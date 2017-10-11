@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ProLEGO.Models
 {
-    public class ProjectInfo
+    public class ProjectVM
     {
     }
 }
