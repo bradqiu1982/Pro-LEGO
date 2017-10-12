@@ -24,5 +24,6 @@ namespace ProLEGO.Models
         {
             return Guid.NewGuid().ToString("N");
         }
+
     }
 }
