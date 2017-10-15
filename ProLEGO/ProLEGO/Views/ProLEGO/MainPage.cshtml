@@ -4,5 +4,27 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Pro-LEGO</h2>
+<div class="container main-header">
+    <span class="col-md-5 logo"></span>
+    <div class="col-md-3 machine">
+        <span class="img-computer"></span>
+        <span>SHG-L80000000</span>
+    </div>
+</div>
+<div class="container main-body">
+    <div class="welcome">
+        <div>Are you ready for</div>
+        <div>management your project!</div>
+    </div>
+    <div class="wel-op">
+        <input type="button" class="btn wel-btn wel-op-btn-left" value="View All Projects">
+        <input type="button" class="btn wel-btn wel-op-btn-right" value="Create My Project">
+    </div>
+</div>
+<script>
+            $(function () {
+                ProLego.init();
+            })
+</script>
+
 
