@@ -1,5 +1,4 @@
 ﻿
-
 CREATE TABLE [dbo].[ProjectColumn] (
     [ColumnID]   NVARCHAR (200) NOT NULL,
     [ColumnName]     NVARCHAR (200) NOT NULL,
@@ -23,4 +22,29 @@ CREATE TABLE [dbo].[MachineColumn] (
     [APVal4]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
 );
 
+
+CREATE TABLE [dbo].[ProjectLog] (
+	[Machine]     NVARCHAR (200) NOT NULL,
+    [Project]   NVARCHAR (200) NOT NULL,
+	[PJColumn]   NVARCHAR (200) NOT NULL,
+    [Event]     NVARCHAR (MAX) NOT NULL,
+	[CreateTime]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL,
+    [APVal1]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [APVal2]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+	[APVal3]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [APVal4]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
+);
+
+
+CREATE TABLE [dbo].[ProjectVM] (
+    [ProjectName]   NVARCHAR (200) NOT NULL,
+    [ColumnName]     NVARCHAR (200) NOT NULL,
+    [ColumnID]     NVARCHAR (200) NOT NULL,
+	[ColumnValue]     NVARCHAR (MAX) NOT NULL,
+	[UpdateTime]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL,
+    [APVal1]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [APVal2]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+	[APVal3]     NVARCHAR (MAX) DEFAULT ('') NOT NULL,
+    [APVal4]     DATETIME       DEFAULT ('1982-05-06 10:00:00') NOT NULL
+);
 

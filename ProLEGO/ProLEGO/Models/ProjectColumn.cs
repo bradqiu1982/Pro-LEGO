@@ -48,7 +48,7 @@ namespace ProLEGO.Models
         public static Dictionary<string, bool> ExistPJColumn()
         {
             var ret = new Dictionary<string, bool>();
-            var pjcolist = RetriveAllPJColumn();
+            var pjcolist = RetrieveAllPJColumn();
             foreach (var pjc in pjcolist)
             {
                 ret.Add(pjc.ColumnName, true);
@@ -56,15 +56,28 @@ namespace ProLEGO.Models
             return ret;
         }
 
-        public bool AddPJColumn()
+        public bool AddPJColumn(string machine)
         {
+            var existcols = ExistPJColumn();
+            if (existcols.ContainsKey(ColumnName))
+                return false;
+
+            var newkey = ProjectVM.GetUniqKey();
             var sql = "insert into ProjectColumn(ColumnID,ColumnName,ColumnType,ColumnDefaultVal,ColumnCreateDate) values('<ColumnID>','<ColumnName>','<ColumnType>','<ColumnDefaultVal>','<ColumnCreateDate>')";
-            sql = sql.Replace("<ColumnID>", ProjectVM.GetUniqKey()).Replace("<ColumnCreateDate>", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"))
+            sql = sql.Replace("<ColumnID>", newkey).Replace("<ColumnCreateDate>", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"))
                 .Replace("<ColumnName>", ColumnName).Replace("<ColumnType>", ColumnType).Replace("<ColumnDefaultVal>", ColumnDefaultVal);
-            return DBUtility.ExeLocalSqlNoRes(sql);
+            var ret = DBUtility.ExeLocalSqlNoRes(sql);
+            if (ret)
+            {
+                ProjectVM.AddNewColumn(ColumnName, newkey);
+            }
+
+            new ProjectLog(machine, "ALLPJ", "ALLCOL", "Add Column: " + ColumnName);
+
+            return ret;
         }
 
-        public static List<ProjectColumn> RetriveAllPJColumn()
+        public static List<ProjectColumn> RetrieveAllPJColumn()
         {
             var ret = new List<ProjectColumn>();
             var sql = "select ColumnID,ColumnName,ColumnType,ColumnDefaultVal from ProjectColumn order by ColumnCreateDate ASC";
@@ -81,6 +94,34 @@ namespace ProLEGO.Models
             return ret;
         }
 
+        public static Dictionary<string, bool> RetrieveAllPJColumnDict()
+        {
+            var dict = new Dictionary<string, bool>();
+            var allcol = RetrieveAllPJColumn();
+            foreach (var col in allcol)
+            {
+                dict.Add(col.ColumnName, true);
+            }
+            return dict;
+        }
+
+        public static List<ProjectColumn> RetriveRolePJColumn()
+        {
+            var ret = new List<ProjectColumn>();
+            var sql = "select ColumnID,ColumnName,ColumnType,ColumnDefaultVal from ProjectColumn where ColumnType = '<ColumnType>' order by ColumnCreateDate ASC";
+            sql = sql.Replace("<ColumnType>", PROJECTCOLUMNTYPE.ROLE);
+            var dbret = DBUtility.ExeLocalSqlWithRes(sql);
+            foreach (var line in dbret)
+            {
+                var tempvm = new ProjectColumn();
+                tempvm.ColumnID = Convert.ToString(line[0]);
+                tempvm.ColumnName = Convert.ToString(line[1]);
+                tempvm.ColumnType = Convert.ToString(line[2]);
+                tempvm.ColumnDefaultVal = Convert.ToString(line[3]);
+                ret.Add(tempvm);
+            }
+            return ret;
+        }
 
     }
 }

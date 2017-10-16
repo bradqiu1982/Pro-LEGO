@@ -175,6 +175,7 @@
     <Compile Include="Models\EmailUtility.cs" />
     <Compile Include="Models\MachineColumn.cs" />
     <Compile Include="Models\ProjectColumn.cs" />
+    <Compile Include="Models\ProjectLog.cs" />
     <Compile Include="Models\ProjectVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
