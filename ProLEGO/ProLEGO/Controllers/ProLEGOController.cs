@@ -43,7 +43,66 @@ namespace ProLEGO.Controllers
         public ActionResult MainPage()
         {
             UserAuth();
+
             return View();
+        }
+
+        public ActionResult AllProjects(int currentpage = 0,string searchkey = null)
+        {
+            UserAuth();
+
+            ViewBag.NavLeft = false;
+            ViewBag.NavRight = false;
+            var pagesize = 4;
+
+            if (!string.IsNullOrEmpty(searchkey))
+            {
+                searchkey = searchkey.Replace("'", "");
+                ViewBag.searchkey = searchkey;
+            }
+
+            var allpro = ProjectVM.RetrieveAllProjectData(searchkey);
+            IEnumerable<ProjectVM> showvm = null;
+
+            if (currentpage < 0) currentpage = 0;
+
+            if (allpro.Count > 0)
+            {
+                if (allpro.Count > currentpage * pagesize)
+                {
+                    showvm = allpro.Skip(currentpage * pagesize).Take((allpro.Count >= ((currentpage + 1) * pagesize)) ? pagesize : (allpro.Count - currentpage * pagesize));
+                }
+                else
+                {
+                    currentpage = 0;
+                    showvm = allpro.Skip(currentpage * pagesize).Take((allpro.Count >= ((currentpage + 1) * pagesize)) ? pagesize : (allpro.Count - currentpage * pagesize));
+                }
+            }
+            else
+            {
+                currentpage = 0;
+            }
+
+            if (currentpage > 0)
+            {
+                ViewBag.NavLeft = true;
+                ViewBag.LeftPage = currentpage - 1;
+            }
+            if (allpro.Count > (currentpage + 1) * pagesize)
+            {
+                ViewBag.NavRight = true;
+                ViewBag.RightPage = currentpage + 1;
+            }
+
+            return View(showvm);
+        }
+
+        public ActionResult ProjectDetail(string ProjectName)
+        {
+            UserAuth();
+
+            var pvm = ProjectVM.RetriveProjectData(ProjectName, null);
+            return View(pvm);
         }
 
         public ActionResult HeartBeat()
@@ -85,9 +144,16 @@ namespace ProLEGO.Controllers
             pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
             pjcol.AddPJColumn(ViewBag.compName);
 
-            ProjectVM.UpdateProjectColumnValue(ViewBag.compName, "CFP4 SR4", "PM", "Meg.Wang");
-            ProjectVM.UpdateProjectColumnValue(ViewBag.compName, "QSFP 28G SR4", "PM", "Steven.Qiu");
-            ProjectVM.UpdateProjectColumnValue(ViewBag.compName, "QSFP 28G SR4", "Start Date", "2017-10-16 10:00:00");
+            new System.Threading.ManualResetEvent(false).WaitOne(1500);
+            ProjectVM.CreateProject(ViewBag.compName, "SFP+");
+            new System.Threading.ManualResetEvent(false).WaitOne(1500);
+            ProjectVM.CreateProject(ViewBag.compName, "Coherent");
+            new System.Threading.ManualResetEvent(false).WaitOne(1500);
+            ProjectVM.CreateProject(ViewBag.compName, "QSFP PSM4");
+
+            //ProjectVM.UpdateProjectColumnValue(ViewBag.compName, "CFP4 SR4", "PM", "Meg.Wang");
+            //ProjectVM.UpdateProjectColumnValue(ViewBag.compName, "QSFP 28G SR4", "PM", "Steven.Qiu");
+            //ProjectVM.UpdateProjectColumnValue(ViewBag.compName, "QSFP 28G SR4", "Start Date", "2017-10-16 10:00:00");
 
             return View("MainPage");
         }

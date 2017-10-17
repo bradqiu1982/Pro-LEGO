@@ -5,44 +5,70 @@ using System.Web;
 
 namespace ProLEGO.Models
 {
+    public class ProjectShowData
+    {
+        public ProjectShowData()
+        {
+            colname = "";
+            colvalue = "";
+            coltype = "";
+        }
+
+        public ProjectShowData(string k, string v, string t)
+        {
+            colname = k;
+            colvalue = v;
+            coltype = t;
+        }
+
+        public string colname { set; get; }
+        public string colvalue { set; get; }
+        public string coltype { set; get; }
+    }
+
+
     public class ProjectVM
     {
         public ProjectVM()
         {
             ProjectName = "";
             PJColList = new List<ProjectColumn>();
-            ColNameValue = new List<KeyValuePair<string, string>>();
+            ColNameValue = new List<ProjectShowData>();
             UpdateTime = DateTime.Parse("1982-05-06 10:00:00");
         }
 
         public string ProjectName { set; get; }
         public List<ProjectColumn> PJColList { set; get; }
-        public List<KeyValuePair<string, string>> ColNameValue { set; get; }
+        public List<ProjectShowData> ColNameValue { set; get; }
         public DateTime UpdateTime { set; get; }
 
-        public List<KeyValuePair<string, string>> PJMemList
+        public List<ProjectShowData> PJMemList
         {
             get {
-                var ret = new List<KeyValuePair<string, string>>();
-                if (PJColList.Count > 0 && ColNameValue.Count > 0)
+                var ret = new List<ProjectShowData>();
+                foreach (var item in ColNameValue)
                 {
-                    var coltypedict = new Dictionary<string, string>();
-                    foreach (var col in PJColList)
+                    if (string.Compare(item.coltype, PROJECTCOLUMNTYPE.ROLE, true) == 0)
                     {
-                        coltypedict.Add(col.ColumnName, col.ColumnType);
+                        ret.Add(item);
                     }
+                }
+                return ret;
+            }
+        }
 
-                    foreach (var kv in ColNameValue)
+        public List<ProjectShowData> PJNonMemList
+        {
+            get
+            {
+                var ret = new List<ProjectShowData>();
+                foreach (var item in ColNameValue)
+                {
+                    if (string.Compare(item.coltype, PROJECTCOLUMNTYPE.ROLE, true) != 0)
                     {
-                        if (coltypedict.ContainsKey(kv.Key))
-                        {
-                            if (string.Compare(coltypedict[kv.Key], PROJECTCOLUMNTYPE.ROLE, true) == 0)
-                            {
-                                ret.Add(new KeyValuePair<string, string>(kv.Key,kv.Value));
-                            }
-                        }
-                    }//end foreach
-                }//end if
+                        ret.Add(item);
+                    }
+                }
                 return ret;
             }
         }
@@ -78,12 +104,23 @@ namespace ProLEGO.Models
             return true;
         }
 
-        public static List<KeyValuePair<string,string>> RetrieveAllProjectName()
+        public static List<KeyValuePair<string,string>> RetrieveAllProjectName(string searchkey)
         {
             var ret = new List<KeyValuePair<string, string>>();
 
             var pjlist = new List<string>();
-            var sql = "select distinct ProjectName from ProjectVM order by ProjectName";
+            var sql = string.Empty;
+            if (!string.IsNullOrEmpty(searchkey))
+            {
+                sql = "select distinct ProjectName from ProjectVM where ProjectName like '%<searchkey>%' order by ProjectName";
+                sql = sql.Replace("<searchkey>", searchkey);
+            }
+            else
+            {
+                sql = "select distinct ProjectName from ProjectVM order by ProjectName";
+            }
+
+
             var dbret = DBUtility.ExeLocalSqlWithRes(sql);
             foreach (var line in dbret)
             {
@@ -108,10 +145,12 @@ namespace ProLEGO.Models
 
             return ret;
         }
+        
+
 
         public static void AddNewColumn(string ColumnName, string ColumnID)
         {
-            var allpj = RetrieveAllProjectName();
+            var allpj = RetrieveAllProjectName(null);
             foreach (var pj in allpj)
             {
                 var sql = "insert into ProjectVM(ProjectName,ColumnName,ColumnID,ColumnValue,UpdateTime) values('<ProjectName>','<ColumnName>','<ColumnID>','<ColumnValue>','<UpdateTime>')";
@@ -179,7 +218,7 @@ namespace ProLEGO.Models
             {
                 if (colvaluedict.ContainsKey(col.ColumnName))
                 {
-                    ret.ColNameValue.Add(new KeyValuePair<string, string>(col.ColumnName,colvaluedict[col.ColumnName]));
+                    ret.ColNameValue.Add(new ProjectShowData(col.ColumnName,colvaluedict[col.ColumnName],col.ColumnType));
                 }
             }
 
@@ -188,10 +227,10 @@ namespace ProLEGO.Models
             return ret;
         }
 
-        public static List<ProjectVM> RetrieveAllProjectData()
+        public static List<ProjectVM> RetrieveAllProjectData(string searchkey)
         {
             var allpjcol = ProjectColumn.RetrieveAllPJColumn();
-            var allpjname = RetrieveAllProjectName();
+            var allpjname = RetrieveAllProjectName(searchkey);
             var ret = new List<ProjectVM>();
             foreach (var pjname in allpjname)
             {

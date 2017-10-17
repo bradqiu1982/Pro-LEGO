@@ -1,0 +1,163 @@
+﻿@model IEnumerable<ProLEGO.Models.ProjectVM>
+
+@{
+    ViewBag.Title = "All Projects";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var pagesize = 0;
+    if (Model != null && Model.Count() > 0)
+    {
+        pagesize = Model.Count();
+    }
+
+    var rolelabelarray = new List<string>();
+    rolelabelarray.Add("label-success");
+    rolelabelarray.Add("label-primary");
+    rolelabelarray.Add("label-warning");
+
+    var slidecolor = new List<string>();
+    slidecolor.Add("color-blue");
+    slidecolor.Add("color-green");
+    slidecolor.Add("color-cyan");
+    slidecolor.Add("color-rose");
+
+    var defaultpagesize = 4;
+
+    var oddeventlist = new List<string>();
+    oddeventlist.Add("pro-odd");
+    oddeventlist.Add("pro-even");
+}
+
+<script src="~/Scripts/prolego.js" type="text/javascript"></script>
+
+<div class="container main-header">
+    <span class="col-md-5 logo"></span>
+    <div class="col-md-3 machine">
+        <span class="img-computer"></span>
+        @if (ViewBag.compName != null)
+        {
+            <span>@ViewBag.compName</span>
+        }
+        else
+        {
+            <span>SHG-L80000000</span>
+        }
+    </div>
+</div>
+<div class="container content-body">
+    @if (ViewBag.NavLeft != null && ViewBag.NavLeft)
+    {
+        if (ViewBag.searchkey != null)
+        {
+            <div class="project-left" onclick="NavePro('currentpage=@(ViewBag.LeftPage)&searchkey=@(ViewBag.searchkey)')"></div>
+        }
+        else
+        {
+            <div class="project-left" onclick="NavePro('currentpage=@(ViewBag.LeftPage)')"></div>
+        }
+
+    }
+    else
+    {
+        <div class="project-left"></div>
+    }
+
+
+    <div class="project-info">
+        @for (var idx = 0; idx < defaultpagesize; idx++)
+        {
+            if (pagesize > idx)
+            {
+                var pvm = Model.ElementAt(idx);
+                var memberheigh = (pvm.PJMemList.Count + 1) * 20;
+
+                <div class="project-container flip-container slant @(oddeventlist[idx % 2]) @(slidecolor[idx])">
+                    <div class="flipper">
+                        <div class="front">
+                            <div class="pro-name-flip">@pvm.ProjectName</div>
+                        </div>
+                        <div class="back">
+                            <div class="pro-detail pro-member" style="height: @(memberheigh)px;">
+                                <div class="dot-img"></div>
+                                <div class="detail-title">Member</div>
+                                <div class="detail-content">
+                                    @for (var ridx = 0; ridx < pvm.PJMemList.Count; ridx++)
+                                    {
+                                        <div class="label-member">
+                                            <span>@pvm.PJMemList[ridx].colvalue</span>
+                                            <span class="label @rolelabelarray[ridx%3]">@pvm.PJMemList[ridx].colname</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            @for (var nidx = 0; nidx < pvm.PJNonMemList.Count; nidx++)
+                            {
+                                if (string.Compare(pvm.PJNonMemList[nidx].coltype, ProLEGO.Models.PROJECTCOLUMNTYPE.BOOL, true) == 0)
+                                {
+                                    <div class="pro-detail-end pro-mes">
+                                        <div class="dot-img-end"></div>
+                                        <div class="detail-title">@pvm.PJNonMemList[nidx].colname</div>
+                                        <div class="detail-content">@pvm.PJNonMemList[nidx].colvalue</div>
+                                        <div class="edit-mes hidden">
+                                            <span class="mes-type mes-type-left mes-inactive">False</span>
+                                            <span class="mes-type mes-type-right mes-active">True</span>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="pro-detail pro-type">
+                                        <div class="dot-img"></div>
+                                        <div class="detail-title">@pvm.PJNonMemList[nidx].colname</div>
+                                        <div class="detail-content">@pvm.PJNonMemList[nidx].colvalue</div>
+                                    </div>
+                                }
+                            }
+
+                            <div class="pro-detail-edit" data-pro-key="@pvm.ProjectName"></div>
+                            <div class="pro-detail-add hidden">
+                                <div class="dot-img-add"></div>
+                                <input type="button" class="pro-detail-add-btn" id="pro-detail-add" name="pro-detail-add" value="Add New">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="project-container slant @(oddeventlist[idx % 2]) @(slidecolor[idx])">
+                    <div class="pro-name">Project @(idx + 1)</div>
+                </div>
+            }
+        }
+
+    </div>
+
+    @if (ViewBag.NavRight != null && ViewBag.NavRight)
+    {
+        if (ViewBag.searchkey != null)
+        {
+            <div class="project-right" onclick="NavePro('currentpage=@(ViewBag.RightPage)&searchkey=@(ViewBag.searchkey)')"></div>
+        }
+        else
+        {
+            <div class="project-right" onclick="NavePro('currentpage=@(ViewBag.RightPage)')"></div>
+        }
+    }
+    else
+    {
+        <div class="project-right"></div>
+    }
+</div>
+<script>
+            $(function () {
+                ProLego.pro_list();
+            })
+            
+            function NavePro(value)
+            {
+                window.location.href = '/ProLEGO/AllProjects?'+value
+            }
+</script>
+

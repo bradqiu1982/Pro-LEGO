@@ -35,7 +35,144 @@
             $('.mes-type').removeClass('mes-active').addClass('mes-inactive');
             $(this).removeClass('mes-inactive').addClass('mes-active');
         });
+
+        $('body').on('click', '.flip-container', function () {
+            var project_key = $(this).find('.front').children('div').eq(0).html();
+            window.location.href = '/ProLEGO/ProjectDetail?ProjectName=' + project_key;
+        });
     }
+
+    var pro_detail = function(){
+        $('.date').datepicker();
+        $('#project_type').autoComplete({
+            minChars: 0,
+            source: function(term, suggest){
+                term = term.toLowerCase();
+                var choices = ['Parallel', 'Test'];
+                var suggestions = [];
+                for (i=0;i<choices.length;i++)
+                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                suggest(suggestions);
+            }
+            // function (term, suggest) {
+            //     term = term.toLowerCase();
+            //     $.post('/ProLego/RoleList',
+            //     {
+
+            //     }, function (output){
+            //         var suggestions = [];
+            //         for (i = 0; i < output.length; i++) {
+            //             if (~output[i].toLowerCase().indexOf(term)) {
+            //                 suggestions.push(output[i]);
+            //             }
+            //         }
+            //         suggest(suggestions);
+            //     });
+            // }
+        });
+
+        $("#member_name").autoComplete({
+            minChars: 0,
+            source: function(term, suggest){
+                term = term.toLowerCase();
+                var choices = ['Test@Finisar.com', 'Test2@Finisar.com'];
+                var suggestions = [];
+                for (i=0;i<choices.length;i++)
+                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                suggest(suggestions);
+            }
+        })
+
+        $("#member_role").autoComplete({
+            minChars: 0,
+            source: function(term, suggest){
+                term = term.toLowerCase();
+                var choices = ['PQE', 'PE'];
+                var suggestions = [];
+                for (i=0;i<choices.length;i++)
+                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                suggest(suggestions);
+            }
+        });
+
+        $('body').on('click', '.project-detail-edit', function(){
+            $('.project-circle-img').removeClass('project-circle-img').addClass('project-del-img');
+            $('.project-dot-img').removeClass('project-dot-img').addClass('project-add-img');
+            $('.project-detail-edit').addClass('hidden');
+            $('.project-detail-end').children('.project-dot-img-end').removeClass('hidden');
+            $('.add-project-col').removeClass('hidden');
+            $('.detail-show').addClass('hidden');
+            $('.detail-edit').removeClass('hidden');
+            $('.project-member').css('height', ($('.project-label-member').length + 3 ) * 20 +'px');
+        });
+
+        $('body').on('click', '.project-del-img', function(){
+            $(this).removeClass('project-del-img').addClass('project-add-img');
+        });
+
+        $('body').on('click', '.project-add-img', function(){
+            $(this).removeClass('project-add-img').addClass('project-del-img');
+        });
+
+        $('body').on('click', '.bool-def-left, .bool-def-right', function(){
+            $('.bool-def-left, .bool-def-right').removeClass('bool-active').addClass('bool-inactive');
+            $(this).removeClass('bool-inactive').addClass('bool-active');
+        });
+
+        $('body').on('click', '.edit-dot-del', function(){
+            var project_key = $('#project_key').html();
+            var member_name = $(this).parent('.detail-edit').parent('.project-label-member').children().eq(1).html();
+            var member_role = $(this).parent('.detail-edit').parent('.project-label-member').children().eq(2).html();
+            var sub_cnt = $(this).parent('.detail-edit').parent('.project-label-member').parent('.project-detail-content').find('.project-label-member').length;
+            $(this).parent('.detail-edit').parent('.project-label-member').parent('.project-detail-content').parent('.project-detail-mid').parent('.project-detail').css('height', ( sub_cnt + 2 ) * 20 +'px');
+            $(this).parent('.detail-edit').parent('.project-label-member').remove();
+            // $.post('/',
+            // {
+            //     project_key: project_key,
+            //     member_name: member_name,
+            //     member_role: member_role
+            // }, function(output){
+            //     if(output.success){
+            //         $(this).parent('.detail-edit').parent('.project-label-member').empty();
+            //     }
+            //     else{
+            //         alert("Failed to remove member!");
+            //     }
+            // })
+        });
+
+        $('body').on('click', '.edit-add-img', function(){
+            var member_name = $('#member_name').val();
+            var member_role = $('#member_role').val();
+            if( ! member_name || ! member_role){
+                return false;
+            }
+            var flg = false;
+            $('.project-label-member').each(function(){
+                if(member_name == $(this).children('span').eq(1).html() && member_role == $(this).children('span').eq(2).html()){
+                    flg = true;
+                }
+            });
+            if(flg){
+                return false;
+            }
+            $('.project-member').css('height', ($('.project-label-member').length + 4 ) * 20 +'px');
+            var appendStr = '<div class="project-label-member">'+
+                    '<span class="detail-edit">'+
+                        '<img src="images/dot_del.png" class="edit-dot-del">'+
+                    '</span>'+
+                    '<span>'+member_name+'</span>'+
+                    '<span class="label label-warning">'+member_role+'</span>'+
+                '</div>';
+            $(appendStr).insertBefore($(this).parent('.detail-edit'));
+        });
+
+        //save
+        $('body').on('click', '#btn_detail_save', function(){
+            alert('Save');
+        });
+    }
+
     var show = function () {
         $('#role-list').autoComplete({
             minChars: 1,
@@ -141,6 +278,9 @@
         },
         pro_list: function(){
             pro_list();
+        },
+        pro_detail: function(){
+            pro_detail();
         }
     };
 }();

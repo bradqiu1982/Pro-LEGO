@@ -23,7 +23,7 @@
     position: absolute;
     left: 5%;
     margin-top: 2%;
-    height: 80%;
+    height: 100%;
     width: 550px;
     background-image: url(./images/logo.png);
     background-repeat: no-repeat;
@@ -680,7 +680,7 @@
     z-index: 1002;
 }
 
-.project-label-member{
+.project-label-member, .project-label-0, .project-label{
     font-size: 14px;
 }
 
@@ -808,6 +808,11 @@
 .edit-autocomplete-input{
     display: inline-block;
     width: 40%;
+}
+
+.autocomplete-input{
+    display: inline-block;
+    width: 80%;
 }
 
 .edit-add-img{
