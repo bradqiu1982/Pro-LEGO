@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -30,18 +31,24 @@ namespace ProLEGO.Models
         public string ColumnDefaultVal { set; get; }
         public DateTime ColumnCreateDate { set; get; }
 
-        public List<string> ColumnDefaultValList {
+        public string ColumnDefaultValList {
             get {
-                var ret = new List<string>();
-                if(string.IsNullOrEmpty(ColumnDefaultVal))
+                if (!string.IsNullOrEmpty(ColumnDefaultVal))
                 {
                     var splitstrs = ColumnDefaultVal.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var item in splitstrs)
-                    {
-                        ret.Add(item.Trim());
-                    }
+                    return JsonConvert.SerializeObject(splitstrs);
                 }
-                return ret;
+                return string.Empty;
+                //var ret = new List<string>();
+                //if(!string.IsNullOrEmpty(ColumnDefaultVal))
+                //{
+                //    var splitstrs = ColumnDefaultVal.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
+                //    foreach (var item in splitstrs)
+                //    {
+                //        ret.Add(item.Trim());
+                //    }
+                //}
+                //return ret;
             }
         }
 

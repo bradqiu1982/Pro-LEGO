@@ -13,6 +13,23 @@
         $('body').on('click', '.wel-op-btn-left', function(){
 
         });
+
+        $('body').on('mouseenter', '.search', function(){
+            $('#keywords').removeClass('hidden');
+            setTimeout(
+                "if($('#keywords').val == '') $('#keywords').addClass('hidden')"
+            , 5000);
+        });
+
+        $('body').on('mouseleave', '.search', function(){
+            if($('#keywords').val() == ''){
+                $('#keywords').addClass('hidden');
+            }
+        })
+
+        $('body').on('click', '.search-img', function(){
+            //search
+        });
     }
     var pro_list = function(){
         $('body').on('click', '.pro-detail-edit', function(){
@@ -44,32 +61,6 @@
 
     var pro_detail = function(){
         $('.date').datepicker();
-        $('#project_type').autoComplete({
-            minChars: 0,
-            source: function(term, suggest){
-                term = term.toLowerCase();
-                var choices = ['Parallel', 'Test'];
-                var suggestions = [];
-                for (i=0;i<choices.length;i++)
-                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                suggest(suggestions);
-            }
-            // function (term, suggest) {
-            //     term = term.toLowerCase();
-            //     $.post('/ProLego/RoleList',
-            //     {
-
-            //     }, function (output){
-            //         var suggestions = [];
-            //         for (i = 0; i < output.length; i++) {
-            //             if (~output[i].toLowerCase().indexOf(term)) {
-            //                 suggestions.push(output[i]);
-            //             }
-            //         }
-            //         suggest(suggestions);
-            //     });
-            // }
-        });
 
         $("#member_name").autoComplete({
             minChars: 0,
@@ -142,27 +133,25 @@
         });
 
         $('body').on('click', '.edit-add-img', function(){
-            var member_name = $('#member_name').val();
-            var member_role = $('#member_role').val();
-            if( ! member_name || ! member_role){
+            var member_name = $('#PM').val();
+             if( ! member_name){
                 return false;
             }
-            var flg = false;
-            $('.project-label-member').each(function(){
-                if(member_name == $(this).children('span').eq(1).html() && member_role == $(this).children('span').eq(2).html()){
-                    flg = true;
-                }
-            });
-            if(flg){
-                return false;
-            }
+            //var flg = false;
+            //$('.project-label-member').each(function(){
+            //    if(member_name == $(this).children('span').eq(1).html()){
+            //        flg = true;
+            //    }
+            //});
+            //if(flg){
+            //    return false;
+            //}
             $('.project-member').css('height', ($('.project-label-member').length + 4 ) * 20 +'px');
             var appendStr = '<div class="project-label-member">'+
                     '<span class="detail-edit">'+
-                        '<img src="images/dot_del.png" class="edit-dot-del">'+
+                        '<img src="~/Content/images/dot_del.png" class="edit-dot-del">' +
                     '</span>'+
                     '<span>'+member_name+'</span>'+
-                    '<span class="label label-warning">'+member_role+'</span>'+
                 '</div>';
             $(appendStr).insertBefore($(this).parent('.detail-edit'));
         });

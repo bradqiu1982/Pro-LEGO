@@ -107,21 +107,80 @@
 }
 
 
-/* add column */
-.add-column-img{
+/* toolbar */
+.toolbar{
     position: fixed;
     right: 0;
-    top: 20px;
+    top: 100px;
+    height: 150px;
+    z-index: 1003;
+}
+
+.toolbar-img{
+    height: 30px;
+    width: 30px;
+    margin: 5px;
+}
+.search{
+    position: fixed;
+    margin-top: 2px;
+    right: 0;
+    top: 100px;
+    width: 300px;
     height: 40px;
+}
+
+.search-img{
+    position: fixed;
+    right: 0;
     width: 40px;
+    height: 40px;
+    background-color: #5C2576; 
+    opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter: alpha(opacity=80);
+    cursor: pointer;
+    z-index: 1003;
+}
+
+.search-keywords{
+    right: 40px;
+    width: 260px;
+    height: 40px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: #5C2576 1px solid;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius:  3px;
     background-color: transparent;
-    background-image: url(./images/add-col-min.png);
-    background-repeat: no-repeat;
-    background-position: bottom;
-    background-size: cover;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;    
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./images/add-col-min.png',sizingMethod='scale');
+}
+
+.project-bom{
+    position: fixed;
+    right: 0;
+    top: 184px;
+    width: 40px;
+    height: 40px;
+    margin-top: 2px;
+    background-color: #93928E; 
+    opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter: alpha(opacity=80);
+    cursor: pointer;
+    z-index: 1003;
+}
+
+.export-all{
+    position: fixed;
+    right: 0;
+    top: 142px;
+    width: 40px;
+    height: 40px;
+    margin-top: 2px;
+    background-color: #58AAA8; 
+    opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter: alpha(opacity=80);
     cursor: pointer;
     z-index: 1003;
 }
@@ -148,6 +207,8 @@
     height: 450px;
     background-color: transparent;
     opacity: 0.5;
+    -moz-opacity: 0.5;
+    filter: alpha(opacity=50);
 }
 
 .project-left:hover{
@@ -174,6 +235,8 @@
     height: 450px;
     background-color: transparent;
     opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter: alpha(opacity=80);
 }
 
 .project-right:hover{
@@ -521,7 +584,7 @@
     left: 0;
     right: 0;
     height: 100px;
-    background-color: #ccc;
+    background-color: #f0f0f0;
     opacity: 0.6;
     -moz-opacity: 0.6;
     filter: alpha(opacity=60);
@@ -570,7 +633,7 @@
     width: 60%;
 }
 .project-detail{
-    height: 80px;
+    height: 60px;
     border-left: 3px #00B0F0 solid;
 }
 .project-detail-mid{

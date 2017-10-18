@@ -184,17 +184,19 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\common.css" />
-    <Content Include="Content\images\add-col-min.png" />
     <Content Include="Content\images\add.png" />
+    <Content Include="Content\images\add_column.png" />
     <Content Include="Content\images\blue_circle.png" />
     <Content Include="Content\images\blue_dot.png" />
     <Content Include="Content\images\computer.png" />
+    <Content Include="Content\images\confirm.png" />
     <Content Include="Content\images\del.png" />
     <Content Include="Content\images\dot.png" />
     <Content Include="Content\images\dot_add.png" />
     <Content Include="Content\images\dot_add_2.png" />
     <Content Include="Content\images\dot_del.png" />
     <Content Include="Content\images\dot_del_2.png" />
+    <Content Include="Content\images\download.png" />
     <Content Include="Content\images\edit.png" />
     <Content Include="Content\images\gray_dot.png" />
     <Content Include="Content\images\home.png" />
@@ -207,6 +209,7 @@
     <Content Include="Content\images\pro_left.png" />
     <Content Include="Content\images\pro_log.png" />
     <Content Include="Content\images\pro_right.png" />
+    <Content Include="Content\images\search.png" />
     <Content Include="Content\images\up.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -270,6 +273,7 @@
     <Content Include="Views\ProLEGO\MainPage.cshtml" />
     <Content Include="Views\ProLEGO\AllProjects.cshtml" />
     <Content Include="Views\ProLEGO\ProjectDetail.cshtml" />
+    <Content Include="Views\ProLEGO\AddProColumn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -105,6 +105,13 @@ namespace ProLEGO.Controllers
             return View(pvm);
         }
 
+        public ActionResult AddProColumn()
+        {
+            UserAuth();
+            var pjcollist = ProjectColumn.RetrieveAllPJColumn();
+            return View(pjcollist);
+        }
+        
         public ActionResult HeartBeat()
         {
             UserAuth();

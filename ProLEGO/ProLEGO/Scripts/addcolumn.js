@@ -147,7 +147,7 @@ var AddColumn = function () {
                 return false;
             }
             var appendStr = '<div class="project-label">'+
-                '<img src="images/dot_del.png" class="edit-dot-del">'+
+                '<img src="~/Content/images/dot_del.png" class="edit-dot-del">' +
                 '<span>'+add_value+'</span>'+
             '</div>';
             $col_value.parent('.project-detail-mid').parent('.project-detail')
@@ -174,7 +174,7 @@ var AddColumn = function () {
         $('body').on('click', '.info-up', function(){
             var column_name = $(this).next('div').children('span').eq(1).find('input').eq(1).val();
             var column_value = $(this).next('div').children('span').eq(0).find('input').val();
-            if( ! column_name || ! column_value){
+            if( ! column_name){
                 return false;
             }
             var flg = false;
@@ -186,57 +186,57 @@ var AddColumn = function () {
             if(flg){
                 return false;
             }
-            var sub_appendStr = '';
-            var col_type = $(this).attr('data-col-type');
-            if(col_type == 'Date'){
-                sub_appendStr = '<div class="input-group date" data-date="'+column_value+'" data-date-format="yyyy-mm-dd">'+
-                    '<input type="text" class="form-control" value="'+column_value+'" readonly>'+
-                    '<span class="input-group-addon">'+
-                        '<span class="glyphicon glyphicon-th"></span>'+
-                    '</span>'+
-                '</div>';
-            }
-            else if(col_type == 'Bool'){
-                if(column_value == 'True'){
-                    sub_appendStr = '<div class="detail-edit edit-bool-def div-span">'+
-                        '<span class="bool-def-left bool-active">True</span>'+
-                        '<span class="bool-def-right bool-inactive" style="margin-left: 0;">False</span>'+
-                    '</div>';
-                }
-                else{
-                    sub_appendStr = '<div class="detail-edit edit-bool-def div-span">'+
-                        '<span class="bool-def-left bool-inactive">True</span>'+
-                        '<span class="bool-def-right bool-active" style="margin-left: 0;">False</span>'+
-                    '</div>';
-                }
-            }
-            else if(col_type == 'Role'){
-                sub_appendStr = '<div class="project-label">'+
-                    '<img src="images/dot_del.png" class="edit-dot-del">'+
-                    '<span>'+column_value+'</span>'+
-                '</div>'+
-                '<div class="detail-edit">'+
-                    '<input type="text" class="form-control autocomplete-input"'+
-                        'autocomplete="off" placeholder="Member Role" />'+
-                    '<div class="edit-add-img"></div>'+
-                '</div>';
-            }
-            else if(col_type == 'Info'){
-                sub_appendStr = '<input type="text" class="form-control" value="'+column_value+'">';
-            }
-            var appendStr = '<div class="project-detail">'+
-                '<div class="project-del-img"></div>'+
-                '<div class="project-detail-mid">'+
-                    '<div class="project-detail-content">'+
-                        sub_appendStr +
-                    '</div>'+
-                    '<div class="project-detail-line"></div>'+
-                    '<div class="project-detail-title" style="margin-left: 0;">'+column_name+'</div>'+
-                    '<div class="project-title-circle"></div>'+
-                '</div>'+
-            '</div>';
-            $(appendStr).insertBefore($('.add-project-col'));
-            $('.date').datepicker();
+            //var sub_appendStr = '';
+            //var col_type = $(this).attr('data-col-type');
+            //if(col_type == 'Date'){
+            //    sub_appendStr = '<div class="input-group date" data-date="'+column_value+'" data-date-format="yyyy-mm-dd">'+
+            //        '<input type="text" class="form-control" value="'+column_value+'" readonly>'+
+            //        '<span class="input-group-addon">'+
+            //            '<span class="glyphicon glyphicon-th"></span>'+
+            //        '</span>'+
+            //    '</div>';
+            //}
+            //else if(col_type == 'Bool'){
+            //    if(column_value == 'True'){
+            //        sub_appendStr = '<div class="detail-edit edit-bool-def div-span">'+
+            //            '<span class="bool-def-left bool-active">True</span>'+
+            //            '<span class="bool-def-right bool-inactive" style="margin-left: 0;">False</span>'+
+            //        '</div>';
+            //    }
+            //    else{
+            //        sub_appendStr = '<div class="detail-edit edit-bool-def div-span">'+
+            //            '<span class="bool-def-left bool-inactive">True</span>'+
+            //            '<span class="bool-def-right bool-active" style="margin-left: 0;">False</span>'+
+            //        '</div>';
+            //    }
+            //}
+            //else if(col_type == 'Role'){
+            //    sub_appendStr = '<div class="project-label">'+
+            //        '<img src="images/dot_del.png" class="edit-dot-del">'+
+            //        '<span>'+column_value+'</span>'+
+            //    '</div>'+
+            //    '<div class="detail-edit">'+
+            //        '<input type="text" class="form-control autocomplete-input"'+
+            //            'autocomplete="off" placeholder="Member Role" />'+
+            //        '<div class="edit-add-img"></div>'+
+            //    '</div>';
+            //}
+            //else if(col_type == 'Info'){
+            //    sub_appendStr = '<input type="text" class="form-control" value="'+column_value+'">';
+            //}
+            //var appendStr = '<div class="project-detail">'+
+            //    '<div class="project-del-img"></div>'+
+            //    '<div class="project-detail-mid">'+
+            //        '<div class="project-detail-content">'+
+            //            sub_appendStr +
+            //        '</div>'+
+            //        '<div class="project-detail-line"></div>'+
+            //        '<div class="project-detail-title" style="margin-left: 0;">'+column_name+'</div>'+
+            //        '<div class="project-title-circle"></div>'+
+            //    '</div>'+
+            //'</div>';
+            //$(appendStr).insertBefore($('.add-project-col'));
+            //$('.date').datepicker();
             // $.post('/', {
 
             // }, function(output){

@@ -12,18 +12,21 @@ namespace ProLEGO.Models
             colname = "";
             colvalue = "";
             coltype = "";
+            defval = "";
         }
 
-        public ProjectShowData(string k, string v, string t)
+        public ProjectShowData(string k, string v, string t, string d)
         {
             colname = k;
             colvalue = v;
             coltype = t;
+            defval = d;
         }
 
         public string colname { set; get; }
         public string colvalue { set; get; }
         public string coltype { set; get; }
+        public string defval { set; get; }
     }
 
 
@@ -218,7 +221,7 @@ namespace ProLEGO.Models
             {
                 if (colvaluedict.ContainsKey(col.ColumnName))
                 {
-                    ret.ColNameValue.Add(new ProjectShowData(col.ColumnName,colvaluedict[col.ColumnName],col.ColumnType));
+                    ret.ColNameValue.Add(new ProjectShowData(col.ColumnName,colvaluedict[col.ColumnName],col.ColumnType,col.ColumnDefaultValList));
                 }
             }
 
