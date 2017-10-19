@@ -13,9 +13,10 @@ namespace ProLEGO.Models
             colvalue = "";
             coltype = "";
             defval = "";
+            notshowcol = false;
         }
 
-        public ProjectShowData(string k, string v, string t, string d)
+        public ProjectShowData(string k, string v, string t, string d,bool s)
         {
             colname = k;
             colvalue = v;
@@ -29,12 +30,14 @@ namespace ProLEGO.Models
             }
             coltype = t;
             defval = d;
+            notshowcol = s;
         }
 
         public string colname { set; get; }
         public string colvalue { set; get; }
         public string coltype { set; get; }
         public string defval { set; get; }
+        public bool notshowcol { set; get; }
     }
 
 
@@ -201,7 +204,7 @@ namespace ProLEGO.Models
         }
 
 
-        public static ProjectVM RetriveProjectData(string pjname, List<ProjectColumn> defcols)
+        public static ProjectVM RetriveProjectData(string pjname, List<ProjectColumn> defcols,string machinename)
         {
             var ret = new ProjectVM();
 
@@ -224,12 +227,14 @@ namespace ProLEGO.Models
                 ret.UpdateTime = Convert.ToDateTime(line[3]);
             }
 
+            var notshowcolumnlist = MachineColumn.RetrieveFobiddenColumnName(machinename);
+
             ret.ColNameValue.Clear();
             foreach (var col in pjcollist)
             {
                 if (colvaluedict.ContainsKey(col.ColumnName))
                 {
-                    ret.ColNameValue.Add(new ProjectShowData(col.ColumnName,colvaluedict[col.ColumnName],col.ColumnType,col.ColumnDefaultValList));
+                    ret.ColNameValue.Add(new ProjectShowData(col.ColumnName,colvaluedict[col.ColumnName],col.ColumnType,col.ColumnDefaultValList,notshowcolumnlist.ContainsKey(col.ColumnName)));
                 }
             }
 
@@ -238,14 +243,15 @@ namespace ProLEGO.Models
             return ret;
         }
 
-        public static List<ProjectVM> RetrieveAllProjectData(string searchkey)
+        public static List<ProjectVM> RetrieveAllProjectData(string searchkey, string machinename)
         {
             var allpjcol = ProjectColumn.RetrieveAllPJColumn();
             var allpjname = RetrieveAllProjectName(searchkey);
+            
             var ret = new List<ProjectVM>();
             foreach (var pjname in allpjname)
             {
-                var pjdata = RetriveProjectData(pjname.Key,allpjcol);
+                var pjdata = RetriveProjectData(pjname.Key,allpjcol,machinename);
                 if (pjdata.ColNameValue.Count > 0)
                 {
                     ret.Add(pjdata);

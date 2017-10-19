@@ -88,6 +88,10 @@
                                 <div class="detail-content">
                                     @for (var ridx = 0; ridx < pvm.PJMemList.Count; ridx++)
                                     {
+                                        if (pvm.PJMemList[ridx].notshowcol)
+                                        {
+                                            continue;
+                                        }
                                         <div class="label-member">
                                             <span>@pvm.PJMemList[ridx].colvalue</span>
                                             <span class="label @rolelabelarray[ridx%3]">@pvm.PJMemList[ridx].colname</span>
@@ -102,6 +106,10 @@
                                 if (nidx == (pvm.PJNonMemList.Count - 1))
                                 {
                                     endidx = 1;
+                                }
+                                if (pvm.PJNonMemList[nidx].notshowcol)
+                                {
+                                    continue;
                                 }
 
                                 if (string.Compare(pvm.PJNonMemList[nidx].coltype, ProLEGO.Models.PROJECTCOLUMNTYPE.BOOL, true) == 0)

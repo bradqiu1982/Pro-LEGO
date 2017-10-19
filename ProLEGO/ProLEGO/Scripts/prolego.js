@@ -162,7 +162,7 @@
         $('body').on('click', '#btn_detail_save', function(){
             var values = new Array();
             var project_key = $('#project_key').html();
-            var project_des = $('.project-key').find('input').val();
+            //var project_des = $('.project-key').find('input').val();
             $('.project-detail').each(function(){
                 var arr_tmp = new Array();
                 var dis_flg = ($(this).find('.project-del-img').length) ? 1 : 0;
@@ -183,10 +183,10 @@
                 arr_tmp.push(col_type, dis_flg, col_name, col_val);
                 values.push(arr_tmp);
             });
-            $.post('/',
+            $.post('/ProLEGO/SaveProjectData',
             {
                 project_key: project_key,
-                project_des: project_des,
+                //project_des: project_des,
                 data: JSON.stringify(values)
             }, function(output){
                 if(output.success){
