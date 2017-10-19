@@ -39,43 +39,29 @@
     <span class="col-md-5 logo"></span>
     <div class="col-md-3 machine">
         <span class="img-computer"></span>
-        @if (ViewBag.compName != null)
-        {
-            <span>@ViewBag.compName</span>
-        }
-        else
-        {
-            <span>SHG-L80000000</span>
-        }
+        <span>@((ViewBag.compName != null)?ViewBag.compName: "SHG-L80000000")</span>
     </div>
 </div>
 <div class="container content-body">
-    @if (ViewBag.NavLeft != null && ViewBag.NavLeft)
-    {
-        if (ViewBag.searchkey != null)
-        {
+    @if (ViewBag.NavLeft != null && ViewBag.NavLeft){
+        if (ViewBag.searchkey != null){
             <div class="project-left" onclick="NavePro('currentpage=@(ViewBag.LeftPage)&searchkey=@(ViewBag.searchkey)')"></div>
         }
-        else
-        {
+        else{
             <div class="project-left" onclick="NavePro('currentpage=@(ViewBag.LeftPage)')"></div>
         }
 
     }
-    else
-    {
+    else{
         <div class="project-left"></div>
     }
 
 
     <div class="project-info">
-        @for (var idx = 0; idx < defaultpagesize; idx++)
-        {
-            if (pagesize > idx)
-            {
+        @for (var idx = 0; idx < defaultpagesize; idx++){
+            if (pagesize > idx){
                 var pvm = Model.ElementAt(idx);
                 var memberheigh = (pvm.PJMemList.Count + 1) * 20;
-
                 <div class="project-container flip-container slant @(oddeventlist[idx % 2]) @(slidecolor[idx])">
                     <div class="flipper">
                         <div class="front">
@@ -144,40 +130,32 @@
                     </div>
                 </div>
             }
-            else
-            {
+            else{
                 <div class="project-container slant @(oddeventlist[idx % 2]) @(slidecolor[idx])">
                     <div class="pro-name">Project @(idx + 1)</div>
                 </div>
             }
         }
-
     </div>
 
-    @if (ViewBag.NavRight != null && ViewBag.NavRight)
-    {
-        if (ViewBag.searchkey != null)
-        {
+    @if (ViewBag.NavRight != null && ViewBag.NavRight){
+        if (ViewBag.searchkey != null){
             <div class="project-right" onclick="NavePro('currentpage=@(ViewBag.RightPage)&searchkey=@(ViewBag.searchkey)')"></div>
         }
-        else
-        {
+        else{
             <div class="project-right" onclick="NavePro('currentpage=@(ViewBag.RightPage)')"></div>
         }
     }
-    else
-    {
+    else{
         <div class="project-right"></div>
     }
 </div>
 <script>
-            $(function () {
-                ProLego.pro_list();
-            })
-            
-            function NavePro(value)
-            {
-                window.location.href = '/ProLEGO/AllProjects?'+value
-            }
+    $(function () {
+        ProLego.pro_list();
+    });   
+    function NavePro(value) {
+        window.location.href = '/ProLEGO/AllProjects?' + value
+    };
 </script>
 
