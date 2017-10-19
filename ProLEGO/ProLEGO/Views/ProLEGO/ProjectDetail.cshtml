@@ -93,47 +93,43 @@
                 {
                     ps = item.colvalue.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
                 }
-                    <div class="project-detail">
-                        <div class="project-circle-img"></div>
-                        <div class="project-detail-mid">
-                            <div class="project-detail-content" data-col-type="@item.coltype">
-
-                                @foreach (var p in ps)
-                                {
-                                    <div class="project-label-member">
-                                        <span class="detail-edit hidden">
-                                            <img src="~/Content/images/dot_del.png" class="edit-dot-del">
-                                        </span>
-                                        <span>@p</span>
-                                    </div>
-                                }
-
-
-                                <div class="detail-edit hidden">
-                                    <input type="text" class="form-control autocomplete-input" id="@item.colname.Replace(" ","_")"
-                                           name="@item.colname.Replace(" ","_")" autocomplete="off" />
-                                    <div class="edit-add-img"></div>
+                <div class="project-detail" data-col-type="@item.coltype">
+                    <div class="project-circle-img"></div>
+                    <div class="project-detail-mid">
+                        <div class="project-detail-content">
+                            @foreach (var p in ps)
+                            {
+                                <div class="project-label-member">
+                                    <span class="detail-edit hidden">
+                                        <img src="~/Content/images/dot_del.png" class="edit-dot-del">
+                                    </span>
+                                    <span>@p</span>
                                 </div>
+                            }
+                            <div class="detail-edit hidden">
+                                <input type="text" class="form-control autocomplete-input" id="@item.colname.Replace(" ","_")"
+                                        name="@item.colname.Replace(" ","_")" autocomplete="off" />
+                                <div class="edit-add-img"></div>
                             </div>
-                            <div class="project-detail-line"></div>
-                            <div class="project-detail-title">@item.colname</div>
-                            <div class="project-title-circle"></div>
                         </div>
+                        <div class="project-detail-line"></div>
+                        <div class="project-detail-title">@item.colname</div>
+                        <div class="project-title-circle"></div>
                     </div>
-
-                    <script type="text/javascript">
-                        $('#@item.colname.Replace(" ", "_")').autoComplete({
-                    minChars: 0,
-                            source: function (term, suggest) {
-                        term = term.toLowerCase();
-                        var choices =  @Html.Raw(item.defval);
-                        var suggestions = [];
-                        for (i = 0; i < choices.length; i++)
-                            if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                        suggest(suggestions);
-                    }
-                });
-                    </script>
+                </div>
+                <script type="text/javascript">
+                    $('#@item.colname.Replace(" ", "_")').autoComplete({
+                        minChars: 0,
+                        source: function (term, suggest) {
+                            term = term.toLowerCase();
+                            var choices =  @Html.Raw(item.defval);
+                            var suggestions = [];
+                            for (i = 0; i < choices.length; i++)
+                                if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                            suggest(suggestions);
+                        }
+                    });
+                </script>
                 
             }
 
@@ -142,10 +138,10 @@
                 var item = Model.PJNonMemList[nidx];
                 if (string.Compare(item.coltype, ProLEGO.Models.PROJECTCOLUMNTYPE.BOOL, true) == 0)
                 {
-                    <div class="project-detail">
+                    <div class="project-detail" data-col-type="@item.coltype">
                         <div class="project-dot-img"></div>
                         <div class="project-detail-mid">
-                            <div class="project-detail-content" data-col-type="@item.coltype">
+                            <div class="project-detail-content">
                                 <span class="detail-show">@item.colvalue</span>
                                 <div class="detail-edit edit-bool-def hidden">
                                     <span class="bool-def-left bool-active">True</span>
@@ -160,10 +156,10 @@
                 }
                 else if (string.Compare(item.coltype, ProLEGO.Models.PROJECTCOLUMNTYPE.DATE, true) == 0)
                 {
-                    <div class="project-detail">
+                    <div class="project-detail" data-col-type="@item.coltype">
                         <div class="project-circle-img"></div>
                         <div class="project-detail-mid">
-                            <div class="project-detail-content" data-col-type="@item.coltype">
+                            <div class="project-detail-content">
                                 <span class="detail-show">@item.colvalue</span>
                                 <div class="detail-edit hidden">
                                     <div class="input-group date" data-date="@item.colvalue" data-date-format="yyyy-mm-dd">
@@ -182,10 +178,10 @@
                 }
                 else
                 {
-                    <div class="project-detail">
+                    <div class="project-detail" data-col-type="@item.coltype">
                         <div class="project-circle-img"></div>
                         <div class="project-detail-mid">
-                            <div class="project-detail-content" data-col-type="@item.coltype">
+                            <div class="project-detail-content">
                                 <span class="detail-show">@item.colvalue</span>
                                 <div class="detail-edit hidden">
                                     <input type="text" class="form-control" id="@item.colname.Replace(" ", "_")"
@@ -199,16 +195,16 @@
                     </div>
                     <script type="text/javascript">
                         $('#@item.colname.Replace(" ", "_")').autoComplete({
-                        minChars: 0,
+                            minChars: 0,
                             source: function (term, suggest) {
-                            term = term.toLowerCase();
-                            var choices = @Html.Raw(item.defval);
-                            var suggestions = [];
-                            for (i = 0; i < choices.length; i++)
-                                if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                            suggest(suggestions);
-                        }
-                    });
+                                term = term.toLowerCase();
+                                var choices = @Html.Raw(item.defval);
+                                var suggestions = [];
+                                for (i = 0; i < choices.length; i++)
+                                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                                suggest(suggestions);
+                            }
+                        });
                     </script>
                 }
             }
@@ -226,8 +222,8 @@
 }
 
 <script>
-            $(function () {
-                ProLego.pro_detail();
-            })
+    $(function () {
+        ProLego.pro_detail();
+    })
 </script>
 
