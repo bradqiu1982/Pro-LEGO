@@ -62,29 +62,29 @@
     var pro_detail = function(){
         $('.date').datepicker();
 
-        $("#member_name").autoComplete({
-            minChars: 0,
-            source: function(term, suggest){
-                term = term.toLowerCase();
-                var choices = ['Test@Finisar.com', 'Test2@Finisar.com'];
-                var suggestions = [];
-                for (i=0;i<choices.length;i++)
-                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                suggest(suggestions);
-            }
-        })
+        //$("#member_name").autoComplete({
+        //    minChars: 0,
+        //    source: function(term, suggest){
+        //        term = term.toLowerCase();
+        //        var choices = ['Test@Finisar.com', 'Test2@Finisar.com'];
+        //        var suggestions = [];
+        //        for (i=0;i<choices.length;i++)
+        //            if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+        //        suggest(suggestions);
+        //    }
+        //})
 
-        $("#member_role").autoComplete({
-            minChars: 0,
-            source: function(term, suggest){
-                term = term.toLowerCase();
-                var choices = ['PQE', 'PE'];
-                var suggestions = [];
-                for (i=0;i<choices.length;i++)
-                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                suggest(suggestions);
-            }
-        });
+        //$("#member_role").autoComplete({
+        //    minChars: 0,
+        //    source: function(term, suggest){
+        //        term = term.toLowerCase();
+        //        var choices = ['PQE', 'PE'];
+        //        var suggestions = [];
+        //        for (i=0;i<choices.length;i++)
+        //            if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+        //        suggest(suggestions);
+        //    }
+        //});
 
         $('body').on('click', '.project-detail-edit', function(){
             $('.project-circle-img').removeClass('project-circle-img').addClass('project-del-img');
