@@ -133,23 +133,25 @@
         });
 
         $('body').on('click', '.edit-add-img', function(){
-            var member_name = $('#PM').val();
-             if( ! member_name){
+            var member_name = $(this).prev('input').val();
+            if( ! member_name){
                 return false;
             }
-            //var flg = false;
-            //$('.project-label-member').each(function(){
-            //    if(member_name == $(this).children('span').eq(1).html()){
-            //        flg = true;
-            //    }
-            //});
-            //if(flg){
-            //    return false;
-            //}
-            $('.project-member').css('height', ($('.project-label-member').length + 4 ) * 20 +'px');
+            var $project_label_content = $(this).parent('.detail-edit').parent('.project-detail-content');
+            var flg = false;
+            $project_label_content.find('.project-label-member').each(function () {
+                if(member_name == $(this).children('span').eq(1).html()){
+                    flg = true;
+                }
+            });
+            if(flg){
+                return false;
+            }
+            $project_label_content.parent('.project-detail-mid').parent('.project-detail')
+                    .css('height', ($project_label_content.find('.project-label-member').length + 4) * 20 + 'px');
             var appendStr = '<div class="project-label-member">'+
                     '<span class="detail-edit">'+
-                        '<img src="~/Content/images/dot_del.png" class="edit-dot-del">' +
+                        '<img src="/Content/images/dot_del.png" class="edit-dot-del">' +
                     '</span>'+
                     '<span>'+member_name+'</span>'+
                 '</div>';
@@ -158,7 +160,42 @@
 
         //save
         $('body').on('click', '#btn_detail_save', function(){
-            alert('Save');
+            var values = new Array();
+            var project_key = $('#project_key').html();
+            var project_des = $('.project-key').find('input').val();
+            $('.project-detail').each(function(){
+                var arr_tmp = new Array();
+                var dis_flg = ($(this).find('.project-del-img').length) ? 1 : 0;
+                var col_name = $(this).find('.project-detail-title').html();
+                var col_val = '';
+                var col_type = $(this).attr('data-col-type');
+                if(col_type == 'ROLE'){
+                    $(this).find('.project-label-member').each(function(){
+                        col_val += $(this).children('span').eq(1).html() + ';';
+                    })
+                }
+                else if(col_type == 'BOOL'){
+                    col_val = $(this).find('.bool-active').html();
+                }
+                else{
+                    col_val = $(this).find('input').val();
+                }
+                arr_tmp.push(col_type, dis_flg, col_name, col_val);
+                values.push(arr_tmp);
+            });
+            $.post('/',
+            {
+                project_key: project_key,
+                project_des: project_des,
+                data: JSON.stringify(values)
+            }, function(output){
+                if(output.success){
+                    window.location.reload();
+                }
+                else{
+                    alert('Failed to Save!');
+                }
+            });
         });
     }
 
@@ -181,7 +218,6 @@
                 });
             }
         });
-
         $('body').on('click', '.add_role', function () {
             var role = $('#new_role').val();
             if (role != '') {
@@ -202,7 +238,6 @@
                 alert('Please input role !');
             }
         });
-
         $('body').on('click', '.add_member', function () {
             var project_key = $('#pro_list').val();
             var role = $('#role_list').val();
