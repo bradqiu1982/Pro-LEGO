@@ -147,7 +147,7 @@ var AddColumn = function () {
                 return false;
             }
             var appendStr = '<div class="project-label">'+
-                '<img src="~/Content/images/dot_del.png" class="edit-dot-del">' +
+                '<img src="/Content/images/dot_del.png" class="edit-dot-del">' +
                 '<span>'+add_value+'</span>'+
             '</div>';
             $col_value.parent('.project-detail-mid').parent('.project-detail')

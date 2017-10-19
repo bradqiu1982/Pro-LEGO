@@ -133,23 +133,25 @@
         });
 
         $('body').on('click', '.edit-add-img', function(){
-            var member_name = $('#PM').val();
-             if( ! member_name){
+            var member_name = $(this).prev('input').val();
+            if( ! member_name){
                 return false;
             }
-            //var flg = false;
-            //$('.project-label-member').each(function(){
-            //    if(member_name == $(this).children('span').eq(1).html()){
-            //        flg = true;
-            //    }
-            //});
-            //if(flg){
-            //    return false;
-            //}
-            $('.project-member').css('height', ($('.project-label-member').length + 4 ) * 20 +'px');
+            var $project_label_content = $(this).parent('.detail-edit').parent('.project-detail-content');
+            var flg = false;
+            $project_label_content.find('.project-label-member').each(function () {
+                if(member_name == $(this).children('span').eq(1).html()){
+                    flg = true;
+                }
+            });
+            if(flg){
+                return false;
+            }
+            $project_label_content.parent('.project-detail-mid').parent('.project-detail')
+                    .css('height', ($project_label_content.find('.project-label-member').length + 4) * 20 + 'px');
             var appendStr = '<div class="project-label-member">'+
                     '<span class="detail-edit">'+
-                        '<img src="~/Content/images/dot_del.png" class="edit-dot-del">' +
+                        '<img src="/Content/images/dot_del.png" class="edit-dot-del">' +
                     '</span>'+
                     '<span>'+member_name+'</span>'+
                 '</div>';
