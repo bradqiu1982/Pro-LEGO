@@ -50,11 +50,13 @@
             {
                 var item = Model.PJMemList[nidx];
                 var ps = new string[] { };
+                var defheigh = 60;
                 if (!string.IsNullOrEmpty(item.colvalue))
                 {
                     ps = item.colvalue.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
+                    defheigh = defheigh + ps.Length * 20;
                 }
-                <div class="project-detail" data-col-type="@item.coltype">
+                <div class="project-detail" data-col-type="@item.coltype" style="height:@(defheigh)px">
                     <div class="@(item.notshowcol?"project-dot-img":"project-circle-img")"></div>
                     <div class="project-detail-mid">
                         <div class="project-detail-content">
