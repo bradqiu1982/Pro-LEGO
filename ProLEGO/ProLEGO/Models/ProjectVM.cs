@@ -19,6 +19,14 @@ namespace ProLEGO.Models
         {
             colname = k;
             colvalue = v;
+            if (string.Compare(t, PROJECTCOLUMNTYPE.DATE, true) == 0 && !string.IsNullOrEmpty(v))
+            {
+                try
+                {
+                    colvalue = DateTime.Parse(v).ToString("yyyy-MM-dd");
+                }
+                catch (Exception ex){ colvalue = ""; }
+            }
             coltype = t;
             defval = d;
         }
