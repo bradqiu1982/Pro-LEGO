@@ -26,6 +26,11 @@
     var oddeventlist = new List<string>();
     oddeventlist.Add("pro-odd");
     oddeventlist.Add("pro-even");
+
+    var detailendlist = new List<string>();
+    detailendlist.Add("pro-detail");
+    detailendlist.Add("pro-detail-end");
+
 }
 
 <script src="~/Scripts/prolego.js" type="text/javascript"></script>
@@ -77,7 +82,7 @@
                             <div class="pro-name-flip">@pvm.ProjectName</div>
                         </div>
                         <div class="back">
-                            <div class="pro-detail pro-member" style="height: @(memberheigh)px;">
+                            <div class="pro-detail" style="height: @(memberheigh)px;">
                                 <div class="dot-img"></div>
                                 <div class="detail-title">Member</div>
                                 <div class="detail-content">
@@ -93,9 +98,15 @@
 
                             @for (var nidx = 0; nidx < pvm.PJNonMemList.Count; nidx++)
                             {
+                                var endidx = 0;
+                                if (nidx == (pvm.PJNonMemList.Count - 1))
+                                {
+                                    endidx = 1;
+                                }
+
                                 if (string.Compare(pvm.PJNonMemList[nidx].coltype, ProLEGO.Models.PROJECTCOLUMNTYPE.BOOL, true) == 0)
                                 {
-                                    <div class="pro-detail-end pro-mes">
+                                    <div class="@(detailendlist[endidx])">
                                         <div class="dot-img-end"></div>
                                         <div class="detail-title">@pvm.PJNonMemList[nidx].colname</div>
                                         <div class="detail-content">@pvm.PJNonMemList[nidx].colvalue</div>
@@ -107,7 +118,7 @@
                                 }
                                 else
                                 {
-                                    <div class="pro-detail pro-type">
+                                    <div class="@(detailendlist[endidx])">
                                         <div class="dot-img"></div>
                                         <div class="detail-title">@pvm.PJNonMemList[nidx].colname</div>
                                         <div class="detail-content">@pvm.PJNonMemList[nidx].colvalue</div>
