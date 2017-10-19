@@ -79,7 +79,7 @@
                 <div class="project-detail">
                     <div class="project-add-img"></div>
                     <div class="project-detail-mid">
-                        <div class="project-detail-content">
+                        <div class="project-detail-content" data-col-type="@(item.ColumnType)">
                             <div class="detail-edit edit-bool-def div-span">
                                 <span class="bool-def-left bool-active">True</span>
                                 <span class="bool-def-right bool-inactive">False</span>
@@ -97,7 +97,7 @@
                 <div class="project-detail">
                     <div class="project-del-img"></div>
                     <div class="project-detail-mid">
-                        <div class="project-detail-content">
+                        <div class="project-detail-content" data-col-type="@(item.ColumnType)">
                             <div class="input-group date" data-date-format="yyyy-mm-dd">
                                 <input type="text" class="form-control" id="@item.ColumnName.Replace(" ","_")" name="@item.ColumnName.Replace(" ","_")" readonly>
                                 <span class="input-group-addon">
@@ -113,14 +113,13 @@
             }
         }
 
-
         <div class="add-project-col">
             <div class="add-project">
-                <div class="info-up" data-col-type="Date"></div>
+                <div class="info-up" data-col-type="DATE"></div>
                 <div class="project-detail-mid add-project-date">
                     <span class="span-column col-val col-val-date">
                         <span class="span-col-val">Date</span>
-                        <div class="input-group date hidden col-md-8" data-date-format="yyyy-mm-dd">
+                        <div class="input-group date add-date hidden col-md-8" data-date-format="yyyy-mm-dd">
                             <input type="text" class="form-control" id="def_date" name="def_date" readonly>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-th"></span>
@@ -141,7 +140,7 @@
                 </div>
             </div>
             <div class="add-project">
-                <div class="addpro-dot-img" data-col-type="Bool"></div>
+                <div class="addpro-dot-img" data-col-type="BOOL"></div>
                 <div class="project-detail-mid add-project-bool">
                     <span class="bool-def div-span">
                         <span class="bool-def-left bool-active">True</span>
@@ -162,7 +161,7 @@
                 </div>
             </div>
             <div class="add-project">
-                <div class="addpro-dot-img" data-col-type="Role"></div>
+                <div class="addpro-dot-img" data-col-type="ROLE"></div>
                 <div class="project-detail-mid add-project-name">
                     <span class="span-column col-val col-val-name">
                         <span class="span-col-val">ROLE</span>
@@ -184,7 +183,7 @@
                 </div>
             </div>
             <div class="add-project">
-                <div class="addpro-dot-img" data-col-type="Info"></div>
+                <div class="addpro-dot-img" data-col-type="INFORMATION"></div>
                 <div class="project-detail-mid add-project-info">
                     <span class="span-column col-val col-val-info">
                         <span class="span-col-val">Information</span>

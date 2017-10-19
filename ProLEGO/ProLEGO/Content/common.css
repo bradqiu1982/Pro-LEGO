@@ -441,6 +441,10 @@
     cursor: pointer;
 }
 
+.project-edit-content{
+    cursor: pointer;
+}
+
 .pro-detail-add-btn{
     position: absolute;
     margin-left: 40px;
@@ -595,6 +599,7 @@
     position: absolute;
     height: 150px;
     margin-top: -50px;
+    z-index: 1002;
 }
 
 .detail-machine{

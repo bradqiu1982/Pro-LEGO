@@ -1,6 +1,33 @@
 var AddColumn = function () {
+    var common = function () {
+        $('body').on('click', '.logo', function () {
+            window.location.href = '/';
+        });
+    }
     var add_column = function(){
         $('.date').datepicker();
+        $('.date').datepicker().on('changeDate', function (ev) {
+            //modify date value
+            if ( ! $(this).hasClass('add-date')) {
+                var col_val = $(this).find('input').val();
+                var col_name = $(this).parent('.project-detail-content').next().next().html();
+                var col_type = $(this).parent('.project-detail-content').attr('data-col-type');
+                //$.post('/',
+                //{
+                //    col_type: col_type,
+                //    col_val: col_val,
+                //    col_name: col_name
+                //}, function (output) {
+                //    if (output.success) {
+                //        window.location.reload();
+                //    }
+                //    else {
+                //        alert('Failed to set default date!');
+                //    }
+                //});
+            }
+            $('.date').datepicker('hide');
+        });
         $('#project_type').autoComplete({
             minChars: 0,
             source: function(term, suggest){
@@ -64,12 +91,34 @@ var AddColumn = function () {
             }
         });
 
-        $('body').on('click', '.project-del-img', function(){
+        $('body').on('click', '.project-del-img', function () {
             $(this).removeClass('project-del-img').addClass('project-add-img');
-        })
-        $('body').on('click', '.project-add-img', function(){
+            var column_name = $(this).next('div').find('.project-detail-title').html();
+            var dis_flg = 0;
+            modify_dis_flg(column_name, dis_flg);
+        });
+
+        $('body').on('click', '.project-add-img', function () {
             $(this).removeClass('project-add-img').addClass('project-del-img');
-        })
+            var column_name = $(this).next('div').find('.project-detail-title').html();
+            var dis_flg = 1;
+            modify_dis_flg(column_name, dis_flg);
+        });
+
+        function modify_dis_flg(column_name, dis_flg) {
+            $.post('/',
+            {
+                column_name: column_name,
+                dis_play: dis_flg
+            }, function (output) {
+                if (output.success) {
+                    window.location.reload();
+                }
+                else {
+                    alert('Failed to set!');
+                }
+            });
+        }
 
         $('body').on('click', '.bool-def-left, .bool-def-right', function(){
             $(this).parent('.div-span').children('span').removeClass('bool-active').addClass('bool-inactive');
@@ -112,47 +161,56 @@ var AddColumn = function () {
             $('.col-val').children('div').addClass('hidden');
         }
 
-        $('body').on('click', '.edit-dot-del', function(){
-            var col_id = $(this).parent('.project-label').parent('.project-detail-content').attr('data-col-id');
-            var sub_cnt = $(this).parent('.project-label').parent('.project-detail-content').find('.project-label').length;
-            $(this).parent('.project-label').parent('.project-detail-content').parent('.project-detail-mid')
-                .parent('.project-detail').css('height', ( sub_cnt + 2 ) * 20 +'px');
+        $('body').on('click', '.edit-dot-del', function () {
+            var $project_detail_content = $(this).parent('.project-label').parent('.project-detail-content');
+            var col_val  = $(this).next('span').html();
+            var col_name = $project_detail_content.next().next().html();
+            var sub_cnt  = $project_detail_content.find('.project-label').length;
+            $project_detail_content.parent('.project-detail-mid')
+                .parent('.project-detail').css('height', (sub_cnt + 2) * 20 + 'px');
             $(this).parent('.project-label').remove();
-            // $.post('/',
-            // {
-            //     col_id: col_id
-            // }, function(output){
-            //     if(output.success){
-            //         $(this).parent('.detail-edit').parent('.project-label').empty();
-            //     }
-            //     else{
-            //         alert("Failed to remove member!");
-            //     }
-            // })
+            $.post('/',
+            {
+                col_val: col_val,
+                col_name: col_name
+            }, function (output) {
+                if (output.success) {
+                    window.location.reload();
+                }
+                else {
+                    alert("Failed to remove member!");
+                }
+            });
         });
 
         $('body').on('click', '.edit-add-img', function(){
             var add_value = $(this).prev('input').val();
-            if( ! add_value){
+            if (!add_value) {
                 return false;
             }
             var $col_value = $(this).parent('.detail-edit').parent('.project-detail-content');
             var flg = false;
-            $col_value.find('.project-label').each(function(){
-                if(add_value == $(this).children('span').eq(0).html()){
+            $col_value.find('.project-label').each(function () {
+                if (add_value == $(this).children('span').eq(0).html()) {
                     flg = true;
                 }
             });
-            if(flg){
+            if (flg) {
                 return false;
             }
-            var appendStr = '<div class="project-label">'+
-                '<img src="/Content/images/dot_del.png" class="edit-dot-del">' +
-                '<span>'+add_value+'</span>'+
-            '</div>';
-            $col_value.parent('.project-detail-mid').parent('.project-detail')
-                .css('height', ($col_value.find('.project-label').length + 4 ) * 20 +'px');
-            $(appendStr).insertBefore($(this).parent('.detail-edit'));
+            var col_name = $col_value.next().next().html();
+            $.post('/',
+            {
+                col_val: add_value,
+                col_name: col_name
+            }, function (output) {
+                if (output.success) {
+                    window.location.reload();
+                }
+                else {
+                    alert('Failed to add!');
+                }
+            });
         });
 
         //add column name
@@ -171,87 +229,42 @@ var AddColumn = function () {
         });
 
         //add column
-        $('body').on('click', '.info-up', function(){
-            var column_name = $(this).next('div').children('span').eq(1).find('input').eq(1).val();
-            var column_value = $(this).next('div').children('span').eq(0).find('input').val();
-            if( ! column_name){
+        $('body').on('click', '.info-up', function () {
+            var col_type = $(this).attr('.data-col-type');
+            var dis_flg = 1;
+            var col_name = $(this).next('div').children('span').eq(1).find('input').eq(1).val();
+            var col_value = $(this).next('div').children('span').eq(0).find('input').val();
+            if (!col_name) {
                 return false;
             }
             var flg = false;
             $('.project-detail').each(function(){
-                if(column_name == $(this).find('.project-detail-title').html()){
+                if (col_name == $(this).find('.project-detail-title').html()) {
                     flg = true;
                 }
             });
             if(flg){
                 return false;
             }
-            //var sub_appendStr = '';
-            //var col_type = $(this).attr('data-col-type');
-            //if(col_type == 'Date'){
-            //    sub_appendStr = '<div class="input-group date" data-date="'+column_value+'" data-date-format="yyyy-mm-dd">'+
-            //        '<input type="text" class="form-control" value="'+column_value+'" readonly>'+
-            //        '<span class="input-group-addon">'+
-            //            '<span class="glyphicon glyphicon-th"></span>'+
-            //        '</span>'+
-            //    '</div>';
-            //}
-            //else if(col_type == 'Bool'){
-            //    if(column_value == 'True'){
-            //        sub_appendStr = '<div class="detail-edit edit-bool-def div-span">'+
-            //            '<span class="bool-def-left bool-active">True</span>'+
-            //            '<span class="bool-def-right bool-inactive" style="margin-left: 0;">False</span>'+
-            //        '</div>';
-            //    }
-            //    else{
-            //        sub_appendStr = '<div class="detail-edit edit-bool-def div-span">'+
-            //            '<span class="bool-def-left bool-inactive">True</span>'+
-            //            '<span class="bool-def-right bool-active" style="margin-left: 0;">False</span>'+
-            //        '</div>';
-            //    }
-            //}
-            //else if(col_type == 'Role'){
-            //    sub_appendStr = '<div class="project-label">'+
-            //        '<img src="images/dot_del.png" class="edit-dot-del">'+
-            //        '<span>'+column_value+'</span>'+
-            //    '</div>'+
-            //    '<div class="detail-edit">'+
-            //        '<input type="text" class="form-control autocomplete-input"'+
-            //            'autocomplete="off" placeholder="Member Role" />'+
-            //        '<div class="edit-add-img"></div>'+
-            //    '</div>';
-            //}
-            //else if(col_type == 'Info'){
-            //    sub_appendStr = '<input type="text" class="form-control" value="'+column_value+'">';
-            //}
-            //var appendStr = '<div class="project-detail">'+
-            //    '<div class="project-del-img"></div>'+
-            //    '<div class="project-detail-mid">'+
-            //        '<div class="project-detail-content">'+
-            //            sub_appendStr +
-            //        '</div>'+
-            //        '<div class="project-detail-line"></div>'+
-            //        '<div class="project-detail-title" style="margin-left: 0;">'+column_name+'</div>'+
-            //        '<div class="project-title-circle"></div>'+
-            //    '</div>'+
-            //'</div>';
-            //$(appendStr).insertBefore($('.add-project-col'));
-            //$('.date').datepicker();
-            // $.post('/', {
-
-            // }, function(output){
-            //     if(output.success){
-            //         $(appendStr).insertBefore($('.add-project-col'));
-            //     }
-            //     else{
-            //         alert('Faled to add column!');
-            //     }
-            // });
+            $.post('/', {
+                col_type: col_type,
+                dis_flg: dis_flg,
+                col_name: col_name,
+                col_value: col_value
+            }, function(output){
+                if (output.success) {
+                    window.location.reload();
+                }
+                else {
+                    alert('Faled to add column!');
+                }
+            });
         });
     }
     return {
         init: function(){
             add_column();
+            common();
         }
     };
 }();

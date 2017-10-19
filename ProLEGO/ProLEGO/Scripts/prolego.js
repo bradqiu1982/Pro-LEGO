@@ -13,24 +13,31 @@
         $('body').on('click', '.wel-op-btn-left', function(){
 
         });
+    }
 
-        $('body').on('mouseenter', '.search', function(){
+    var common = function () {
+        $('body').on('mouseenter', '.search', function () {
             $('#keywords').removeClass('hidden');
             setTimeout(
                 "if($('#keywords').val == '') $('#keywords').addClass('hidden')"
             , 5000);
         });
 
-        $('body').on('mouseleave', '.search', function(){
-            if($('#keywords').val() == ''){
+        $('body').on('mouseleave', '.search', function () {
+            if ($('#keywords').val() == '') {
                 $('#keywords').addClass('hidden');
             }
         })
 
-        $('body').on('click', '.search-img', function(){
+        $('body').on('click', '.search-img', function () {
             //search
         });
+
+        $('body').on('click', '.logo', function () {
+            window.location.href = '/';
+        });
     }
+
     var pro_list = function(){
         $('body').on('click', '.pro-detail-edit', function(){
             $(this).parent('.back').children('.pro-detail')
@@ -53,7 +60,7 @@
             $(this).removeClass('mes-inactive').addClass('mes-active');
         });
 
-        $('body').on('click', '.flip-container', function () {
+        $('body').on('click', '.project-edit-content', function () {
             var project_key = $(this).find('.front').children('div').eq(0).html();
             window.location.href = '/ProLEGO/ProjectDetail?ProjectName=' + project_key;
         });
@@ -61,6 +68,9 @@
 
     var pro_detail = function(){
         $('.date').datepicker();
+        $('.date').datepicker().on('changeDate', function (ev) {
+            $('.date').datepicker('hide');
+        });
 
         $("#member_name").autoComplete({
             minChars: 0,
@@ -199,112 +209,18 @@
         });
     }
 
-    var show = function () {
-        $('#role-list').autoComplete({
-            minChars: 1,
-            source: function (term, suggest) {
-                term = term.toLowerCase();
-                $.post('/ProLego/RoleList',
-                {
-
-                }, function (output){
-                    var suggestions = [];
-                    for (i = 0; i < output.length; i++) {
-                        if (~output[i].toLowerCase().indexOf(term)) {
-                            suggestions.push(output[i]);
-                        }
-                    }
-                    suggest(suggestions);
-                });
-            }
-        });
-        $('body').on('click', '.add_role', function () {
-            var role = $('#new_role').val();
-            if (role != '') {
-                $.post('/',
-                {
-                    role: role
-                }, function (output) {
-                    if (output.success) {
-                        //bind dropdownlist
-
-                    }
-                    else {
-                        alert('Failed to add role !');
-                    }
-                });
-            }
-            else {
-                alert('Please input role !');
-            }
-        });
-        $('body').on('click', '.add_member', function () {
-            var project_key = $('#pro_list').val();
-            var role = $('#role_list').val();
-            var members = $('#members').val();
-            if (project_key == '') {
-                alert('Please select project !');
-                return false;
-            }
-            if (role == '') {
-                alert('Please select role !');
-                return false;
-            }
-            if (members == '') {
-                alert('Please at least add one member !');
-                return false;
-            }
-            $.post('/',
-            {
-                project_key: project_key,
-                role: role,
-                members: members
-            }, function (output) {
-                if (output.success) {
-                    //update project member list
-                }
-                else {
-                    alert('Failed to add members !');
-                }
-            })
-        });
-        $('body').on('click', '.delete', function () {
-            if (!confirm('Do you really want to delete this member ?')) {
-                return false;
-            }
-            var member = $(this).attr('data-name');
-            var project_key = $(this).attr('data-prokey');
-            var role = $(this).attr('data-role');
-            if (member && project_key && role) {
-                $.post('/',
-                {
-                    member: member,
-                    project_key: project_key,
-                    role: role
-                }, function (output) {
-                    if (output.success) {
-                        //remove this member
-                    }
-                    else {
-                        alert('Failed to remove this member !');
-                    }
-                })
-            }
-        });
-        $('body').on('click', '.export', function () {
-
-        });
-    }
-
     return {
         init: function () {
             wel_init();
+            common();
         },
         pro_list: function(){
             pro_list();
+            common();
         },
         pro_detail: function(){
             pro_detail();
+            common();
         }
     };
 }();
