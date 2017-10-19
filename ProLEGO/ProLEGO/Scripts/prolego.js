@@ -61,7 +61,7 @@
         });
 
         $('body').on('click', '.project-edit-content', function () {
-            var project_key = $(this).find('.front').children('div').eq(0).html();
+            var project_key = $(this).parent('div').prev('.front').children('div').eq(0).html();
             window.location.href = '/ProLEGO/ProjectDetail?ProjectName=' + project_key;
         });
     }
