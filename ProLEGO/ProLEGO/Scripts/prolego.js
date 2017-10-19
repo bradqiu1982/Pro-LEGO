@@ -158,7 +158,42 @@
 
         //save
         $('body').on('click', '#btn_detail_save', function(){
-            alert('Save');
+            var values = new Array();
+            var project_key = $('#project_key').html();
+            var project_des = $('.project-key').find('input').val();
+            $('.project-detail').each(function(){
+                var arr_tmp = new Array();
+                var dis_flg = ($(this).find('.project-del-img').length) ? 1 : 0;
+                var col_name = $(this).find('.project-detail-title').html();
+                var col_val = '';
+                var col_type = $(this).attr('data-col-type');
+                if(col_type == 'ROLE'){
+                    $(this).find('.project-label-member').each(function(){
+                        col_val += $(this).children('span').eq(1).html() + ';';
+                    })
+                }
+                else if(col_type == 'BOOL'){
+                    col_val = $(this).find('.bool-active').html();
+                }
+                else{
+                    col_val = $(this).find('input').val();
+                }
+                arr_tmp.push(col_type, dis_flg, col_name, col_val);
+                values.push(arr_tmp);
+            });
+            $.post('/',
+            {
+                project_key: project_key,
+                project_des: project_des,
+                data: JSON.stringify(values)
+            }, function(output){
+                if(output.success){
+                    window.location.reload();
+                }
+                else{
+                    alert('Failed to Save!');
+                }
+            });
         });
     }
 
@@ -181,7 +216,6 @@
                 });
             }
         });
-
         $('body').on('click', '.add_role', function () {
             var role = $('#new_role').val();
             if (role != '') {
@@ -202,7 +236,6 @@
                 alert('Please input role !');
             }
         });
-
         $('body').on('click', '.add_member', function () {
             var project_key = $('#pro_list').val();
             var role = $('#role_list').val();
