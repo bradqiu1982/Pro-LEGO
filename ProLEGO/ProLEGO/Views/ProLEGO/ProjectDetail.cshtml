@@ -42,59 +42,22 @@
                         <span id="project_key">@Model.ProjectName</span>
                         <img src="~/Content/images/pro_log.png" height="30" width="30">
                     </div>
-                    @*<div class="project-description">
-                        <span class="detail-show">
-                            Description Description Description Description
-                        </span>
-                        <div class="detail-edit hidden">
-                            <input id="project" name="project" class="form-control"
-                                   value="Description Description Description Description">
-                        </div>
-                    </div>*@
                 </div>
             </div>
 
-            @*<div class="project-detail project-member" style="height: @(memberheigh)px;">
-                <div class="project-circle-img"></div>
-                <div class="project-detail-mid">
-                    <div class="project-detail-content" data-col-id="1" data-col-type="ROLE">
-                        @for (var ridx = 0; ridx < Model.PJMemList.Count; ridx++)
-                        {
-                            <div class="project-label-member">
-                                <span class="detail-edit hidden">
-                                    <img src="~/Content/images/dot_del.png" class="edit-dot-del">
-                                </span>
-                                <span>@Model.PJMemList[ridx].colvalue</span>
-                                <span class="label @rolelabelarray[ridx%3]">@Model.PJMemList[ridx].colname</span>
-                            </div>
-                        }
-
-                        <div class="detail-edit hidden">
-                            <input type="text" class="form-control edit-autocomplete-input"
-                                   id="member_name" ame="member_name" autocomplete="off"
-                                   placeholder="Member Name" />
-                            <input type="text" class="form-control edit-autocomplete-input"
-                                   id="member_role" name="member_role" autocomplete="off"
-                                   placeholder="Member Role" />
-                            <div class="edit-add-img"></div>
-                        </div>
-                    </div>
-                    <div class="project-detail-line"></div>
-                    <div class="project-detail-title">Member</div>
-                    <div class="project-title-circle"></div>
-                </div>
-            </div>*@
 
             @for (var nidx = 0; nidx < Model.PJMemList.Count; nidx++)
             {
                 var item = Model.PJMemList[nidx];
                 var ps = new string[] { };
+                var defheigh = 60;
                 if (!string.IsNullOrEmpty(item.colvalue))
                 {
                     ps = item.colvalue.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
+                    defheigh = defheigh + ps.Length * 20;
                 }
-                <div class="project-detail" data-col-type="@item.coltype">
-                    <div class="project-circle-img"></div>
+                <div class="project-detail" data-col-type="@item.coltype" style="height:@(defheigh)px">
+                    <div class="@(item.notshowcol?"project-dot-img":"project-circle-img")"></div>
                     <div class="project-detail-mid">
                         <div class="project-detail-content">
                             @foreach (var p in ps)
@@ -139,7 +102,7 @@
                 if (string.Compare(item.coltype, ProLEGO.Models.PROJECTCOLUMNTYPE.BOOL, true) == 0)
                 {
                     <div class="project-detail" data-col-type="@item.coltype">
-                        <div class="project-dot-img"></div>
+                        <div class="@(item.notshowcol?"project-dot-img":"project-circle-img")"></div>
                         <div class="project-detail-mid">
                             <div class="project-detail-content">
                                 <span class="detail-show">@item.colvalue</span>
@@ -157,7 +120,7 @@
                 else if (string.Compare(item.coltype, ProLEGO.Models.PROJECTCOLUMNTYPE.DATE, true) == 0)
                 {
                     <div class="project-detail" data-col-type="@item.coltype">
-                        <div class="project-circle-img"></div>
+                        <div class="@(item.notshowcol?"project-dot-img":"project-circle-img")"></div>
                         <div class="project-detail-mid">
                             <div class="project-detail-content">
                                 <span class="detail-show">@item.colvalue</span>
@@ -179,7 +142,7 @@
                 else
                 {
                     <div class="project-detail" data-col-type="@item.coltype">
-                        <div class="project-circle-img"></div>
+                        <div class="@(item.notshowcol?"project-dot-img":"project-circle-img")"></div>
                         <div class="project-detail-mid">
                             <div class="project-detail-content">
                                 <span class="detail-show">@item.colvalue</span>

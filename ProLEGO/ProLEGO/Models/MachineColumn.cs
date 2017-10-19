@@ -29,10 +29,10 @@ namespace ProLEGO.Models
             DBUtility.ExeLocalSqlNoRes(sql);
         }
 
-        public static void RemoveFobiddenColumn(string MachineName, string ColumnID)
+        public static void RemoveFobiddenColumn(string MachineName, string ColumnName)
         {
-            var sql = "delete from MachineColumn where MachineName = '<MachineName>' and ColumnID = '<ColumnID>'";
-            sql = sql.Replace("<ColumnID>", ColumnID).Replace("<MachineName>", MachineName);
+            var sql = "delete from MachineColumn where MachineName = '<MachineName>' and ColumnName = '<ColumnName>'";
+            sql = sql.Replace("<ColumnName>", ColumnName).Replace("<MachineName>", MachineName);
             DBUtility.ExeLocalSqlNoRes(sql);
         }
 
@@ -52,21 +52,21 @@ namespace ProLEGO.Models
             return ret;
         }
 
-        public static Dictionary<string, bool> RetrieveFobiddenColumnID(string MachineName)
-        {
-            var ret = new Dictionary<string, bool>();
-            var sql = "select ColumnName,ColumnID from MachineColumn where  MachineName = '<MachineName>'";
-            sql = sql.Replace("<MachineName>", MachineName);
-            var dbret = DBUtility.ExeLocalSqlWithRes(sql);
-            foreach (var line in dbret)
-            {
-                if (!ret.ContainsKey(Convert.ToString(line[1])))
-                {
-                    ret.Add(Convert.ToString(line[1]), true);
-                }
-            }
-            return ret;
-        }
+        //public static Dictionary<string, bool> RetrieveFobiddenColumnID(string MachineName)
+        //{
+        //    var ret = new Dictionary<string, bool>();
+        //    var sql = "select ColumnName,ColumnID from MachineColumn where  MachineName = '<MachineName>'";
+        //    sql = sql.Replace("<MachineName>", MachineName);
+        //    var dbret = DBUtility.ExeLocalSqlWithRes(sql);
+        //    foreach (var line in dbret)
+        //    {
+        //        if (!ret.ContainsKey(Convert.ToString(line[1])))
+        //        {
+        //            ret.Add(Convert.ToString(line[1]), true);
+        //        }
+        //    }
+        //    return ret;
+        //}
 
 
     }

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using ProLEGO.Models;
 
+
 namespace ProLEGO.Controllers
 {
     public class ProLEGOController : Controller
@@ -61,21 +62,21 @@ namespace ProLEGO.Controllers
                 ViewBag.searchkey = searchkey;
             }
 
-            var allpro = ProjectVM.RetrieveAllProjectData(searchkey);
+            IEnumerable<ProjectVM> allpro = ProjectVM.RetrieveAllProjectData(searchkey, ViewBag.compName);
             IEnumerable<ProjectVM> showvm = null;
 
             if (currentpage < 0) currentpage = 0;
 
-            if (allpro.Count > 0)
+            if (allpro.Count() > 0)
             {
-                if (allpro.Count > currentpage * pagesize)
+                if (allpro.Count() > currentpage * pagesize)
                 {
-                    showvm = allpro.Skip(currentpage * pagesize).Take((allpro.Count >= ((currentpage + 1) * pagesize)) ? pagesize : (allpro.Count - currentpage * pagesize));
+                    showvm = allpro.Skip(currentpage * pagesize).Take((allpro.Count() >= ((currentpage + 1) * pagesize)) ? pagesize : (allpro.Count() - currentpage * pagesize));
                 }
                 else
                 {
                     currentpage = 0;
-                    showvm = allpro.Skip(currentpage * pagesize).Take((allpro.Count >= ((currentpage + 1) * pagesize)) ? pagesize : (allpro.Count - currentpage * pagesize));
+                    showvm = allpro.Skip(currentpage * pagesize).Take((allpro.Count() >= ((currentpage + 1) * pagesize)) ? pagesize : (allpro.Count() - currentpage * pagesize));
                 }
             }
             else
@@ -88,7 +89,7 @@ namespace ProLEGO.Controllers
                 ViewBag.NavLeft = true;
                 ViewBag.LeftPage = currentpage - 1;
             }
-            if (allpro.Count > (currentpage + 1) * pagesize)
+            if (allpro.Count() > (currentpage + 1) * pagesize)
             {
                 ViewBag.NavRight = true;
                 ViewBag.RightPage = currentpage + 1;
@@ -100,9 +101,35 @@ namespace ProLEGO.Controllers
         public ActionResult ProjectDetail(string ProjectName)
         {
             UserAuth();
-
-            var pvm = ProjectVM.RetriveProjectData(ProjectName, null);
+            var pvm = ProjectVM.RetriveProjectData(ProjectName, null, ViewBag.compName);
             return View(pvm);
+        }
+
+        public JsonResult SaveProjectData()
+        {
+            UserAuth();
+            var projectkey = Request.Form["project_key"];
+            var data = (List<List<string>>)Newtonsoft.Json.JsonConvert.DeserializeObject(Request.Form["data"],(new List<List<string>>()).GetType());
+            foreach (var line in data)
+            {
+                if (string.Compare(line[1], "0") == 0)
+                {
+                    var fbc = new MachineColumn();
+                    fbc.ColumnName = line[2];
+                    fbc.MachineName = ViewBag.compName;
+                    fbc.AddFobiddenColumn();
+                }
+                else
+                {
+                    MachineColumn.RemoveFobiddenColumn(ViewBag.compName, line[2]);
+                }
+
+                ProjectVM.UpdateProjectColumnValue(ViewBag.compName, projectkey, line[2], line[3]);
+            }
+
+            var ret = new JsonResult();
+            ret.Data = new { success = true };
+            return ret;
         }
 
         public ActionResult AddProColumn()

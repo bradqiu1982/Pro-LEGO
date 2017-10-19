@@ -72,29 +72,29 @@
             $('.date').datepicker('hide');
         });
 
-        $("#member_name").autoComplete({
-            minChars: 0,
-            source: function(term, suggest){
-                term = term.toLowerCase();
-                var choices = ['Test@Finisar.com', 'Test2@Finisar.com'];
-                var suggestions = [];
-                for (i=0;i<choices.length;i++)
-                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                suggest(suggestions);
-            }
-        })
+        //$("#member_name").autoComplete({
+        //    minChars: 0,
+        //    source: function(term, suggest){
+        //        term = term.toLowerCase();
+        //        var choices = ['Test@Finisar.com', 'Test2@Finisar.com'];
+        //        var suggestions = [];
+        //        for (i=0;i<choices.length;i++)
+        //            if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+        //        suggest(suggestions);
+        //    }
+        //})
 
-        $("#member_role").autoComplete({
-            minChars: 0,
-            source: function(term, suggest){
-                term = term.toLowerCase();
-                var choices = ['PQE', 'PE'];
-                var suggestions = [];
-                for (i=0;i<choices.length;i++)
-                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                suggest(suggestions);
-            }
-        });
+        //$("#member_role").autoComplete({
+        //    minChars: 0,
+        //    source: function(term, suggest){
+        //        term = term.toLowerCase();
+        //        var choices = ['PQE', 'PE'];
+        //        var suggestions = [];
+        //        for (i=0;i<choices.length;i++)
+        //            if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+        //        suggest(suggestions);
+        //    }
+        //});
 
         $('body').on('click', '.project-detail-edit', function(){
             $('.project-circle-img').removeClass('project-circle-img').addClass('project-del-img');
@@ -172,7 +172,7 @@
         $('body').on('click', '#btn_detail_save', function(){
             var values = new Array();
             var project_key = $('#project_key').html();
-            var project_des = $('.project-key').find('input').val();
+            //var project_des = $('.project-key').find('input').val();
             $('.project-detail').each(function(){
                 var arr_tmp = new Array();
                 var dis_flg = ($(this).find('.project-del-img').length) ? 1 : 0;
@@ -193,10 +193,10 @@
                 arr_tmp.push(col_type, dis_flg, col_name, col_val);
                 values.push(arr_tmp);
             });
-            $.post('/',
+            $.post('/ProLEGO/SaveProjectData',
             {
                 project_key: project_key,
-                project_des: project_des,
+                //project_des: project_des,
                 data: JSON.stringify(values)
             }, function(output){
                 if(output.success){
