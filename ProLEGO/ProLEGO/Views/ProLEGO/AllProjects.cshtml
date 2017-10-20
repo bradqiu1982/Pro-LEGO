@@ -69,12 +69,26 @@
                 var memberheigh = (pvm.PJMemList.Count + 1) * 20;
                 <div class="project-container flip-container slant @(oddeventlist[idx % 2]) @(slidecolor[idx])">
                     <div class="flipper">
-                        <div class="front">
-                            <div class="pro-name-flip">@pvm.ProjectName</div>
-                        </div>
+                        @{
+                            ViewBag.isie9 = true;
+                        }
+                        @if ( ! (ViewBag.isie9 != null && ViewBag.isie9))
+                        {
+                            <div class="front">
+                                <div class="pro-name-flip">@pvm.ProjectName</div>
+                            </div>
+                        }
                         <div class="back">
                             <div class="project-edit-content">
                             </div>
+                            <input type="hidden" class="project-name-hide" value="@pvm.ProjectName" />
+                            @if (ViewBag.isie9 != null && ViewBag.isie9)
+                            {
+                                <div class="pro-detail pro-detail-name">
+                                    <div class="dot-img"></div>
+                                    <div class="detail-title all-project-name">@pvm.ProjectName</div>
+                                </div>
+                            }
                             <div class="pro-detail" style="height: @(memberheigh)px;">
                                 <div class="dot-img"></div>
                                 <div class="detail-title">Member</div>
@@ -126,7 +140,6 @@
                                     </div>
                                 }
                             }
-                            <div class="pro-detail-edit" data-pro-key="@pvm.ProjectName"></div>
                             <div class="pro-detail-add hidden">
                                 <div class="dot-img-add"></div>
                             </div>

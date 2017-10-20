@@ -68,7 +68,7 @@ var AddColumn = function () {
                 $(this).parent('.bool-def').parent('.project-detail-mid').prev('.addpro-dot-img')
                         .removeClass('addpro-dot-img').addClass('info-up');
                 $(this).parent('.bool-def').find('input').val($(this).html());
-                $(this).parent('.col-name').css('border-bottom', 'unset').children('span').addClass('hidden');
+                $(this).parent('.col-name').css('border-bottom', '0 #939393 solid').children('span').addClass('hidden');
                 $(this).parent('.col-name').children('div').removeClass('hidden');
                 $(this).parent('.col-val').children('span').addClass('hidden');
                 $(this).parent('.col-val').children('div').removeClass('hidden');
@@ -96,7 +96,7 @@ var AddColumn = function () {
             $(this).parent('.span-column').parent('.project-detail-mid').prev('.addpro-dot-img')
                     .removeClass('addpro-dot-img').addClass('info-up');
             batch_update_css();
-            $(this).parent('.col-name').css('border-bottom', 'unset').children('span').addClass('hidden');
+            $(this).parent('.col-name').css('border-bottom', '0 #939393 solid').children('span').addClass('hidden');
             $(this).parent('.col-name').children('div').removeClass('hidden');
             $(this).parent('.col-val').children('span').addClass('hidden');
             $(this).parent('.col-val').children('div').removeClass('hidden');
@@ -110,6 +110,9 @@ var AddColumn = function () {
             $('.col-val').children('div').children('input').each(function(){
                 if($(this).val()){
                     $(this).parent('div').prev('span').html($(this).val());
+                }
+                else {
+                    $(this).parent('div').prev('span').html($(this).parent('div').prev('span').attr('data-def'));
                 }
             });
             $('.col-val').children('span').removeClass('hidden');
@@ -173,16 +176,16 @@ var AddColumn = function () {
         //add column name
         $('body').on('click', '.add-column', function(){
             var column_name = $(this).prev('input').prev('input').val();
-            if(column_name != ''){
-                $(this).prev('input').val(column_name);
-                $(this).parent('.input-group').parent('.col-name').css('border-bottom','1px #939393 solid')
+            $(this).prev('input').val(column_name);
+            $(this).parent('div').addClass('hidden');
+            //default value
+            var $col_val = $(this).parent('.input-group').parent('.col-name').prev('.col-val');
+            $col_val.children('span').addClass('hidden');
+            $col_val.children('div').removeClass('hidden');
+            column_name = (column_name != '') ? column_name : $(this).parent('.input-group').prev('span').attr('data-def');
+            $(this).parent('.input-group').parent('.col-name').css('border-bottom','1px #939393 solid')
                     .children('span').removeClass('hidden').html(column_name);
-                $(this).parent('div').addClass('hidden');
-                //default value
-                var $col_val = $(this).parent('.input-group').parent('.col-name').prev('.col-val');
-                $col_val.children('span').addClass('hidden');
-                $col_val.children('div').removeClass('hidden');
-            }
+
         });
 
         //add column
@@ -215,7 +218,7 @@ var AddColumn = function () {
                     window.location.reload();
                 }
                 else {
-                    alert('Faled to add column!');
+                    alert('Failed to add column!');
                 }
             });
         });

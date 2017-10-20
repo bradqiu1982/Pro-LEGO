@@ -39,6 +39,25 @@ namespace ProLEGO.Controllers
             {
                 ViewBag.Admin = false;
             }
+			
+			ViewBag.isie8 = false;
+            ViewBag.isie9 = false;
+            ViewBag.showie8modal = false;
+
+            var browse = Request.Browser;
+            if (string.Compare(browse.Browser, "IE", true) == 0
+                && (string.Compare(browse.Version, "7.0", true) == 0
+                || string.Compare(browse.Version, "8.0", true) == 0))
+            {
+                ViewBag.isie8 = true;
+            }
+            if (string.Compare(browse.Browser, "IE", true) == 0
+                && (string.Compare(browse.Version, "7.0", true) == 0
+                || string.Compare(browse.Version, "8.0", true) == 0
+                || string.Compare(browse.Version, "9.0", true) == 0))
+            {
+                ViewBag.isie9 = true;
+            }
         }
 
         public ActionResult MainPage()

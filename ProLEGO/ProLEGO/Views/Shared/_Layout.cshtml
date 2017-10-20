@@ -9,7 +9,17 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    <link href="~/Content/common.css" rel="stylesheet" type="text/css" />
+    @{
+        ViewBag.isie8 = true;
+    }
+    @if (ViewBag.isie8 != null && ViewBag.isie8)
+    {
+        <link href="~/Content/common_ie8.css" rel="stylesheet" type="text/css" />
+    }
+    else
+    {
+        <link href="~/Content/common.css" rel="stylesheet" type="text/css" />
+    }
     <link href="~/Scripts/jquery-autocomplete/jquery.auto-complete.css" rel="stylesheet" type="text/css" />
     <link href="~/Scripts/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
 
