@@ -63,9 +63,22 @@ namespace ProLEGO.Controllers
         public ActionResult MainPage()
         {
             UserAuth();
-
+            if (ViewBag.Admin)
+            {
+                var sysdict = CfgUtility.GetSysConfig(this);
+                var pjlist = new List<string>();
+                foreach (var kv in sysdict)
+                {
+                    if (kv.Key.ToUpper().Contains("PJNAME"))
+                    {
+                        pjlist.Add(kv.Value);
+                    }
+                }
+                ViewBag.PJList = Newtonsoft.Json.JsonConvert.SerializeObject(pjlist.ToArray());
+            }
             return View();
         }
+
 
         public ActionResult AllProjects(int currentpage = 0,string searchkey = null)
         {
@@ -115,6 +128,33 @@ namespace ProLEGO.Controllers
             }
 
             return View(showvm);
+        }
+
+        public JsonResult CreateProject()
+        {
+            UserAuth();
+            var ret = new JsonResult();
+
+            if (ViewBag.Admin)
+            {
+                var ProjectName = Request.Form["pjname"].Replace("'", "").Trim();
+                var cret = ProjectVM.CreateProject(ViewBag.compName, ProjectName);
+                if (cret)
+                {
+                    ret.Data = new { success = true, projectkey = ProjectName };
+                    new ProjectLog(ViewBag.compName, ProjectName, "ALL", "Create this project");
+                }
+                else
+                {
+                    ret.Data = new { success = false, msg = "no project architect exist,please contact administrator to add project architect" };
+                }
+            }
+            else
+            {
+                ret.Data = new { success = false, msg = "you do not have such authorization,please contact administrator to add authorization" };
+            }
+            
+            return ret;
         }
 
         public ActionResult ProjectDetail(string ProjectName)
@@ -252,6 +292,12 @@ namespace ProLEGO.Controllers
             ret.Data = new { success = true };
             return ret;
         }
+
+
+        //public FileResult DownLoadAllProject()
+        //{
+
+        //}
 
         public ActionResult HeartBeat()
         {

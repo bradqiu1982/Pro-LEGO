@@ -33,7 +33,7 @@ namespace ProLEGO.Models
 
         private void AddLog()
         {
-            var sql = "insert into ProjectLog(Machine,Project,PJColumn,Event,CreateTime) values('<Machine>','<Project>','<PJColumn>','<Event>','<CreateTime>')";
+            var sql = "insert into ProjectLog(Machine,Project,PJColumn,Event,CreateTime) values(N'<Machine>',N'<Project>',N'<PJColumn>',N'<Event>',N'<CreateTime>')";
             sql = sql.Replace("<Machine>",Machine).Replace("<Project>",Project).Replace("<Event>",Event).Replace("<PJColumn>", PJColumn)
                 .Replace("<CreateTime>",CreateTime.ToString("yyyy-MM-dd hh:mm:ss"));
             DBUtility.ExeLocalSqlNoRes(sql);

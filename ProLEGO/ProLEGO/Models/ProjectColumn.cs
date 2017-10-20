@@ -90,7 +90,7 @@ namespace ProLEGO.Models
                 return false;
 
             var newkey = ProjectVM.GetUniqKey();
-            var sql = "insert into ProjectColumn(ColumnID,ColumnName,ColumnType,ColumnDefaultVal,ColumnCreateDate) values('<ColumnID>','<ColumnName>','<ColumnType>','<ColumnDefaultVal>','<ColumnCreateDate>')";
+            var sql = "insert into ProjectColumn(ColumnID,ColumnName,ColumnType,ColumnDefaultVal,ColumnCreateDate) values(N'<ColumnID>',N'<ColumnName>',N'<ColumnType>',N'<ColumnDefaultVal>',N'<ColumnCreateDate>')";
             sql = sql.Replace("<ColumnID>", newkey).Replace("<ColumnCreateDate>", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"))
                 .Replace("<ColumnName>", ColumnName).Replace("<ColumnType>", ColumnType).Replace("<ColumnDefaultVal>", ColumnDefaultVal);
             var ret = DBUtility.ExeLocalSqlNoRes(sql);
@@ -158,7 +158,7 @@ namespace ProLEGO.Models
         public static List<ProjectColumn> RetrievePJColumnByName(string ColumnName)
         {
             var ret = new List<ProjectColumn>();
-            var sql = "select ColumnID,ColumnName,ColumnType,ColumnDefaultVal from ProjectColumn where ColumnName = '<ColumnName>'";
+            var sql = "select ColumnID,ColumnName,ColumnType,ColumnDefaultVal from ProjectColumn where ColumnName = N'<ColumnName>'";
             sql = sql.Replace("<ColumnName>", ColumnName);
 
             var dbret = DBUtility.ExeLocalSqlWithRes(sql);
@@ -176,7 +176,7 @@ namespace ProLEGO.Models
 
         public static void UpdatePJColDefaultVal(string ColumnName, string ColumnDefaultVal)
         {
-            var sql = "update ProjectColumn set ColumnDefaultVal = '<ColumnDefaultVal>' where ColumnName = '<ColumnName>'";
+            var sql = "update ProjectColumn set ColumnDefaultVal = N'<ColumnDefaultVal>' where ColumnName = N'<ColumnName>'";
             sql = sql.Replace("<ColumnName>", ColumnName).Replace("<ColumnDefaultVal>", ColumnDefaultVal);
             DBUtility.ExeLocalSqlNoRes(sql);
         }
@@ -184,7 +184,7 @@ namespace ProLEGO.Models
         //TRUE or FALSE
         public static void UpdatePJColRemoved(string ColumnName, bool Removed)
         {
-            var sql = "update ProjectColumn set Removed = '<Removed>' where ColumnName = '<ColumnName>'";
+            var sql = "update ProjectColumn set Removed = N'<Removed>' where ColumnName = N'<ColumnName>'";
             sql = sql.Replace("<ColumnName>", ColumnName).Replace("<Removed>", Removed?"TRUE":"FALSE");
             DBUtility.ExeLocalSqlNoRes(sql);
         }
@@ -203,7 +203,7 @@ namespace ProLEGO.Models
         public static List<ProjectColumn> RetriveRolePJColumn()
         {
             var ret = new List<ProjectColumn>();
-            var sql = "select ColumnID,ColumnName,ColumnType,ColumnDefaultVal from ProjectColumn where ColumnType = '<ColumnType>' order by ColumnCreateDate ASC";
+            var sql = "select ColumnID,ColumnName,ColumnType,ColumnDefaultVal from ProjectColumn where ColumnType = N'<ColumnType>' order by ColumnCreateDate ASC";
             sql = sql.Replace("<ColumnType>", PROJECTCOLUMNTYPE.ROLE);
             var dbret = DBUtility.ExeLocalSqlWithRes(sql);
             foreach (var line in dbret)

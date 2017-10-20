@@ -32,7 +32,7 @@
         $('body').on('click', '.search-img', function () {
             if ($('#keywords').val())
             {
-                window.location.href = '/ProLEGO/AllProjects?currentpage=0&searchkey=' + $('#keywords').val();
+                window.location.href = '/ProLEGO/AllProjects?currentpage=0&searchkey=' + encodeURIComponent($('#keywords').val());
             }
         });
 
@@ -63,7 +63,7 @@
 
         $('body').on('click', '.project-edit-content', function () {
             var project_key = $(this).next('.project-name-hide').val();
-            window.location.href = '/ProLEGO/ProjectDetail?ProjectName=' + project_key;
+            window.location.href = '/ProLEGO/ProjectDetail?ProjectName=' + encodeURIComponent(project_key);
         });
     }
 
