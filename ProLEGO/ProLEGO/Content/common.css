@@ -201,6 +201,7 @@
 }
 
 .project-left{
+    position: fixed;
     display: inline-block;
     cursor: pointer;
     width: 5%;
@@ -224,7 +225,7 @@
 .project-info{
     display: inline-block;
     width: 84%;
-    margin-left: 5%;
+    margin-left: 10%;
 }
 
 .project-right{
@@ -427,11 +428,10 @@
 }
 
 .pro-detail-edit{
-    position: absolute;
-    top: 400px;
-    right: 10px;
+    float: right;
     width: 30px;
     height: 30px;
+    margin-bottom: 5px;
     background-image: url(./images/pencil.png);
     background-repeat: no-repeat;
     background-position: left top;
@@ -442,7 +442,12 @@
 }
 
 .project-edit-content{
+    position: fixed;
+    width: 80%;
+    height: 80%;
+    margin-left: 20%;
     cursor: pointer;
+    z-index: 1003;
 }
 
 .pro-detail-add-btn{
@@ -496,14 +501,21 @@
     -webkit-perspective: 1000px;
     -moz-perspective: 1000px;
     -ms-perspective: 1000px;
+    overflow: hidden;
 }
 
-/* flip the pane when hovered */
-.flip-container:hover .flipper, .flip-container.hover .flipper {
-    transform: rotateY(180deg);             
+/* flip the pane when hovered*/
+.flip-container:hover .back {
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);    
+}
+.flip-container:hover .front {
     -webkit-transform: rotateY(180deg);
     -moz-transform: rotateY(180deg);
     -ms-transform: rotateY(180deg);
+    transform: rotateY(180deg);       
 }
 
 /* flip speed goes here */
@@ -525,19 +537,17 @@
 
 /* hide back of pane during swap */
 .front, .back {
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -ms-backface-visibility: hidden;
-    backface-visibility: hidden;
+    backface-visibility: hidden;  /* W3C */
+    -webkit-backface-visibility: hidden; /* Safari & Chrome */
+    -moz-backface-visibility: hidden; /* Firefox */
+    -ms-backface-visibility: hidden; /* Internet Explorer */
+    -o-backface-visibility: hidden; /* Opera */
 
     -webkit-transition: 1s;
     -webkit-transform-style: preserve-3d;
 
     -moz-transition: 1s;
     -moz-transform-style: preserve-3d;
-
-    -o-transition: 1s;
-    -o-transform-style: preserve-3d;
 
     -ms-transition: 1s;
     -ms-transform-style: preserve-3d;
@@ -548,7 +558,7 @@
 
 /* front pane, placed above back */
 .front {
-    z-index: 1001;
+    z-index: 1002; 
 }
 
 /* back, initially hidden pane */
