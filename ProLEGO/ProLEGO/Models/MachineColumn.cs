@@ -23,7 +23,7 @@ namespace ProLEGO.Models
             var namedict = RetrieveFobiddenColumnName(MachineName);
             if (namedict.ContainsKey(ColumnName)) return;
 
-            var sql = "insert into MachineColumn(MachineName,ColumnID,ColumnName) values('<MachineName>','<ColumnID>','<ColumnName>')";
+            var sql = "insert into MachineColumn(MachineName,ColumnID,ColumnName) values(N'<MachineName>',N'<ColumnID>',N'<ColumnName>')";
             sql = sql.Replace("<ColumnID>", ColumnID).Replace("<ColumnName>", ColumnName)
                 .Replace("<MachineName>", MachineName);
             DBUtility.ExeLocalSqlNoRes(sql);
@@ -31,7 +31,7 @@ namespace ProLEGO.Models
 
         public static void RemoveFobiddenColumn(string MachineName, string ColumnName)
         {
-            var sql = "delete from MachineColumn where MachineName = '<MachineName>' and ColumnName = '<ColumnName>'";
+            var sql = "delete from MachineColumn where MachineName = N'<MachineName>' and ColumnName = N'<ColumnName>'";
             sql = sql.Replace("<ColumnName>", ColumnName).Replace("<MachineName>", MachineName);
             DBUtility.ExeLocalSqlNoRes(sql);
         }
@@ -39,7 +39,7 @@ namespace ProLEGO.Models
         public static Dictionary<string,bool> RetrieveFobiddenColumnName(string MachineName)
         {
             var ret = new Dictionary<string, bool>();
-            var sql = "select ColumnName,ColumnID from MachineColumn where  MachineName = '<MachineName>'";
+            var sql = "select ColumnName,ColumnID from MachineColumn where  MachineName = N'<MachineName>'";
             sql = sql.Replace("<MachineName>", MachineName);
             var dbret = DBUtility.ExeLocalSqlWithRes(sql);
             foreach (var line in dbret)
@@ -55,7 +55,7 @@ namespace ProLEGO.Models
         //public static Dictionary<string, bool> RetrieveFobiddenColumnID(string MachineName)
         //{
         //    var ret = new Dictionary<string, bool>();
-        //    var sql = "select ColumnName,ColumnID from MachineColumn where  MachineName = '<MachineName>'";
+        //    var sql = "select ColumnName,ColumnID from MachineColumn where  MachineName = N'<MachineName>'";
         //    sql = sql.Replace("<MachineName>", MachineName);
         //    var dbret = DBUtility.ExeLocalSqlWithRes(sql);
         //    foreach (var line in dbret)

@@ -27,13 +27,16 @@
     </div>
     <div class="wel-op">
         <input type="button" class="btn wel-btn wel-op-btn-left" value="View All Projects" onclick="allprojects()">
-        <input type="button" class="btn wel-btn wel-op-btn-right" value="Create My Project">
+        <input type="button" class="btn wel-btn wel-op-btn-right" value="Create My Project" onclick="createproject()">
     </div>
 </div>
         <div class="container toolbar">
-            <div class="project-bom" title="Project Architecture">
-                <a href="/ProLEGO/ManageProColumn"><img class="toolbar-img" src="~/Content/images/add_column.png"></a>
-            </div>
+            @if (ViewBag.Admin != null && ViewBag.Admin)
+            {
+                <div class="project-bom" title="Project Architecture">
+                    <a href="/ProLEGO/ManageProColumn"><img class="toolbar-img" src="~/Content/images/add_column.png"></a>
+                </div>
+            }
             <div class="export-all" title="Export Projects">
                 <img class="toolbar-img" src="~/Content/images/download.png">
             </div>
@@ -44,7 +47,74 @@
                 </span>
             </div>
         </div>
+
+<div class="modal" id="createpjmodal" tabindex="-1" role="dialog" aria-labelledby="createpjmodalLabel" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content crpjpopup">
+            <div class="modal-header">
+                <h4 class="modal-title" id="createpjmodalLabel">Create Project</h4>
+            </div>
+            <div class="row">
+                <div class="popup-input">
+                    <input type="text" class="input-placeholder" id="pjname" name="pjname" placeholder="Project Name">
+                </div>
+                <script type="text/javascript">
+                    $('#pjname').autoComplete({
+                        minChars: 0,
+                        source: function (term, suggest) {
+                            term = term.toLowerCase();
+                            var choices =  @Html.Raw(ViewBag.PJList);
+                            var suggestions = [];
+                            for (i = 0; i < choices.length; i++)
+                                if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                            suggest(suggestions);
+                        }
+                    });
+                </script>
+            </div>
+            <div class="modal-footer" style="border-top:0">
+                <button type="button" class="btn btn-popup" onclick="cancelcreatepj()">Cancel</button>
+                <button type="button" class="btn btn-popup" onclick="submitproject()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    function createproject()
+    {
+        $("#createpjmodal").modal();
+    }
+
+    function submitproject()
+    {
+        $("#createpjmodal").modal('hide');
+
+        var pjname = $("#pjname").val();
+        if (pjname) {
+            $.post('/ProLEGO/CreateProject',
+            {
+                pjname: pjname
+            }, function (output) {
+                if (output.success) {
+                    window.location.href = '/ProLEGO/ProjectDetail?ProjectName=' + output.projectkey;
+                }
+                else {
+                    alert(output.msg);
+                }
+            });
+        }
+        else {
+            alert("please input your project name");
+        }
+        return false;
+    }
+
+    function cancelcreatepj()
+    {
+        $("#createpjmodal").modal('hide');
+    }
+
             $(function () {
                 ProLego.init();
             })
