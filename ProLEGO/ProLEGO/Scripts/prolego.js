@@ -30,7 +30,10 @@
         })
 
         $('body').on('click', '.search-img', function () {
-            //search
+            if ($('#keywords').val())
+            {
+                window.location.href = '/ProLEGO/AllProjects?currentpage=0&searchkey=' + $('#keywords').val();
+            }
         });
 
         $('body').on('click', '.logo', function () {
@@ -204,6 +207,10 @@
                 }
             });
         });
+
+        $('body').on('click', '.logo', function () {
+            window.location.href = '/ProLEGO/AllProjects';
+        });
     }
 
     return {
@@ -217,7 +224,6 @@
         },
         pro_detail: function(){
             pro_detail();
-            common();
         }
     };
 }();

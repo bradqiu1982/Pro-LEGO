@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ProLEGO.Models.ProjectColumn>
 
 @{
-    ViewBag.Title = "Add Pro-Arch";
+    ViewBag.Title = "Manage Pro-Arch";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -38,6 +38,12 @@
 
         @foreach (var item in Model)
         {
+            var itemfobidden = false;
+            if (string.Compare(item.Removed, "true", true) == 0)
+            {
+                itemfobidden = true;
+            }
+
             if (string.Compare(item.ColumnType, ProLEGO.Models.PROJECTCOLUMNTYPE.INFORMATION, true) == 0
                 || string.Compare(item.ColumnType, ProLEGO.Models.PROJECTCOLUMNTYPE.ROLE, true) == 0)
             {
@@ -51,7 +57,7 @@
                 itemheigh = defaultvallist.Count * 20 + itemheigh;
 
                 <div class="project-detail" style="height: @(itemheigh)px;">
-                    <div class="project-del-img"></div>
+                    <div class="@(itemfobidden?"project-add-img":"project-del-img")"></div>
                     <div class="project-detail-mid">
                         <div class="project-detail-content" data-col-id="0" data-col-type="@(item.ColumnType)">
                             @foreach (var defval in defaultvallist)
@@ -63,7 +69,7 @@
                             }
                             <div class="detail-edit">
                                 <input type="text" class="form-control autocomplete-input"
-                                       id="project_type" name="project_type" autocomplete="off" />
+                                       id="@item.ColumnName.Replace(" ", "_")" name="@item.ColumnName.Replace(" ", "_")" autocomplete="off" />
                                 <div class="edit-add-img"></div>
                             </div>
                         </div>
@@ -72,17 +78,42 @@
                         <div class="project-title-circle"></div>
                     </div>
                 </div>
+
+                if (string.Compare(item.ColumnType, ProLEGO.Models.PROJECTCOLUMNTYPE.ROLE, true) == 0)
+                {
+                    <script type="text/javascript">
+                    $('#@item.ColumnName.Replace(" ", "_")').autoComplete({
+                        minChars: 0,
+                        source: function (term, suggest) {
+                            term = term.toLowerCase();
+                            var choices =  @Html.Raw(item.ColumnDefaultValList);
+                            var suggestions = [];
+                            for (i = 0; i < choices.length; i++)
+                                if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                            suggest(suggestions);
+                        }
+                    });
+                    </script>
+                }
             }
 
             if (string.Compare(item.ColumnType, ProLEGO.Models.PROJECTCOLUMNTYPE.BOOL, true) == 0)
             {
                 <div class="project-detail">
-                    <div class="project-add-img"></div>
+                    <div class="@(itemfobidden?"project-add-img":"project-del-img")"></div>
                     <div class="project-detail-mid">
                         <div class="project-detail-content" data-col-type="@(item.ColumnType)">
                             <div class="detail-edit edit-bool-def div-span">
-                                <span class="bool-def-left bool-active">True</span>
-                                <span class="bool-def-right bool-inactive">False</span>
+                                @if (string.Compare(item.ColumnDefaultVal, "true", true) == 0)
+                                {
+                                    <span class="bool-def-left bool-active">True</span>
+                                    <span class="bool-def-right bool-inactive">False</span>
+                                }
+                                else
+                                {
+                                    <span class="bool-def-left bool-inactive">True</span>
+                                    <span class="bool-def-right bool-active">False</span>
+                                }
                             </div>
                         </div>
                         <div class="project-detail-line"></div>
@@ -95,11 +126,11 @@
             if (string.Compare(item.ColumnType, ProLEGO.Models.PROJECTCOLUMNTYPE.DATE, true) == 0)
             {
                 <div class="project-detail">
-                    <div class="project-del-img"></div>
+                    <div class="@(itemfobidden?"project-add-img":"project-del-img")"></div>
                     <div class="project-detail-mid">
                         <div class="project-detail-content" data-col-type="@(item.ColumnType)">
-                            <div class="input-group date" data-date-format="yyyy-mm-dd">
-                                <input type="text" class="form-control" id="@item.ColumnName.Replace(" ","_")" name="@item.ColumnName.Replace(" ","_")" readonly>
+                            <div class="input-group date" data-date="@(item.ColumnDefaultVal)" data-date-format="yyyy-mm-dd">
+                                <input type="text" class="form-control"  value="@(item.ColumnDefaultVal)"  id="@item.ColumnName.Replace(" ","_")" name="@item.ColumnName.Replace(" ","_")" readonly>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </span>
@@ -115,7 +146,7 @@
 
         <div class="add-project-col">
             <div class="add-project">
-                <div class="info-up" data-col-type="DATE"></div>
+                <div class="info-up" data-col-type="@(ProLEGO.Models.PROJECTCOLUMNTYPE.DATE)"></div>
                 <div class="project-detail-mid add-project-date">
                     <span class="span-column col-val col-val-date">
                         <span class="span-col-val" data-def="Date">Date</span>
@@ -140,7 +171,7 @@
                 </div>
             </div>
             <div class="add-project">
-                <div class="addpro-dot-img" data-col-type="BOOL"></div>
+                <div class="addpro-dot-img" data-col-type="@(ProLEGO.Models.PROJECTCOLUMNTYPE.BOOL)"></div>
                 <div class="project-detail-mid add-project-bool">
                     <span class="bool-def div-span">
                         <span class="bool-def-left bool-active">True</span>
@@ -161,7 +192,7 @@
                 </div>
             </div>
             <div class="add-project">
-                <div class="addpro-dot-img" data-col-type="ROLE"></div>
+                <div class="addpro-dot-img" data-col-type="@(ProLEGO.Models.PROJECTCOLUMNTYPE.ROLE)"></div>
                 <div class="project-detail-mid add-project-name">
                     <span class="span-column col-val col-val-name">
                         <span class="span-col-val" data-def="Role">Role</span>
@@ -183,7 +214,7 @@
                 </div>
             </div>
             <div class="add-project">
-                <div class="addpro-dot-img" data-col-type="INFORMATION"></div>
+                <div class="addpro-dot-img" data-col-type="@(ProLEGO.Models.PROJECTCOLUMNTYPE.INFORMATION)"></div>
                 <div class="project-detail-mid add-project-info">
                     <span class="span-column col-val col-val-info">
                         <span class="span-col-val" data-def="Information">Information</span>
