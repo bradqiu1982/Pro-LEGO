@@ -118,7 +118,7 @@
                 <div class="info-up" data-col-type="DATE"></div>
                 <div class="project-detail-mid add-project-date">
                     <span class="span-column col-val col-val-date">
-                        <span class="span-col-val">Date</span>
+                        <span class="span-col-val" data-def="Date">Date</span>
                         <div class="input-group date add-date hidden col-md-8" data-date-format="yyyy-mm-dd">
                             <input type="text" class="form-control" id="def_date" name="def_date" readonly>
                             <span class="input-group-addon">
@@ -127,7 +127,7 @@
                         </div>
                     </span>
                     <span class="span-column col-name col-name-date">
-                        <span class="span-col-name">What's date for?</span>
+                        <span class="span-col-name" data-def="What's date for?">What's date for?</span>
                         <div class="input-group hidden">
                             <input type="text" id="col_name_date"
                                    name="col_name_date" class="form-control" autocomplete="off">
@@ -148,7 +148,7 @@
                         <input type="hidden" value="True">
                     </span>
                     <span class="span-column col-name col-name-bool">
-                        <span class="span-col-name">What's True or False for?</span>
+                        <span class="span-col-name" data-def="What's True or Fals for?">What's True or False for?</span>
                         <div class="input-group hidden">
                             <input type="text" id="col_name_bool"
                                    name="col_name_bool" class="form-control" autocomplete="off">
@@ -164,13 +164,13 @@
                 <div class="addpro-dot-img" data-col-type="ROLE"></div>
                 <div class="project-detail-mid add-project-name">
                     <span class="span-column col-val col-val-name">
-                        <span class="span-col-val">ROLE</span>
+                        <span class="span-col-val" data-def="Role">Role</span>
                         <div class="input-group hidden col-md-8">
                             <input type="text" class="form-control" id="def_name" name="def_name">
                         </div>
                     </span>
                     <span class="span-column col-name col-name-name">
-                        <span class="span-col-name">What's name for?</span>
+                        <span class="span-col-name" data-def="What's name for?">What's name for?</span>
                         <div class="input-group hidden">
                             <input type="text" id="col_name_name"
                                    name="col_name_name" class="form-control" autocomplete="off">
@@ -186,13 +186,13 @@
                 <div class="addpro-dot-img" data-col-type="INFORMATION"></div>
                 <div class="project-detail-mid add-project-info">
                     <span class="span-column col-val col-val-info">
-                        <span class="span-col-val">Information</span>
+                        <span class="span-col-val" data-def="Information">Information</span>
                         <div class="input-group hidden col-md-8">
                             <input type="text" class="form-control" id="def_info" name="def_info">
                         </div>
                     </span>
                     <span class="span-column col-name col-name-info">
-                        <span class="span-col-name">What's information for?</span>
+                        <span class="span-col-name" data-def="What's information for?">What's information for?</span>
                         <div class="input-group hidden">
                             <input type="text" id="col_name_info"
                                    name="col_name_info" class="form-control" autocomplete="off">
@@ -209,7 +209,7 @@
 </div>
 
 <script>
-            $(function () {
-                AddColumn.init();
-            })
+    $(function () {
+        AddColumn.init();
+    });
 </script>

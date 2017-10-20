@@ -184,6 +184,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\common.css" />
+    <Content Include="Content\common_ie8.css" />
     <Content Include="Content\images\add.png" />
     <Content Include="Content\images\add_column.png" />
     <Content Include="Content\images\blue_circle.png" />

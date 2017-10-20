@@ -44,7 +44,7 @@
             $(this).parent('.back').children('.pro-detail-end').children('.dot-img-end').removeClass('dot-img-end').addClass('dot-img-del');
             $(this).parent('.back').children('.pro-detail-end').removeClass('pro-detail-end').addClass('pro-detail');
             $(this).parent('.back').children('.pro-detail-add').removeClass('hidden');
-            $(this).addClass('hidden');
+            $(this).removeClass('pro-detail-edit').addClass('pro-detail-edit-hidden');
             $(this).parent('.back').children('.pro-mes').children('.detail-content').addClass('hidden');
             $(this).parent('.back').children('.pro-mes').children('.edit-mes').removeClass('hidden');
         });
@@ -59,7 +59,7 @@
         });
 
         $('body').on('click', '.project-edit-content', function () {
-            var project_key = $(this).parent('div').prev('.front').children('div').eq(0).html();
+            var project_key = $(this).next('.project-name-hide').val();
             window.location.href = '/ProLEGO/ProjectDetail?ProjectName=' + project_key;
         });
     }

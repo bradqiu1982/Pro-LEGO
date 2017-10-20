@@ -1,4 +1,4 @@
-﻿html,body{
+﻿bodyhtml,body{
     height: auto;
     width: 100%;
     padding: 0;
@@ -25,13 +25,12 @@
     margin-top: 2%;
     height: 100%;
     width: 550px;
-    background-image: url(./images/logo.png);
+    background-image: url(./images/ie8/logo.png);
     background-repeat: no-repeat;
     background-position: left;
     background-size: contain;
     -webkit-background-size: contain;
     -moz-background-size: contain;
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./images/logo.png',sizingMethod='scale');
     cursor:pointer;
     z-index: 1003;
 }
@@ -50,11 +49,10 @@
     height: 28px !important; 
     width: 28px !important;
     margin-bottom: -7px;
-    background: url(./images/computer.png) no-repeat center center;
+    background: url(./images/ie8/computer.png) no-repeat center center;
     -webkit-background-size: contain;
     -moz-background-size: contain;
     background-size: contain;    
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./images/computer.png',sizingMethod='scale');
 }
 
 /* body */
@@ -65,18 +63,17 @@
     right: 0;
     bottom: 0;
     background-color: #fff;
-    background-image: url(./images/home.png);
+    background-image: url(./images/ie8/home.png);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./images/home.png',sizingMethod='scale');
     z-index: 1000;
 }
 
 .main-body-hover{
-    background-image: url(./images/home_hover.png);
+    background-image: url(./images/ie8/home_hover.png);
 }
 
 .welcome{
@@ -190,13 +187,12 @@
     position: relative;
     top: 150px;
     background-color: transparent;
-    background-image: url(./images/pro_bg.png);
+    background-image: url(./images/ie8/pro_bg.png);
     background-repeat: no-repeat;
     background-position: bottom;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;    
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./images/pro_bg.png',sizingMethod='scale');
     z-index: 1000;
 }
 
@@ -213,7 +209,7 @@
 }
 
 .project-left:hover{
-    background-image: url(./images/pro_left.png);
+    background-image: url(./images/ie8/pro_left.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -240,7 +236,7 @@
 }
 
 .project-right:hover{
-    background-image: url(./images/pro_right.png);
+    background-image: url(./images/ie8/pro_right.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -354,7 +350,7 @@
     left: -4px;
     width: 8px;
     height: 8px;
-    background-image: url(./images/dot.png);
+    background-image: url(./images/ie8/dot.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -364,10 +360,10 @@
 
 .dot-img-end{
     position: relative;
-    left: -3px;
+    left: -2px;
     width: 8px;
     height: 8px;
-    background-image: url(./images/dot.png);
+    background-image: url(./images/ie8/dot.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -380,7 +376,7 @@
     left: -4px;
     width: 8px;
     height: 8px;
-    background-image: url(./images/dot_del.png);
+    background-image: url(./images/ie8/dot_del.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -391,10 +387,10 @@
 
 .dot-img-add{
     position: relative;
-    left: 17px;
+    left: 18px;
     width: 10px;
     height: 10px;
-    background-image: url(./images/dot_add.png);
+    background-image: url(./images/ie8/dot_add.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -430,7 +426,7 @@
     width: 30px;
     height: 30px;
     margin-bottom: 5px;
-    background-image: url(./images/pencil.png);
+    background-image: url(./images/ie8/pencil.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -583,13 +579,12 @@
     right: 0;
     bottom: 0;
     background-color: #fff;
-    background-image: url(./images/pro_detail_bg.png);
-    background-repeat: no-repeat;
+    background-image: url(./images/ie8/pro_detail_bg.png);
+    background-repeat: repeat;
     background-position: center center;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;    
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./images/home.png',sizingMethod='scale');
     opacity: 0.5;
     -moz-opacity: 0.5;
     filter: alpha(opacity=50);
@@ -689,7 +684,7 @@
     left: -9px;
     width: 16px;
     height: 16px;
-    background-image: url(./images/blue_circle.png);
+    background-image: url(./images/ie8/blue_circle.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -702,7 +697,7 @@
     left: -9px;
     width: 16px;
     height: 16px;
-    background-image: url(./images/del.png);
+    background-image: url(./images/ie8/del.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -716,7 +711,7 @@
     left: -9px;
     width: 16px;
     height: 16px;
-    background-image: url(./images/blue_dot.png);
+    background-image: url(./images/ie8/blue_dot.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -729,7 +724,7 @@
     left: -10px;
     width: 16px;
     height: 16px;
-    background-image: url(./images/blue_dot.png);
+    background-image: url(./images/ie8/blue_dot.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -742,26 +737,27 @@
     left: -9px;
     width: 16px;
     height: 16px;
-    background-image: url(./images/add.png);
+    background-image: url(./images/ie8/add_1.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
     -webkit-background-size: contain;
     -moz-background-size: contain;
+    cursor: pointer;
     z-index: 1002;
 }
 .project-title-circle{
     display: inline-block;
     width: 14px;
     height: 14px;
-    background-image: url(./images/blue_circle.png);
+    background-image: url(./images/ie8/blue_circle_1.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
     -webkit-background-size: contain;
     -moz-background-size: contain;
     margin-left: -5px;
-    margin-bottom: -6px;
+    margin-bottom: -7px;
     z-index: 1002;
 }
 
@@ -778,7 +774,7 @@
     left: -20px;
     width: 30px;
     height: 30px;
-    background-image: url(./images/edit.png);
+    background-image: url(./images/ie8/edit.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -798,7 +794,7 @@
     left: -13px;
     width: 25px;
     height: 25px;
-    background-image: url(./images/up.png);
+    background-image: url(./images/ie8/up.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -812,7 +808,7 @@
     left: -9px;
     width: 16px;
     height: 16px;
-    background-image: url(./images/gray_dot.png);
+    background-image: url(./images/ie8/gray_dot.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-size: contain;
@@ -904,7 +900,7 @@
     display: inline-block;
     width: 25px;
     height: 30px;
-    background-image: url(./images/add.png);
+    background-image: url(./images/ie8/add.png);
     background-repeat: no-repeat;
     background-position: bottom center;
     background-size: contain;
@@ -913,4 +909,13 @@
     vertical-align: middle;
     cursor: pointer;
     z-index: 1002;
+}
+
+.project-name{
+    font-size: 24px; 
+    color: #fff;
+}
+
+.pro-detail-name{
+    height: 90px;
 }
