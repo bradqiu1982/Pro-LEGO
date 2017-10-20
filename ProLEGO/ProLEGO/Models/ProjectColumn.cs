@@ -38,7 +38,10 @@ namespace ProLEGO.Models
                     var splitstrs = ColumnDefaultVal.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
                     return JsonConvert.SerializeObject(splitstrs);
                 }
-                return string.Empty;
+                else
+                {
+                    return JsonConvert.SerializeObject(new string[] {});
+                }
                 //var ret = new List<string>();
                 //if(!string.IsNullOrEmpty(ColumnDefaultVal))
                 //{
