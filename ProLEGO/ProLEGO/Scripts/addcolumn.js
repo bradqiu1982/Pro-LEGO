@@ -11,85 +11,24 @@ var AddColumn = function () {
             if ( ! $(this).hasClass('add-date')) {
                 var col_val = $(this).find('input').val();
                 var col_name = $(this).parent('.project-detail-content').next().next().html();
-                var col_type = $(this).parent('.project-detail-content').attr('data-col-type');
-                //$.post('/',
-                //{
-                //    col_type: col_type,
-                //    col_val: col_val,
-                //    col_name: col_name
-                //}, function (output) {
-                //    if (output.success) {
-                //        window.location.reload();
-                //    }
-                //    else {
-                //        alert('Failed to set default date!');
-                //    }
-                //});
+
+                //add default date
+                $.post('/ProLEGO/UpdateDateDefColumnValue',
+                {
+                    col_value: col_val,
+                    col_name: col_name
+                }, function (output) {
+                    if (output.success) {
+                        window.location.reload();
+                    }
+                    else {
+                        alert('Failed to set default date!');
+                    }
+                });
             }
             $('.date').datepicker('hide');
         });
-        $('#project_type').autoComplete({
-            minChars: 0,
-            source: function(term, suggest){
-                term = term.toLowerCase();
-                var choices = ['Parallel', 'Test'];
-                var suggestions = [];
-                for (i=0;i<choices.length;i++)
-                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                suggest(suggestions);
-            }
-            // function (term, suggest) {
-            //     term = term.toLowerCase();
-            //     $.post('/ProLego/RoleList',
-            //     {
 
-            //     }, function (output){
-            //         var suggestions = [];
-            //         for (i = 0; i < output.length; i++) {
-            //             if (~output[i].toLowerCase().indexOf(term)) {
-            //                 suggestions.push(output[i]);
-            //             }
-            //         }
-            //         suggest(suggestions);
-            //     });
-            // }
-        });
-
-        $("#member_name").autoComplete({
-            minChars: 0,
-            source: function(term, suggest){
-                term = term.toLowerCase();
-                var choices = ['Test@Finisar.com', 'Test2@Finisar.com'];
-                var suggestions = [];
-                for (i=0;i<choices.length;i++)
-                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                suggest(suggestions);
-            }
-        })
-
-        $("#member_role").autoComplete({
-            minChars: 0,
-            source: function(term, suggest){
-                term = term.toLowerCase();
-                var choices = ['PQE', 'PE'];
-                var suggestions = [];
-                for (i=0;i<choices.length;i++)
-                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                suggest(suggestions);
-            }
-        });
-
-        $("#col_name_date").autoComplete({
-            minChars: 0,
-            source: function(term, suggest){
-                term = term.toLowerCase();
-                var choices = ['Start Date', 'Due Date'];
-                var suggestions = [];
-                for (i=0;i<choices.length;i++)
-                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                suggest(suggestions);
-            }
-        });
 
         $('body').on('click', '.project-del-img', function () {
             $(this).removeClass('project-del-img').addClass('project-add-img');
@@ -105,8 +44,9 @@ var AddColumn = function () {
             modify_dis_flg(column_name, dis_flg);
         });
 
+        //whole display
         function modify_dis_flg(column_name, dis_flg) {
-            $.post('/',
+            $.post('/ProLEGO/DisplayPlatformCol',
             {
                 column_name: column_name,
                 dis_play: dis_flg
@@ -132,6 +72,21 @@ var AddColumn = function () {
                 $(this).parent('.col-name').children('div').removeClass('hidden');
                 $(this).parent('.col-val').children('span').addClass('hidden');
                 $(this).parent('.col-val').children('div').removeClass('hidden');
+            }
+            else {
+                var col_val = $(this).parent('.detail-edit').find('.bool-active').html();
+                var col_name = $(this).parent('.detail-edit').parent('.project-detail-content').next().next().html();
+                $.post('/ProLEGO/UpdateDateDefColumnValue', {
+                    col_value: col_val,
+                    col_name: col_name
+                }, function (output) {
+                    if (output.success) {
+                        window.location.reload();
+                    }
+                    else {
+                        alert("Failed to change!");
+                    }
+                });
             }
         });
 
@@ -161,6 +116,7 @@ var AddColumn = function () {
             $('.col-val').children('div').addClass('hidden');
         }
 
+        //delete default value
         $('body').on('click', '.edit-dot-del', function () {
             var $project_detail_content = $(this).parent('.project-label').parent('.project-detail-content');
             var col_val  = $(this).next('span').html();
@@ -169,7 +125,7 @@ var AddColumn = function () {
             $project_detail_content.parent('.project-detail-mid')
                 .parent('.project-detail').css('height', (sub_cnt + 2) * 20 + 'px');
             $(this).parent('.project-label').remove();
-            $.post('/',
+            $.post('/ProLEGO/RemoveDefColumnValue',
             {
                 col_val: col_val,
                 col_name: col_name
@@ -183,6 +139,7 @@ var AddColumn = function () {
             });
         });
 
+        //add default value
         $('body').on('click', '.edit-add-img', function(){
             var add_value = $(this).prev('input').val();
             if (!add_value) {
@@ -199,7 +156,7 @@ var AddColumn = function () {
                 return false;
             }
             var col_name = $col_value.next().next().html();
-            $.post('/',
+            $.post('/ProLEGO/AddDefColumnValue',
             {
                 col_val: add_value,
                 col_name: col_name
@@ -230,7 +187,7 @@ var AddColumn = function () {
 
         //add column
         $('body').on('click', '.info-up', function () {
-            var col_type = $(this).attr('.data-col-type');
+            var col_type = $(this).attr('data-col-type');
             var dis_flg = 1;
             var col_name = $(this).next('div').children('span').eq(1).find('input').eq(1).val();
             var col_value = $(this).next('div').children('span').eq(0).find('input').val();
@@ -246,7 +203,9 @@ var AddColumn = function () {
             if(flg){
                 return false;
             }
-            $.post('/', {
+
+            //add column
+            $.post('/ProLEGO/AddProColumn', {
                 col_type: col_type,
                 dis_flg: dis_flg,
                 col_name: col_name,

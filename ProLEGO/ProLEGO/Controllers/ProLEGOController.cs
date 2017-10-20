@@ -132,13 +132,108 @@ namespace ProLEGO.Controllers
             return ret;
         }
 
-        public ActionResult AddProColumn()
+        public ActionResult ManageProColumn()
         {
             UserAuth();
             var pjcollist = ProjectColumn.RetrieveAllPJColumn();
             return View(pjcollist);
         }
-        
+
+        public JsonResult AddProColumn()
+        {
+            UserAuth();
+            var colname = Request.Form["col_name"].Trim();
+            var coltype = Request.Form["col_type"].Trim();
+            var coldefval = Request.Form["col_value"].Trim();
+
+            var pjcol = new ProjectColumn();
+            pjcol.ColumnName = colname;
+            pjcol.ColumnType = coltype;
+            pjcol.ColumnDefaultVal = coldefval;
+            pjcol.AddPJColumn(ViewBag.compName);
+
+            var ret = new JsonResult();
+            ret.Data = new { success = true };
+            return ret;
+        }
+
+        public JsonResult AddDefColumnValue()
+        {
+            UserAuth();
+            var colname = Request.Form["col_name"].Trim();
+            var coldefval = Request.Form["col_val"].Trim();
+
+            var procol = ProjectColumn.RetrievePJColumnByName(colname);
+            if (procol.Count > 0)
+            {
+                ProjectColumn.UpdatePJColDefaultVal(colname, procol[0].ColumnDefaultVal + ";" + coldefval);
+            }
+
+            var ret = new JsonResult();
+            ret.Data = new { success = true };
+            return ret;
+        }
+
+        public JsonResult RemoveDefColumnValue()
+        {
+            UserAuth();
+            var colname = Request.Form["col_name"].Trim();
+            var coldefval = Request.Form["col_val"].Trim();
+
+            var procol = ProjectColumn.RetrievePJColumnByName(colname);
+            if (procol.Count > 0)
+            {
+                ProjectColumn.UpdatePJColDefaultVal(colname, procol[0].ColumnDefaultVal.Replace((";" + coldefval),"").Replace(coldefval, ""));
+            }
+
+            var ret = new JsonResult();
+            ret.Data = new { success = true };
+            return ret;
+        }
+
+        public JsonResult UpdateDateDefColumnValue()
+        {
+            UserAuth();
+            var colname = Request.Form["col_name"].Trim();
+            var coldefval = Request.Form["col_value"].Trim();
+
+            var procol = ProjectColumn.RetrievePJColumnByName(colname);
+            if (procol.Count > 0)
+            {
+                ProjectColumn.UpdatePJColDefaultVal(colname,coldefval);
+            }
+
+            var ret = new JsonResult();
+            ret.Data = new { success = true };
+            return ret;
+        }
+
+        public JsonResult DisplayPlatformCol()
+        {
+            UserAuth();
+            var colname = Request.Form["column_name"].Trim();
+            var display = Request.Form["dis_play"].Trim();
+
+            var procol = ProjectColumn.RetrievePJColumnByName(colname);
+            if (procol.Count > 0)
+            {
+                if (string.Compare(display, "0") == 0)
+                {
+                    ProjectColumn.UpdatePJColRemoved(colname,true);
+                    new ProjectLog(ViewBag.compName, "ALLPJ", "ALLCOL", "Remove Column: " + colname + " at whole platform");
+                }
+                else
+                {
+                    ProjectColumn.UpdatePJColRemoved(colname,false);
+                    new ProjectLog(ViewBag.compName, "ALLPJ", "ALLCOL", "Show Column: " + colname + " at whole platform");
+                }
+            }
+
+            var ret = new JsonResult();
+            ret.Data = new { success = true };
+            return ret;
+        }
+
         public ActionResult HeartBeat()
         {
             UserAuth();

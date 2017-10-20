@@ -107,8 +107,16 @@
                             <div class="project-detail-content">
                                 <span class="detail-show">@item.colvalue</span>
                                 <div class="detail-edit edit-bool-def hidden">
-                                    <span class="bool-def-left bool-active">True</span>
-                                    <span class="bool-def-right bool-inactive">False</span>
+                                    @if (string.Compare(item.colvalue, "true", true) == 0)
+                                    {
+                                        <span class="bool-def-left bool-active">True</span>
+                                        <span class="bool-def-right bool-inactive">False</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="bool-def-left bool-inactive">True</span>
+                                        <span class="bool-def-right bool-active">False</span>
+                                    }
                                 </div>
                             </div>
                             <div class="project-detail-line"></div>

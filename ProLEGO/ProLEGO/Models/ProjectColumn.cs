@@ -23,6 +23,8 @@ namespace ProLEGO.Models
             ColumnType = "";
             ColumnDefaultVal = "";
             ColumnCreateDate = DateTime.Parse("1982-05-06 10:00:00");
+            Removed = "";
+            AdditionDefault = new List<string>();
         }
 
         public string ColumnID { set; get; }
@@ -30,15 +32,33 @@ namespace ProLEGO.Models
         public string ColumnType { set; get; }
         public string ColumnDefaultVal { set; get; }
         public DateTime ColumnCreateDate { set; get; }
+        public string Removed { set; get; }
+        public List<string> AdditionDefault { set; get; }
 
         public string ColumnDefaultValList {
             get {
                 if (!string.IsNullOrEmpty(ColumnDefaultVal))
                 {
                     var splitstrs = ColumnDefaultVal.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (AdditionDefault.Count > 0)
+                    {
+                        var combinelist = new List<string>();
+                        combinelist.AddRange(splitstrs);
+                        combinelist.AddRange(AdditionDefault);
+                        return JsonConvert.SerializeObject(combinelist.ToArray());
+                    }
+
                     return JsonConvert.SerializeObject(splitstrs);
                 }
-                return string.Empty;
+                else
+                {
+                    if (AdditionDefault.Count > 0)
+                    {
+                        return JsonConvert.SerializeObject(AdditionDefault.ToArray());
+                    }
+                    return JsonConvert.SerializeObject(new string[] { });
+                }
+
                 //var ret = new List<string>();
                 //if(!string.IsNullOrEmpty(ColumnDefaultVal))
                 //{
@@ -87,7 +107,32 @@ namespace ProLEGO.Models
         public static List<ProjectColumn> RetrieveAllPJColumn()
         {
             var ret = new List<ProjectColumn>();
-            var sql = "select ColumnID,ColumnName,ColumnType,ColumnDefaultVal from ProjectColumn order by ColumnCreateDate ASC";
+            var sql = "select ColumnID,ColumnName,ColumnType,ColumnDefaultVal,Removed from ProjectColumn order by ColumnCreateDate ASC";
+            var dbret = DBUtility.ExeLocalSqlWithRes(sql);
+            foreach (var line in dbret)
+            {
+                var tempvm = new ProjectColumn();
+                tempvm.ColumnID = Convert.ToString(line[0]);
+                tempvm.ColumnName = Convert.ToString(line[1]);
+                tempvm.ColumnType = Convert.ToString(line[2]);
+                tempvm.ColumnDefaultVal = Convert.ToString(line[3]);
+                tempvm.Removed = Convert.ToString(line[4]);
+                if (string.Compare(tempvm.ColumnType, PROJECTCOLUMNTYPE.ROLE, true) == 0)
+                {
+                    tempvm.AdditionDefault.Clear();
+                    tempvm.AdditionDefault.AddRange(RetrieveRoleAdditionalDefault());
+                }
+                ret.Add(tempvm);
+            }
+            return ret;
+        }
+
+        public static List<ProjectColumn> RetrievePJColumnByName(string ColumnName)
+        {
+            var ret = new List<ProjectColumn>();
+            var sql = "select ColumnID,ColumnName,ColumnType,ColumnDefaultVal from ProjectColumn where ColumnName = '<ColumnName>'";
+            sql = sql.Replace("<ColumnName>", ColumnName);
+
             var dbret = DBUtility.ExeLocalSqlWithRes(sql);
             foreach (var line in dbret)
             {
@@ -99,6 +144,21 @@ namespace ProLEGO.Models
                 ret.Add(tempvm);
             }
             return ret;
+        }
+
+        public static void UpdatePJColDefaultVal(string ColumnName, string ColumnDefaultVal)
+        {
+            var sql = "update ProjectColumn set ColumnDefaultVal = '<ColumnDefaultVal>' where ColumnName = '<ColumnName>'";
+            sql = sql.Replace("<ColumnName>", ColumnName).Replace("<ColumnDefaultVal>", ColumnDefaultVal);
+            DBUtility.ExeLocalSqlNoRes(sql);
+        }
+
+        //TRUE or FALSE
+        public static void UpdatePJColRemoved(string ColumnName, bool Removed)
+        {
+            var sql = "update ProjectColumn set Removed = '<Removed>' where ColumnName = '<ColumnName>'";
+            sql = sql.Replace("<ColumnName>", ColumnName).Replace("<Removed>", Removed?"TRUE":"FALSE");
+            DBUtility.ExeLocalSqlNoRes(sql);
         }
 
         public static Dictionary<string, bool> RetrieveAllPJColumnDict()
@@ -127,6 +187,20 @@ namespace ProLEGO.Models
                 tempvm.ColumnDefaultVal = Convert.ToString(line[3]);
                 ret.Add(tempvm);
             }
+            return ret;
+        }
+
+        public static List<string> RetrieveRoleAdditionalDefault()
+        {
+            var sql = "select UserName from UserTable";
+            var dbret = DBUtility.ExeTraceSqlWithRes(sql);
+            var ret = new List<string>();
+
+            foreach (var line in dbret)
+            {
+                ret.Add(Convert.ToString(line[0]).Replace("@FINISAR.COM",""));
+            }
+            ret.Sort();
             return ret;
         }
 
