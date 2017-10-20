@@ -42,12 +42,10 @@
     }
 
     var pro_list = function(){
-        $('body').on('click', '.pro-detail-edit', function(){
-            $(this).parent('.back').children('.pro-detail')
-                .children('.dot-img').removeClass('dot-img').addClass('dot-img-del');
-            $(this).parent('.back').children('.pro-detail-end')
-                .removeClass('pro-detail-end').addClass('pro-detail').children('.dot-img-end')
-                    .removeClass('dot-img-end').addClass('dot-img-del');
+        $('body').on('click', '.pro-detail-edit', function () {
+            $(this).parent('.back').children('.pro-detail').children('.dot-img').removeClass('dot-img').addClass('dot-img-del');
+            $(this).parent('.back').children('.pro-detail-end').children('.dot-img-end').removeClass('dot-img-end').addClass('dot-img-del');
+            $(this).parent('.back').children('.pro-detail-end').removeClass('pro-detail-end').addClass('pro-detail');
             $(this).parent('.back').children('.pro-detail-add').removeClass('hidden');
             $(this).addClass('hidden');
             $(this).parent('.back').children('.pro-mes').children('.detail-content').addClass('hidden');
@@ -74,7 +72,6 @@
         $('.date').datepicker().on('changeDate', function (ev) {
             $('.date').datepicker('hide');
         });
-
         //$("#member_name").autoComplete({
         //    minChars: 0,
         //    source: function(term, suggest){
