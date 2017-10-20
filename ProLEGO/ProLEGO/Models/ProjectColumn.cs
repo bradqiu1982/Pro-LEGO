@@ -127,6 +127,34 @@ namespace ProLEGO.Models
             return ret;
         }
 
+        public static List<ProjectColumn> RetrieveAllPJColumnWithoutRemoved()
+        {
+            var ret = new List<ProjectColumn>();
+            var sql = "select ColumnID,ColumnName,ColumnType,ColumnDefaultVal,Removed from ProjectColumn order by ColumnCreateDate ASC";
+            var dbret = DBUtility.ExeLocalSqlWithRes(sql);
+            foreach (var line in dbret)
+            {
+                var tempvm = new ProjectColumn();
+                tempvm.ColumnID = Convert.ToString(line[0]);
+                tempvm.ColumnName = Convert.ToString(line[1]);
+                tempvm.ColumnType = Convert.ToString(line[2]);
+                tempvm.ColumnDefaultVal = Convert.ToString(line[3]);
+                tempvm.Removed = Convert.ToString(line[4]);
+                if (string.Compare(tempvm.Removed, "true", true) == 0)
+                {
+                    continue;
+                }
+
+                if (string.Compare(tempvm.ColumnType, PROJECTCOLUMNTYPE.ROLE, true) == 0)
+                {
+                    tempvm.AdditionDefault.Clear();
+                    tempvm.AdditionDefault.AddRange(RetrieveRoleAdditionalDefault());
+                }
+                ret.Add(tempvm);
+            }
+            return ret;
+        }
+
         public static List<ProjectColumn> RetrievePJColumnByName(string ColumnName)
         {
             var ret = new List<ProjectColumn>();

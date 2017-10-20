@@ -211,7 +211,7 @@ namespace ProLEGO.Models
             var pjcollist = defcols;
             if (pjcollist == null)
             {
-                pjcollist = ProjectColumn.RetrieveAllPJColumn();
+                pjcollist = ProjectColumn.RetrieveAllPJColumnWithoutRemoved();
             }
 
             var colvaluedict = new Dictionary<string, string>();
@@ -245,7 +245,7 @@ namespace ProLEGO.Models
 
         public static List<ProjectVM> RetrieveAllProjectData(string searchkey, string machinename)
         {
-            var allpjcol = ProjectColumn.RetrieveAllPJColumn();
+            var allpjcol = ProjectColumn.RetrieveAllPJColumnWithoutRemoved();
             var allpjname = RetrieveAllProjectName(searchkey);
             
             var ret = new List<ProjectVM>();
