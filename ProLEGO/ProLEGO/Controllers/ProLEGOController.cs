@@ -5,7 +5,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProLEGO.Models;
-
+using System.IO;
 
 namespace ProLEGO.Controllers
 {
@@ -128,6 +128,66 @@ namespace ProLEGO.Controllers
             }
 
             return View(showvm);
+        }
+
+        private List<string> PrepeareAllPJData()
+        {
+            UserAuth();
+
+            List<ProjectVM> allpro = ProjectVM.RetrieveAllProjectData(null, ViewBag.compName);
+            if (allpro.Count > 0)
+            {
+                var ret = new List<string>();
+                var line = "\"" + "Project Name";
+                foreach (var col in allpro[0].PJColList)
+                {
+                    line = line + "\"," + "\"" + col.ColumnName.Replace("\"", "");
+                }
+                line = line + "\"";
+                ret.Add(line);
+
+                foreach (var pj in allpro)
+                {
+                    line = "\"" + pj.ProjectName.Replace("\"", "");
+
+                    foreach (var kv in pj.ColNameValue)
+                    {
+                        line = line + "\"," + "\"" + kv.colvalue.Replace("\"", "");
+                    }
+                    line = line + "\"";
+                    ret.Add(line);
+                }
+
+                return ret;
+            }
+
+            return new List<string>();
+        }
+
+        public ActionResult DownloadAllProject()
+        {
+            UserAuth();
+
+            string datestring = DateTime.Now.ToString("yyyyMMdd");
+            string imgdir = Server.MapPath("~/userfiles") + "\\docs\\" + datestring + "\\";
+            if (!Directory.Exists(imgdir))
+            {
+                Directory.CreateDirectory(imgdir);
+            }
+
+            var fn = "ALL_Project_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
+            var filename = imgdir + fn;
+
+            var lines = PrepeareAllPJData();
+
+            var wholefile = "";
+            foreach (var l in lines)
+            {
+                wholefile = wholefile + l + "\r\n";
+            }
+            System.IO.File.WriteAllText(filename, wholefile);
+
+            return File(filename, "application/vnd.ms-excel", fn);
         }
 
         public JsonResult CreateProject()
