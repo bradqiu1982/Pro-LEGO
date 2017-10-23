@@ -207,7 +207,11 @@ namespace ProLEGO.Models
             csql = csql.Replace("<UpdateTime>", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")).Replace("<ProjectName>", ProjectName);
             DBUtility.ExeLocalSqlNoRes(csql);
 
-            new ProjectLog(machine, ProjectName, ColumnName, "Add value: " + Value);
+            if (!string.IsNullOrEmpty(Value))
+            {
+                new ProjectLog(machine, ProjectName, ColumnName, "update value: " + Value);
+            }
+
         }
 
 
