@@ -297,6 +297,7 @@
     <Content Include="Views\ProLEGO\AllProjects.cshtml" />
     <Content Include="Views\ProLEGO\ProjectDetail.cshtml" />
     <Content Include="Views\ProLEGO\ManageProColumn.cshtml" />
+    <Content Include="Views\ProLEGO\ProjectLog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

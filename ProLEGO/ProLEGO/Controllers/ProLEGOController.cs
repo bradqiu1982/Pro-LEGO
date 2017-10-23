@@ -299,6 +299,11 @@ namespace ProLEGO.Controllers
 
         //}
 
+        public ActionResult ProjectLog()
+        {
+            return View();
+        }
+
         public ActionResult HeartBeat()
         {
             UserAuth();
