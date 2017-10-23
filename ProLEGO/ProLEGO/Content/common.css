@@ -65,8 +65,8 @@
 .logo{
     position: absolute;
     left: 5%;
-    margin-top: 2%;
-    height: 100%;
+    margin: 3% auto 2% auto;
+    height: 70%;
     width: 550px;
     background-image: url(./images/logo.png);
     background-repeat: no-repeat;
@@ -632,7 +632,6 @@
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;    
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./images/home.png',sizingMethod='scale');
     opacity: 0.5;
     -moz-opacity: 0.5;
     filter: alpha(opacity=50);
@@ -791,6 +790,7 @@
     background-size: contain;
     -webkit-background-size: contain;
     -moz-background-size: contain;
+    cursor: pointer;
     z-index: 1002;
 }
 .project-title-circle{
@@ -956,4 +956,14 @@
     vertical-align: middle;
     cursor: pointer;
     z-index: 1002;
+}
+
+.pro-log{
+    cursor: pointer;
+}
+
+.pro_log_header{
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom: 1%;
 }
