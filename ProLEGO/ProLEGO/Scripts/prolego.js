@@ -20,7 +20,7 @@
             $('#keywords').removeClass('hidden');
             setTimeout(
                 "if($('#keywords').val == '') $('#keywords').addClass('hidden')"
-            , 5000);
+            , 3000);
         });
 
         $('body').on('mouseleave', '.search', function () {
