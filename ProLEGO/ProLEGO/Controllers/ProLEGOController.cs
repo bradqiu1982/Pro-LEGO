@@ -30,7 +30,9 @@ namespace ProLEGO.Controllers
             var compName = DetermineCompName(IP);
             ViewBag.compName = compName;
 
-            var adminmachine = CfgUtility.GetSysConfig(this)["ADMINMACHINE"];
+            var glbcfg = CfgUtility.GetSysConfig(this);
+
+            var adminmachine = glbcfg["ADMINMACHINE"];
             if (!string.IsNullOrEmpty(compName) && adminmachine.ToUpper().Contains(compName.ToUpper()))
             {
                 ViewBag.Admin = true;
@@ -39,7 +41,12 @@ namespace ProLEGO.Controllers
             {
                 ViewBag.Admin = false;
             }
-			
+
+            if (glbcfg.ContainsKey(ViewBag.compName))
+            {
+                ViewBag.compName = glbcfg[ViewBag.compName].Trim().ToUpper();
+            }
+
 			ViewBag.isie8 = false;
             ViewBag.isie9 = false;
             ViewBag.showie8modal = false;
