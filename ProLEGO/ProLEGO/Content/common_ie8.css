@@ -152,13 +152,13 @@
     position: fixed;
     right: 0;
     top: 100px;
-    height: 150px;
+    height: 120px;
     z-index: 1003;
 }
 
 .toolbar-img{
-    height: 30px;
-    width: 30px;
+    height: 20px;
+    width: 20px;
     margin: 5px;
 }
 .search{
@@ -167,14 +167,14 @@
     right: 0;
     top: 100px;
     width: 300px;
-    height: 40px;
+    height:30px;
 }
 
 .search-img{
     position: fixed;
     right: 0;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     background-color: #5C2576; 
     opacity: 0.8;
     -moz-opacity: 0.8;
@@ -185,8 +185,8 @@
 
 .search-keywords{
     right: 40px;
-    width: 260px;
-    height: 40px;
+    width: 270px;
+    height: 30px;
     padding-left: 5px;
     padding-right: 5px;
     border: #5C2576 1px solid;
@@ -198,9 +198,9 @@
 .project-bom{
     position: fixed;
     right: 0;
-    top: 184px;
-    width: 40px;
-    height: 40px;
+    top: 164px;
+    width: 30px;
+    height: 30px;
     margin-top: 2px;
     background-color: #93928E; 
     opacity: 0.8;
@@ -213,9 +213,9 @@
 .export-all{
     position: fixed;
     right: 0;
-    top: 142px;
-    width: 40px;
-    height: 40px;
+    top: 132px;
+    width: 30px;
+    height: 30px;
     margin-top: 2px;
     background-color: #58AAA8; 
     opacity: 0.8;
