@@ -39,5 +39,32 @@ namespace ProLEGO.Models
             DBUtility.ExeLocalSqlNoRes(sql);
 
         }
+
+        public static List<ProjectLog> RetrieveAllProject(string pjname)
+        {
+            var ret = new List<ProjectLog>();
+
+            var sql = "select Machine,Project,PJColumn,Event,CreateTime from ProjectLog where Project = '<Project>' order by CreateTime DESC";
+            sql = sql.Replace("<Project>", pjname);
+            var dbret = DBUtility.ExeLocalSqlWithRes(sql);
+            foreach (var line in dbret)
+            {
+                try
+                {
+                    var tempvm = new ProjectLog();
+                    tempvm.Machine = Convert.ToString(line[0]);
+                    tempvm.Project = Convert.ToString(line[1]);
+                    tempvm.PJColumn = Convert.ToString(line[2]);
+                    tempvm.Event = Convert.ToString(line[3]);
+                    tempvm.CreateTime = Convert.ToDateTime(line[4]);
+                    ret.Add(tempvm);
+                }
+                catch (Exception ex) { }
+            }
+
+            return ret;
+        }
+
+
     }
 }
