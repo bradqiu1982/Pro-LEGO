@@ -110,7 +110,7 @@ namespace ProLEGO.Models
             }
 
             var csql = "update ProjectVM set UpdateTime = N'<UpdateTime>' where ProjectName = N'<ProjectName>'";
-            csql = csql.Replace("<UpdateTime>", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")).Replace("<ProjectName>", ProjectName);
+            csql = csql.Replace("<UpdateTime>", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")).Replace("<ProjectName>", ProjectName);
             DBUtility.ExeLocalSqlNoRes(csql);
 
             new ProjectLog(machine, ProjectName, "ALLCOL", "Add project: " + ProjectName);
@@ -153,7 +153,7 @@ namespace ProLEGO.Models
                 var csql = "select top 1 UpdateTime from ProjectVM where ProjectName = N'<ProjectName>'";
                 csql = csql.Replace("<ProjectName>", pj);
                 var cdbret = DBUtility.ExeLocalSqlWithRes(csql);
-                var temppair = new KeyValuePair<string, string>(pj,Convert.ToDateTime(cdbret[0][0]).ToString("yyyy-MM-dd hh:mm:ss"));
+                var temppair = new KeyValuePair<string, string>(pj,Convert.ToDateTime(cdbret[0][0]).ToString("yyyy-MM-dd HH:mm:ss"));
                 ret.Add(temppair);
             }
 
@@ -204,7 +204,7 @@ namespace ProLEGO.Models
             DBUtility.ExeLocalSqlNoRes(sql);
             
             var csql = "update ProjectVM set UpdateTime = N'<UpdateTime>' where ProjectName = N'<ProjectName>'";
-            csql = csql.Replace("<UpdateTime>", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")).Replace("<ProjectName>", ProjectName);
+            csql = csql.Replace("<UpdateTime>", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")).Replace("<ProjectName>", ProjectName);
             DBUtility.ExeLocalSqlNoRes(csql);
 
             new ProjectLog(machine, ProjectName, ColumnName, "Add value: " + Value);

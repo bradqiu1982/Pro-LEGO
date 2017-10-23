@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
 
     @if (ViewBag.isie8 != null && ViewBag.isie8)
     {
@@ -20,18 +20,11 @@
     }
     <link href="~/Scripts/jquery-autocomplete/jquery.auto-complete.css" rel="stylesheet" type="text/css" />
     <link href="~/Scripts/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
-
     <script src="~/Scripts/jquery-autocomplete/jquery.auto-complete.min.js" type="text/javascript"></script>
     <script src="~/Scripts/bootstrap-datepicker/bootstrap-datepicker.js" type="text/javascript"></script>
 </head>
 
 <body>
     @RenderBody()
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    <script src="~/Scripts/jquery-autocomplete/jquery.auto-complete.min.js" type="text/javascript"></script>
-    <script src="~/Scripts/bootstrap-datepicker/bootstrap-datepicker.js" type="text/javascript"></script>
-    @RenderSection("scripts", required: false)
 </body>
 </html>

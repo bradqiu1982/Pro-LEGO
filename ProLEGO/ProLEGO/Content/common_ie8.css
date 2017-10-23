@@ -1,4 +1,4 @@
-﻿bodyhtml,body{
+﻿html,body{
     height: auto;
     width: 100%;
     padding: 0;
@@ -65,8 +65,8 @@
 .logo{
     position: absolute;
     left: 5%;
-    margin-top: 2%;
-    height: 100%;
+    margin: 3% auto 2% auto;
+    height: 70%;
     width: 550px;
     background-image: url(./images/ie8/logo.png);
     background-repeat: no-repeat;
@@ -623,7 +623,7 @@
     bottom: 0;
     background-color: #fff;
     background-image: url(./images/ie8/pro_detail_bg.png);
-    background-repeat: repeat;
+    background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     -webkit-background-size: cover;
@@ -961,4 +961,14 @@
 
 .pro-detail-name{
     height: 90px;
+}
+
+.pro-log{
+    cursor: pointer;
+}
+
+.pro_log_header{
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom: 1%;
 }

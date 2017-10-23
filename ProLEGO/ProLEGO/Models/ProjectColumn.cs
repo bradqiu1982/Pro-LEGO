@@ -91,7 +91,7 @@ namespace ProLEGO.Models
 
             var newkey = ProjectVM.GetUniqKey();
             var sql = "insert into ProjectColumn(ColumnID,ColumnName,ColumnType,ColumnDefaultVal,ColumnCreateDate) values(N'<ColumnID>',N'<ColumnName>',N'<ColumnType>',N'<ColumnDefaultVal>',N'<ColumnCreateDate>')";
-            sql = sql.Replace("<ColumnID>", newkey).Replace("<ColumnCreateDate>", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"))
+            sql = sql.Replace("<ColumnID>", newkey).Replace("<ColumnCreateDate>", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
                 .Replace("<ColumnName>", ColumnName).Replace("<ColumnType>", ColumnType).Replace("<ColumnDefaultVal>", ColumnDefaultVal);
             var ret = DBUtility.ExeLocalSqlNoRes(sql);
             if (ret)

@@ -72,6 +72,10 @@
         $('.date').datepicker().on('changeDate', function (ev) {
             $('.date').datepicker('hide');
         });
+        $('body').on('click', '.pro-log', function () {
+            var project_key = $(this).prev('span').html();
+            window.location.href = '/ProLEGO/DisplayProLog?projectkey='+encodeURIComponent(project_key);
+        });
         //$("#member_name").autoComplete({
         //    minChars: 0,
         //    source: function(term, suggest){
@@ -207,7 +211,9 @@
                 }
             });
         });
+    }
 
+    var logo_redirect = function () {
         $('body').on('click', '.logo', function () {
             window.location.href = '/ProLEGO/AllProjects';
         });
@@ -224,6 +230,10 @@
         },
         pro_detail: function(){
             pro_detail();
+            logo_redirect();
+        },
+        pro_log: function () {
+            logo_redirect();
         }
     };
 }();

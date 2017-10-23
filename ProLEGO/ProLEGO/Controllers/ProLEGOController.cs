@@ -299,9 +299,11 @@ namespace ProLEGO.Controllers
 
         //}
 
-        public ActionResult ProjectLog()
+        public ActionResult DisplayProLog(string projectkey)
         {
-            return View();
+            UserAuth();
+            ViewBag.logList = ProjectLog.RetrieveAllProject(projectkey);
+            return View("ProjectLog");
         }
 
         public ActionResult HeartBeat()
