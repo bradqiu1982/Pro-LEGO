@@ -175,7 +175,7 @@ namespace ProLEGO.Controllers
                 Directory.CreateDirectory(imgdir);
             }
 
-            var fn = "ALL_Project_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
+            var fn = "ALL_Project_"+ ViewBag.compName + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
             var filename = imgdir + fn;
 
             var lines = PrepeareAllPJData();
