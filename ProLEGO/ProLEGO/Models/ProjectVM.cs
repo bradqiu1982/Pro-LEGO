@@ -134,8 +134,15 @@ namespace ProLEGO.Models
                 sql = "select distinct ProjectName from ProjectVM order by ProjectName";
             }
 
-
             var dbret = DBUtility.ExeLocalSqlWithRes(sql);
+
+            if (!string.IsNullOrEmpty(searchkey) && dbret.Count == 0)
+            {
+                sql = "select distinct ProjectName from ProjectVM where ColumnValue like '%<searchkey>%' order by ProjectName";
+                sql = sql.Replace("<searchkey>", searchkey);
+                dbret = DBUtility.ExeLocalSqlWithRes(sql);
+            }
+
             foreach (var line in dbret)
             {
                 pjlist.Add(Convert.ToString(line[0]));

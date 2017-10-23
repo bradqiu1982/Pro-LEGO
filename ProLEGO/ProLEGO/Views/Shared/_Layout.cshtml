@@ -9,9 +9,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @{
-        ViewBag.isie8 = true;
-    }
+
     @if (ViewBag.isie8 != null && ViewBag.isie8)
     {
         <link href="~/Content/common_ie8.css" rel="stylesheet" type="text/css" />
