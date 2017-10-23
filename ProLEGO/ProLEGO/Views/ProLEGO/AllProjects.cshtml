@@ -131,11 +131,23 @@
                                 }
                                 else
                                 {
-                                    <div class="@(detailendlist[endidx])">
-                                        <div class="@(detailimglist[endidx])"></div>
-                                        <div class="detail-title">@pvm.PJNonMemList[nidx].colname</div>
-                                        <div class="detail-content">@pvm.PJNonMemList[nidx].colvalue</div>
-                                    </div>
+                                    if (pvm.PJNonMemList[nidx].colvalue.ToUpper().Contains("HTTP://")
+                                        || pvm.PJNonMemList[nidx].colvalue.ToUpper().Contains("HTTPS://"))
+                                    {
+                                        <div class="@(detailendlist[endidx])">
+                                            <div class="@(detailimglist[endidx])"></div>
+                                            <div class="detail-title">@pvm.PJNonMemList[nidx].colname</div>
+                                            <div class="detail-content"><a href="@pvm.PJNonMemList[nidx].colvalue" target="_blank">@pvm.PJNonMemList[nidx].colname</a></div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="@(detailendlist[endidx])">
+                                            <div class="@(detailimglist[endidx])"></div>
+                                            <div class="detail-title">@pvm.PJNonMemList[nidx].colname</div>
+                                            <div class="detail-content">@pvm.PJNonMemList[nidx].colvalue</div>
+                                        </div>
+                                    }
                                 }
                             }
                             <div class="pro-detail-add hidden">
