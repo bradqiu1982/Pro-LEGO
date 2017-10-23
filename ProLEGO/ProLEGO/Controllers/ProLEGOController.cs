@@ -39,8 +39,8 @@ namespace ProLEGO.Controllers
             {
                 ViewBag.Admin = false;
             }
-
-            ViewBag.isie8 = false;
+			
+			ViewBag.isie8 = false;
             ViewBag.isie9 = false;
             ViewBag.showie8modal = false;
 
