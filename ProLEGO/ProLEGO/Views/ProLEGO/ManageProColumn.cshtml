@@ -135,18 +135,6 @@
                 {
                     <script type="text/javascript">
                         autoCompleteFill('@item.ColumnName.Replace(" ", "_")', @Html.Raw(item.ColumnDefaultValList));
-
-                    @*$('#@item.ColumnName.Replace(" ", "_")').autoComplete({
-                        minChars: 0,
-                        source: function (term, suggest) {
-                            term = term.toLowerCase();
-                            var choices =  @Html.Raw(item.ColumnDefaultValList);
-                            var suggestions = [];
-                            for (i = 0; i < choices.length; i++)
-                                if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                            suggest(suggestions);
-                        }
-                    });*@
                     </script>
                 }
             }

@@ -191,7 +191,17 @@
                         </div>
                     </div>
                     <script type="text/javascript">
-                        autoCompleteFill('@item.colname.Replace(" ", "_")', @Html.Raw(item.defval));
+                        $('#@item.colname.Replace(" ", "_")').autoComplete({
+                            minChars: 0,
+                            source: function (term, suggest) {
+                                term = term.toLowerCase();
+                                var choices = @Html.Raw(item.defval);
+                                var suggestions = [];
+                                for (i = 0; i < choices.length; i++)
+                                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                                suggest(suggestions);
+                            }
+                        });
                     </script>
                 }
             }
