@@ -235,6 +235,17 @@ namespace ProLEGO.Controllers
         {
             UserAuth();
             var projectkey = Request.Form["project_key"];
+
+            ProjectVM existdata = ProjectVM.RetriveProjectData(projectkey, null, ViewBag.compName);
+            var colvaluedict = new Dictionary<string, string>();
+            foreach (var item in existdata.ColNameValue)
+            {
+                if (!colvaluedict.ContainsKey(item.colname))
+                {
+                    colvaluedict.Add(item.colname, item.colvalue);
+                }
+            }
+
             var data = (List<List<string>>)Newtonsoft.Json.JsonConvert.DeserializeObject(Request.Form["data"],(new List<List<string>>()).GetType());
             foreach (var line in data)
             {
@@ -250,7 +261,11 @@ namespace ProLEGO.Controllers
                     MachineColumn.RemoveFobiddenColumn(ViewBag.compName, line[2]);
                 }
 
-                ProjectVM.UpdateProjectColumnValue(ViewBag.compName, projectkey, line[2], line[3]);
+                if (colvaluedict.ContainsKey(line[2])
+                    && string.Compare(colvaluedict[line[2]], line[3]) != 0)
+                {
+                    ProjectVM.UpdateProjectColumnValue(ViewBag.compName, projectkey, line[2], line[3]);
+                }
             }
 
             var ret = new JsonResult();
