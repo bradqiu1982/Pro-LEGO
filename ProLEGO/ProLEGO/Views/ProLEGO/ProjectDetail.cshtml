@@ -7,6 +7,50 @@
 
 <script src="~/Scripts/prolego.js" type="text/javascript"></script>
 
+<script>
+    $(function () {
+        ProLego.pro_detail();
+    });
+    function autoCompleteFill(id, values){
+
+        $('#'+id).autoComplete({
+            minChars: 0,
+            source: function (term, suggest) {
+                term = term.toLowerCase();
+                var choices = values;
+                var suggestions = [];
+                for (i = 0; i < choices.length; i++)
+                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                suggest(suggestions);
+            },
+            onSelect: function(event, term, item)	{
+                addItem(id, term);
+            }
+        });
+    }
+    function addItem(id, value){
+        $('#'+id).val('');
+        var $project_label_content = $('#'+id).parent('.detail-edit').parent('.project-detail-content');
+        var flg = false;
+        $project_label_content.find('.project-label-member').each(function () {
+            if(value == $(this).children('span').eq(1).html()){
+                flg = true;
+            }
+        });
+        if(flg){
+            return false;
+        }
+        $project_label_content.parent('.project-detail-mid').parent('.project-detail')
+            .css('height', ($project_label_content.find('.project-label-member').length + 4) * 20 + 'px');
+        var appendStr = '<div class="project-label-member">'+
+                '<span class="detail-edit">'+
+                    '<img src="/Content/images/dot_del.png" class="edit-dot-del">' +
+                '</span>'+
+                '<span>'+value+'</span>'+
+            '</div>';
+        $(appendStr).insertBefore($('#'+id).parent('.detail-edit'));
+    }
+</script>
 <div id="pro-detail-body"></div>
 <div id="pro-detail-header"></div>
 <div class="container detail-header">
@@ -39,7 +83,6 @@
                     </div>
                 </div>
             </div>
-
 
             @for (var nidx = 0; nidx < Model.PJMemList.Count; nidx++)
             {
@@ -76,21 +119,9 @@
                     </div>
                 </div>
                 <script type="text/javascript">
-                    $('#@item.colname.Replace(" ", "_")').autoComplete({
-                        minChars: 0,
-                        source: function (term, suggest) {
-                            term = term.toLowerCase();
-                            var choices =  @Html.Raw(item.defval);
-                            var suggestions = [];
-                            for (i = 0; i < choices.length; i++)
-                                if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                            suggest(suggestions);
-                        }
-                    });
+                    autoCompleteFill('@item.colname.Replace(" ", "_")', @Html.Raw(item.defval));
                 </script>
-                
             }
-
             @for (var nidx = 0; nidx < Model.PJNonMemList.Count; nidx++)
             {
                 var item = Model.PJNonMemList[nidx];
@@ -160,17 +191,7 @@
                         </div>
                     </div>
                     <script type="text/javascript">
-                        $('#@item.colname.Replace(" ", "_")').autoComplete({
-                            minChars: 0,
-                            source: function (term, suggest) {
-                                term = term.toLowerCase();
-                                var choices = @Html.Raw(item.defval);
-                                var suggestions = [];
-                                for (i = 0; i < choices.length; i++)
-                                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
-                                suggest(suggestions);
-                            }
-                        });
+                        autoCompleteFill('@item.colname.Replace(" ", "_")', @Html.Raw(item.defval));
                     </script>
                 }
             }
@@ -186,10 +207,4 @@
         </div>
     </div>
 }
-
-<script>
-    $(function () {
-        ProLego.pro_detail();
-    })
-</script>
 
