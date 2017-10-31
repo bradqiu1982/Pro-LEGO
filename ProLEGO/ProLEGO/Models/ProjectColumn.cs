@@ -83,6 +83,7 @@ namespace ProLEGO.Models
             return ret;
         }
 
+        //change to 24 hour format
         public bool AddPJColumn(string machine)
         {
             var existcols = ExistPJColumn();

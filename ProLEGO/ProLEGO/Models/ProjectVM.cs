@@ -193,6 +193,7 @@ namespace ProLEGO.Models
             return false;
         }
 
+        //change to 24 hour format
         public static void UpdateProjectColumnValue(string machine,string ProjectName, string ColumnName, string Value)
         {
             var coldict = ProjectColumn.RetrieveAllPJColumnDict();
