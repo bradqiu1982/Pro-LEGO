@@ -78,7 +78,7 @@ namespace ProLEGO.Models
                 var ret = new List<ProjectShowData>();
                 foreach (var item in ColNameValue)
                 {
-                    if (string.Compare(item.coltype, PROJECTCOLUMNTYPE.ROLE, true) != 0)
+                    if (string.Compare(item.coltype, PROJECTCOLUMNTYPE.ROLE, true) != 0 && !item.notshowcol)
                     {
                         ret.Add(item);
                     }
