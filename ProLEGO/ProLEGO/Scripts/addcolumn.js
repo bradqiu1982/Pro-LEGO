@@ -174,18 +174,32 @@ var AddColumn = function () {
         });
 
         //add column name
-        $('body').on('click', '.add-column', function(){
-            var column_name = $(this).prev('input').prev('input').val();
-            $(this).prev('input').val(column_name);
+        //$('body').on('click', '.add-column', function(){
+        //    var column_name = $(this).prev('input').prev('input').val();
+        //    $(this).prev('input').val(column_name);
+        //    $(this).parent('div').addClass('hidden');
+        //    //default value
+        //    var $col_val = $(this).parent('.input-group').parent('.col-name').prev('.col-val');
+        //    $col_val.children('span').addClass('hidden');
+        //    $col_val.children('div').removeClass('hidden');
+        //    column_name = (column_name != '') ? column_name : $(this).parent('.input-group').prev('span').attr('data-def');
+        //    $(this).parent('.input-group').parent('.col-name').css('border-bottom','1px #939393 solid')
+        //            .children('span').removeClass('hidden').html(column_name);
+
+        //});
+
+
+        $('body').on('blur', '#col_name_info, #col_name_name, #col_name_bool, #col_name_date', function () {
+            var column_name = $(this).val();
+            $(this).next('input').val(column_name);
             $(this).parent('div').addClass('hidden');
             //default value
             var $col_val = $(this).parent('.input-group').parent('.col-name').prev('.col-val');
             $col_val.children('span').addClass('hidden');
             $col_val.children('div').removeClass('hidden');
             column_name = (column_name != '') ? column_name : $(this).parent('.input-group').prev('span').attr('data-def');
-            $(this).parent('.input-group').parent('.col-name').css('border-bottom','1px #939393 solid')
+            $(this).parent('.input-group').parent('.col-name').css('border-bottom', '1px #939393 solid')
                     .children('span').removeClass('hidden').html(column_name);
-
         });
 
         //add column
