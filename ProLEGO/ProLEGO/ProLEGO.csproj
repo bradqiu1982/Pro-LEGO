@@ -49,6 +49,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -173,6 +178,8 @@
     <Compile Include="Models\CfgUtility.cs" />
     <Compile Include="Models\DBUtility.cs" />
     <Compile Include="Models\EmailUtility.cs" />
+    <Compile Include="Models\ExcelReader.cs" />
+    <Compile Include="Models\ExternalDataCollector.cs" />
     <Compile Include="Models\MachineColumn.cs" />
     <Compile Include="Models\ProjectColumn.cs" />
     <Compile Include="Models\ProjectLog.cs" />
@@ -185,6 +192,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\common.css" />
     <Content Include="Content\common_ie8.css" />
+    <Content Include="Content\flip.css" />
     <Content Include="Content\images\add.png" />
     <Content Include="Content\images\add_column.png" />
     <Content Include="Content\images\blue_circle.png" />

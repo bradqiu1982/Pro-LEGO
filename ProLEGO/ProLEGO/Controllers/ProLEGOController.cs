@@ -391,52 +391,22 @@ namespace ProLEGO.Controllers
         public ActionResult HeartBeat()
         {
             UserAuth();
-            var pjcol = new ProjectColumn();
-            pjcol.ColumnName = "Project Code";
-            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
-            pjcol.ColumnDefaultVal = "S109;S107;S108";
-            pjcol.AddPJColumn(ViewBag.compName);
 
-            pjcol = new ProjectColumn();
-            pjcol.ColumnName = "NPI Status";
-            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
-            pjcol.ColumnDefaultVal = "PIP1;EVT;DVT;MVT;MP";
-            pjcol.AddPJColumn(ViewBag.compName);
+            ExternalDataCollector.LoadAllProjects(this);
 
-            pjcol = new ProjectColumn();
-            pjcol.ColumnName = "Start Date";
-            pjcol.ColumnType = PROJECTCOLUMNTYPE.DATE;
-            pjcol.AddPJColumn(ViewBag.compName);
-
-            pjcol = new ProjectColumn();
-            pjcol.ColumnName = "PM";
-            pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
-            pjcol.AddPJColumn(ViewBag.compName);
-
-            pjcol = new ProjectColumn();
-            pjcol.ColumnName = "PQE";
-            pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
-            pjcol.AddPJColumn(ViewBag.compName);
-
-            ProjectVM.CreateProject(ViewBag.compName, "QSFP 28G SR4");
-
-            ProjectVM.CreateProject(ViewBag.compName, "CFP4 SR4");
-
-            pjcol = new ProjectColumn();
-            pjcol.ColumnName = "CQE";
-            pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
-            pjcol.AddPJColumn(ViewBag.compName);
-
-            new System.Threading.ManualResetEvent(false).WaitOne(1500);
-            ProjectVM.CreateProject(ViewBag.compName, "SFP+");
-            new System.Threading.ManualResetEvent(false).WaitOne(1500);
-            ProjectVM.CreateProject(ViewBag.compName, "Coherent");
-            new System.Threading.ManualResetEvent(false).WaitOne(1500);
-            ProjectVM.CreateProject(ViewBag.compName, "QSFP PSM4");
-
-            //ProjectVM.UpdateProjectColumnValue(ViewBag.compName, "CFP4 SR4", "PM", "Meg.Wang");
-            //ProjectVM.UpdateProjectColumnValue(ViewBag.compName, "QSFP 28G SR4", "PM", "Steven.Qiu");
-            //ProjectVM.UpdateProjectColumnValue(ViewBag.compName, "QSFP 28G SR4", "Start Date", "2017-10-16 10:00:00");
+            if (ViewBag.Admin)
+            {
+                var sysdict = CfgUtility.GetSysConfig(this);
+                var pjlist = new List<string>();
+                foreach (var kv in sysdict)
+                {
+                    if (kv.Key.ToUpper().Contains("PJNAME"))
+                    {
+                        pjlist.Add(kv.Value);
+                    }
+                }
+                ViewBag.PJList = Newtonsoft.Json.JsonConvert.SerializeObject(pjlist.ToArray());
+            }
 
             return View("MainPage");
         }
