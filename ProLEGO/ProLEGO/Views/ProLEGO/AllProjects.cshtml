@@ -88,23 +88,22 @@
                 <div class="project-container flip-container slant @(oddeventlist[idx % 2]) @(slidecolor[idx])">
                     <div class="flipper">
 
-                        @if ( ! (ViewBag.isie9 != null && ViewBag.isie9))
+                        @*@if ( ! (ViewBag.isie9 != null && ViewBag.isie9))
                         {
                             <div class="front">
                                 <div class="pro-name-flip">@pvm.ProjectName</div>
                             </div>
-                        }
+                        }*@
                         <div class="back">
                             <div class="project-edit-content">
                             </div>
                             <input type="hidden" class="project-name-hide" value="@pvm.ProjectName" />
-                            @if (ViewBag.isie9 != null && ViewBag.isie9)
-                            {
-                                <div class="pro-detail pro-detail-name">
+                            @*@if (ViewBag.isie9 != null && ViewBag.isie9){*@
+                                <div class="pro-detail pro-detail-name" style="height:100px!important">
                                     <div class="dot-img"></div>
-                                    <div class="detail-title all-project-name">@pvm.ProjectName</div>
+                                    <div class="detail-title all-project-name" style="font-size:24px"><strong>@pvm.ProjectName</strong></div>
                                 </div>
-                            }
+                            @* } *@
                             <div class="pro-detail" style="height: @(memberheigh)px;">
                                 <div class="dot-img"></div>
                                 <div class="detail-title">Member</div>

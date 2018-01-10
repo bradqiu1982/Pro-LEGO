@@ -30,5 +30,28 @@ namespace ProLEGO.Models
             }//end foreach
             return ret;
         }
+
+        public static Dictionary<string, string> GetEmployDict(Controller ctrl)
+        {
+            var lines = System.IO.File.ReadAllLines(ctrl.Server.MapPath("~/Scripts/ProLEGOCfg.txt"));
+            var ret = new Dictionary<string, string>();
+            foreach (var line in lines)
+            {
+                if (line.Contains("##"))
+                {
+                    continue;
+                }
+
+                if (line.Contains(":::"))
+                {
+                    var kvpair = line.Split(new string[] { ":::" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (!ret.ContainsKey(kvpair[1].Trim().ToUpper()))
+                    {
+                        ret.Add(kvpair[1].Trim().ToUpper(), kvpair[0].Trim());
+                    }
+                }//end if
+            }//end foreach
+            return ret;
+        }
     }
 }
