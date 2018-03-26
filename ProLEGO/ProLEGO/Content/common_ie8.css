@@ -264,6 +264,7 @@
     display: inline-block;
     width: 84%;
     margin-left: 10%;
+    margin-top:-30px;
 }
 
 .project-right{
@@ -378,7 +379,7 @@
 .pro-detail{
     margin-left: 20px;
     width: 0;
-    height: 60px;
+    height: 40px;
     border-left: 2px #FFC000 solid;
     border-right: 2px #FFC000 solid;
 }
@@ -454,7 +455,7 @@
     position: absolute;
     right: 15px;
     color: #fff;
-    font-size: 20px;
+    font-size: 12px;
     margin-top: 10px;
 }
 

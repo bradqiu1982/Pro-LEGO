@@ -258,6 +258,7 @@
     <Content Include="Scripts\bootstrap-datepicker\bootstrap-datepicker3.min.css.map" />
     <Content Include="Scripts\bootstrap-datepicker\bootstrap-datepicker3.standalone.css.map" />
     <Content Include="Scripts\bootstrap-datepicker\bootstrap-datepicker3.standalone.min.css.map" />
+    <None Include="Properties\PublishProfiles\lego-pub.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\addcolumn.js" />
@@ -335,9 +336,11 @@
     <Content Include="Views\ProLEGO\ProjectDetail.cshtml" />
     <Content Include="Views\ProLEGO\ManageProColumn.cshtml" />
     <Content Include="Views\ProLEGO\ProjectLog.cshtml" />
+    <Content Include="Views\ProLEGO\HeartBeat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="userfiles\docs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

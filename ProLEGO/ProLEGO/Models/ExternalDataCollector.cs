@@ -209,13 +209,34 @@ namespace ProLEGO.Models
 
         public static void LoadAllProjects(Controller ctrl)
         {
+
             var pjcol = new ProjectColumn();
+            pjcol.ColumnName = "Project Code";
+            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+            pjcol = new ProjectColumn();
             pjcol.ColumnName = "PM";
             pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
             pjcol.AddPJColumn(ctrl.ViewBag.compName);
 
             pjcol = new ProjectColumn();
-            pjcol.ColumnName = "Project Code";
+            pjcol.ColumnName = "Owner";
+            pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
+            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+            pjcol = new ProjectColumn();
+            pjcol.ColumnName = "Planner";
+            pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
+            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+            pjcol = new ProjectColumn();
+            pjcol.ColumnName = "Type";
+            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+            pjcol = new ProjectColumn();
+            pjcol.ColumnName = "Series";
             pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
             pjcol.AddPJColumn(ctrl.ViewBag.compName);
 
@@ -225,14 +246,33 @@ namespace ProLEGO.Models
             pjcol.ColumnDefaultVal = "PIP1;EVT;DVT;MVT;MP";
             pjcol.AddPJColumn(ctrl.ViewBag.compName);
 
+            pjcol = new ProjectColumn();
+            pjcol.ColumnName = "RD Site";
+            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+            pjcol = new ProjectColumn();
+            pjcol.ColumnName = "Period";
+            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+            pjcol = new ProjectColumn();
+            pjcol.ColumnName = "Buget";
+            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+            pjcol = new ProjectColumn();
+            pjcol.ColumnName = "Planner Code";
+            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
 
             var syscfgdict = CfgUtility.GetSysConfig(ctrl);
-            var pmdict = CfgUtility.GetEmployDict(ctrl);
             var pjlistfolder = syscfgdict["PJLISTFILEFD"];
             var pjsrcfss = DirectoryEnumerateFiles(ctrl, pjlistfolder);
             foreach (var fl in pjsrcfss)
             {
-                if (fl.ToUpper().Contains("PROJECT LIST"))
+                if (fl.ToUpper().Contains("PROJECT LEGO DATA"))
                 {
                     try
                     {
@@ -247,42 +287,51 @@ namespace ProLEGO.Models
                         FileCopy(ctrl, fl, desfl, true);
                         if (FileExist(ctrl, desfl))
                         {
-                            var alldata = RetrieveDataFromExcel(ctrl,desfl, null);
+                            var alldata = RetrieveDataFromExcel(ctrl, desfl, "Project(NPI&RD)");
                             foreach (var line in alldata)
                             {
-                                if (!string.IsNullOrEmpty(line[15]) 
-                                    && pmdict.ContainsKey(line[15].Replace(" ",".").ToUpper()))
+                                var pjcode = line[1];
+                                if (pjcode.ToUpper().Contains("PROJECT CODE") 
+                                    || pjcode.ToUpper().Contains("NA"))
                                 {
-                                    var pj = line[2].Replace("/", "-").Trim();
-                                    var pjcode = line[4];
+                                    continue;
+                                }
 
-                                    var pjprogress = "MP";
-                                    if (!string.IsNullOrEmpty(line[7]))
-                                    {
-                                        pjprogress = "PIP1";
-                                    }
-                                    if (!string.IsNullOrEmpty(line[8]))
-                                    {
-                                        pjprogress = "EVT";
-                                    }
-                                    if (!string.IsNullOrEmpty(line[9]))
-                                    {
-                                        pjprogress = "DVT";
-                                    }
-                                    if (!string.IsNullOrEmpty(line[10]))
-                                    {
-                                        pjprogress = "MVT";
-                                    }
-                                    if (!string.IsNullOrEmpty(line[11]))
-                                    {
-                                        pjprogress = "MP";
-                                    }
-                                    var PM = line[15].Replace(" ", ".").ToUpper();
+                                var pjname = line[7];
+                                var pm = line[16];
 
-                                    ProjectVM.CreateProject(ctrl.ViewBag.compName, pj);
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pj, "PM", PM);
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pj, "Project Code", pjcode);
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pj, "NPI Status", pjprogress);
+                                if (!string.IsNullOrEmpty(pjcode)
+                                    && !string.IsNullOrEmpty(pjname)
+                                    && !string.IsNullOrEmpty(pm))
+                                {
+                                    var owner = line[15];
+                                    var type = line[17] + "/" + line[18] + "/" + line[20];
+                                    var rdsite = line[22];
+
+                                    var phase = line[27];
+                                    var period = line[28];
+                                    var buget = line[32];
+
+                                    var plannercode = line[62];
+                                    var series = line[59];
+                                    var planner = line[68];
+
+                                    ProjectVM.CreateProject(ctrl.ViewBag.compName, pjname);
+
+                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Project Code", pjcode);
+                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "PM", pm);
+                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Owner", owner);
+
+                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Planner", planner);
+                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Type", type);
+                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Series", series);
+
+                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "NPI Status", phase);
+                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "RD Site", rdsite);
+                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Period", period);
+
+                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Buget", buget);
+                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Planner Code", plannercode);
                                 }//check PM
                             }//end foreach
                         }//copied file exist
@@ -291,6 +340,91 @@ namespace ProLEGO.Models
                 }// src file exist
             }// scan file from source fold
         }
+
+        //public static void LoadAllProjects(Controller ctrl)
+        //{
+        //    var pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "PM";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "Project Code";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "NPI Status";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+        //    pjcol.ColumnDefaultVal = "PIP1;EVT;DVT;MVT;MP";
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+
+        //    var syscfgdict = CfgUtility.GetSysConfig(ctrl);
+        //    var pmdict = CfgUtility.GetEmployDict(ctrl);
+        //    var pjlistfolder = syscfgdict["PJLISTFILEFD"];
+        //    var pjsrcfss = DirectoryEnumerateFiles(ctrl, pjlistfolder);
+        //    foreach (var fl in pjsrcfss)
+        //    {
+        //        if (fl.ToUpper().Contains("PROJECT LIST"))
+        //        {
+        //            try
+        //            {
+        //                var fn = Path.GetFileName(fl);
+        //                fn = fn.Replace(" ", "_").Replace("#", "").Replace("'", "")
+        //                        .Replace("&", "").Replace("?", "").Replace("%", "").Replace("+", "");
+        //                string datestring = DateTime.Now.ToString("yyyyMMdd");
+        //                string imgdir = ctrl.Server.MapPath("~/userfiles") + "\\docs\\" + datestring + "\\";
+        //                if (!DirectoryExists(ctrl, imgdir))
+        //                    Directory.CreateDirectory(imgdir);
+        //                var desfl = imgdir + fn;
+        //                FileCopy(ctrl, fl, desfl, true);
+        //                if (FileExist(ctrl, desfl))
+        //                {
+        //                    var alldata = RetrieveDataFromExcel(ctrl,desfl, null);
+        //                    foreach (var line in alldata)
+        //                    {
+        //                        if (!string.IsNullOrEmpty(line[15]) 
+        //                            && pmdict.ContainsKey(line[15].Replace(" ",".").ToUpper()))
+        //                        {
+        //                            var pj = line[2].Replace("/", "-").Trim();
+        //                            var pjcode = line[4];
+
+        //                            var pjprogress = "MP";
+        //                            if (!string.IsNullOrEmpty(line[7]))
+        //                            {
+        //                                pjprogress = "PIP1";
+        //                            }
+        //                            if (!string.IsNullOrEmpty(line[8]))
+        //                            {
+        //                                pjprogress = "EVT";
+        //                            }
+        //                            if (!string.IsNullOrEmpty(line[9]))
+        //                            {
+        //                                pjprogress = "DVT";
+        //                            }
+        //                            if (!string.IsNullOrEmpty(line[10]))
+        //                            {
+        //                                pjprogress = "MVT";
+        //                            }
+        //                            if (!string.IsNullOrEmpty(line[11]))
+        //                            {
+        //                                pjprogress = "MP";
+        //                            }
+        //                            var PM = line[15].Replace(" ", ".").ToUpper();
+
+        //                            ProjectVM.CreateProject(ctrl.ViewBag.compName, pj);
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pj, "PM", PM);
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pj, "Project Code", pjcode);
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pj, "NPI Status", pjprogress);
+        //                        }//check PM
+        //                    }//end foreach
+        //                }//copied file exist
+        //            }
+        //            catch (Exception ex) { }
+        //        }// src file exist
+        //    }// scan file from source fold
+        //}
 
 
 

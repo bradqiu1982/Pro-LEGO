@@ -394,21 +394,22 @@ namespace ProLEGO.Controllers
 
             ExternalDataCollector.LoadAllProjects(this);
 
-            if (ViewBag.Admin)
-            {
-                var sysdict = CfgUtility.GetSysConfig(this);
-                var pjlist = new List<string>();
-                foreach (var kv in sysdict)
-                {
-                    if (kv.Key.ToUpper().Contains("PJNAME"))
-                    {
-                        pjlist.Add(kv.Value);
-                    }
-                }
-                ViewBag.PJList = Newtonsoft.Json.JsonConvert.SerializeObject(pjlist.ToArray());
-            }
+            return View();
+            //if (ViewBag.Admin)
+            //{
+            //    var sysdict = CfgUtility.GetSysConfig(this);
+            //    var pjlist = new List<string>();
+            //    foreach (var kv in sysdict)
+            //    {
+            //        if (kv.Key.ToUpper().Contains("PJNAME"))
+            //        {
+            //            pjlist.Add(kv.Value);
+            //        }
+            //    }
+            //    ViewBag.PJList = Newtonsoft.Json.JsonConvert.SerializeObject(pjlist.ToArray());
+            //}
 
-            return View("MainPage");
+            //return View("MainPage");
         }
 
     }
