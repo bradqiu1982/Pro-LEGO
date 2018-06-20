@@ -207,23 +207,44 @@ namespace ProLEGO.Models
             }
         }
 
+        private static string ConvertStr(object obj)
+        {
+            try
+            {
+                if (obj == null)
+                { return string.Empty; }
+                else
+                { return Convert.ToString(obj); }
+            }
+            catch (Exception ex) { }
+            return string.Empty;
+        }
+
         public static void LoadAllProjects(Controller ctrl)
         {
+            //var pjcollist = new List<string>();
+            //pjcollist.Add("Project Code");
+            //pjcollist.Add("PM");
+            //pjcollist.Add("Planner");
+            //pjcollist.Add("Project Phase");
+            //pjcollist.Add("BU");
+            //pjcollist.Add("COST CENTER");
+            //pjcollist.Add("Planner Code");
+            //pjcollist.Add("Location");
+            //pjcollist.Add("R&D Type");
+            //pjcollist.Add("Project Group");
 
             var pjcol = new ProjectColumn();
             pjcol.ColumnName = "Project Code";
             pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
             pjcol.AddPJColumn(ctrl.ViewBag.compName);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
 
             pjcol = new ProjectColumn();
             pjcol.ColumnName = "PM";
             pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
             pjcol.AddPJColumn(ctrl.ViewBag.compName);
-
-            pjcol = new ProjectColumn();
-            pjcol.ColumnName = "Owner";
-            pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
-            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
 
             pjcol = new ProjectColumn();
             pjcol.ColumnName = "Planner";
@@ -231,115 +252,222 @@ namespace ProLEGO.Models
             pjcol.AddPJColumn(ctrl.ViewBag.compName);
 
             pjcol = new ProjectColumn();
-            pjcol.ColumnName = "Type";
+            pjcol.ColumnName = "Project Phase";
             pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
             pjcol.AddPJColumn(ctrl.ViewBag.compName);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
 
             pjcol = new ProjectColumn();
-            pjcol.ColumnName = "Series";
+            pjcol.ColumnName = "BU";
             pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
             pjcol.AddPJColumn(ctrl.ViewBag.compName);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
 
             pjcol = new ProjectColumn();
-            pjcol.ColumnName = "NPI Status";
-            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
-            pjcol.ColumnDefaultVal = "PIP1;EVT;DVT;MVT;MP";
-            pjcol.AddPJColumn(ctrl.ViewBag.compName);
-
-            pjcol = new ProjectColumn();
-            pjcol.ColumnName = "RD Site";
+            pjcol.ColumnName = "COST CENTER";
             pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
             pjcol.AddPJColumn(ctrl.ViewBag.compName);
-
-            pjcol = new ProjectColumn();
-            pjcol.ColumnName = "Period";
-            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
-            pjcol.AddPJColumn(ctrl.ViewBag.compName);
-
-            pjcol = new ProjectColumn();
-            pjcol.ColumnName = "Buget";
-            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
-            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
 
             pjcol = new ProjectColumn();
             pjcol.ColumnName = "Planner Code";
             pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
             pjcol.AddPJColumn(ctrl.ViewBag.compName);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
 
+            pjcol = new ProjectColumn();
+            pjcol.ColumnName = "Location";
+            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
 
-            var syscfgdict = CfgUtility.GetSysConfig(ctrl);
-            var pjlistfolder = syscfgdict["PJLISTFILEFD"];
-            var pjsrcfss = DirectoryEnumerateFiles(ctrl, pjlistfolder);
-            foreach (var fl in pjsrcfss)
+            pjcol = new ProjectColumn();
+            pjcol.ColumnName = "R&D Type";
+            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
+
+            pjcol = new ProjectColumn();
+            pjcol.ColumnName = "Project Group";
+            pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+            pjcol.AddPJColumn(ctrl.ViewBag.compName);
+            new System.Threading.ManualResetEvent(false).WaitOne(1000);
+
+            var sql = @"select (Project+'/'+Series) as ProjectName,Project_Code,Project_Manager,Planner,Phase_in_current_week
+                         ,BU,Cost_Center,Location,RD_Type,(Project_Group+'/'+Group1+'/'+Group2) as PJGroup,Planner_Code  FROM [OA].[dbo].[View_OA_Planning_Project_List]";
+            var dbret = DBUtility.ExeOASqlWithRes(sql);
+            foreach (var line in dbret)
             {
-                if (fl.ToUpper().Contains("PROJECT LEGO DATA"))
-                {
-                    try
-                    {
-                        var fn = Path.GetFileName(fl);
-                        fn = fn.Replace(" ", "_").Replace("#", "").Replace("'", "")
-                                .Replace("&", "").Replace("?", "").Replace("%", "").Replace("+", "");
-                        string datestring = DateTime.Now.ToString("yyyyMMdd");
-                        string imgdir = ctrl.Server.MapPath("~/userfiles") + "\\docs\\" + datestring + "\\";
-                        if (!DirectoryExists(ctrl, imgdir))
-                            Directory.CreateDirectory(imgdir);
-                        var desfl = imgdir + fn;
-                        FileCopy(ctrl, fl, desfl, true);
-                        if (FileExist(ctrl, desfl))
-                        {
-                            var alldata = RetrieveDataFromExcel(ctrl, desfl, "Project(NPI&RD)");
-                            foreach (var line in alldata)
-                            {
-                                var pjcode = line[1];
-                                if (pjcode.ToUpper().Contains("PROJECT CODE") 
-                                    || pjcode.ToUpper().Contains("NA"))
-                                {
-                                    continue;
-                                }
+                var pjname = ConvertStr(line[0]);
+                if (string.IsNullOrEmpty(pjname)) { continue; }
 
-                                var pjname = line[7];
-                                var pm = line[16];
+                ProjectVM.CreateProject(ctrl.ViewBag.compName, pjname);
 
-                                if (!string.IsNullOrEmpty(pjcode)
-                                    && !string.IsNullOrEmpty(pjname)
-                                    && !string.IsNullOrEmpty(pm))
-                                {
-                                    var owner = line[15];
-                                    var type = line[17] + "/" + line[18] + "/" + line[20];
-                                    var rdsite = line[22];
+                var pjcode = ConvertStr(line[1]);
+                var pm = ConvertStr(line[2]);
+                var planner = ConvertStr(line[3]);
 
-                                    var phase = line[27];
-                                    var period = line[28];
-                                    var buget = line[32];
+                var phase = ConvertStr(line[4]);
+                var bu = ConvertStr(line[5]);
+                var costcenter = ConvertStr(line[6]);
 
-                                    var plannercode = line[62];
-                                    var series = line[59];
-                                    var planner = line[68];
+                var location = ConvertStr(line[7]);
+                var rdtype = ConvertStr(line[8]);
+                var pjgroup = ConvertStr(line[9]);
+                var plannercode = ConvertStr(line[10]);
 
-                                    ProjectVM.CreateProject(ctrl.ViewBag.compName, pjname);
+                ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Project Code", pjcode);
+                ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "PM", pm);
+                ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Planner", planner);
 
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Project Code", pjcode);
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "PM", pm);
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Owner", owner);
 
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Planner", planner);
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Type", type);
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Series", series);
+                ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Project Phase", phase);
+                ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "BU", bu);
+                ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "COST CENTER", costcenter);
 
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "NPI Status", phase);
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "RD Site", rdsite);
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Period", period);
+                ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Planner Code", plannercode);
 
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Buget", buget);
-                                    ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Planner Code", plannercode);
-                                }//check PM
-                            }//end foreach
-                        }//copied file exist
-                    }
-                    catch (Exception ex) { }
-                }// src file exist
-            }// scan file from source fold
+                ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Location", location);
+                ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "R&D Type", rdtype);
+                ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Project Group", pjgroup);
+            }
+
         }
+
+
+        //public static void LoadAllProjects(Controller ctrl)
+        //{
+
+        //    var pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "Project Code";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "PM";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "Owner";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "Planner";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.ROLE;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "Type";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "Series";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "NPI Status";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+        //    pjcol.ColumnDefaultVal = "PIP1;EVT;DVT;MVT;MP";
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "RD Site";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "Period";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "Buget";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+        //    pjcol = new ProjectColumn();
+        //    pjcol.ColumnName = "Planner Code";
+        //    pjcol.ColumnType = PROJECTCOLUMNTYPE.INFORMATION;
+        //    pjcol.AddPJColumn(ctrl.ViewBag.compName);
+
+
+        //    var syscfgdict = CfgUtility.GetSysConfig(ctrl);
+        //    var pjlistfolder = syscfgdict["PJLISTFILEFD"];
+        //    var pjsrcfss = DirectoryEnumerateFiles(ctrl, pjlistfolder);
+        //    foreach (var fl in pjsrcfss)
+        //    {
+        //        if (fl.ToUpper().Contains("PROJECT LEGO DATA"))
+        //        {
+        //            try
+        //            {
+        //                var fn = Path.GetFileName(fl);
+        //                fn = fn.Replace(" ", "_").Replace("#", "").Replace("'", "")
+        //                        .Replace("&", "").Replace("?", "").Replace("%", "").Replace("+", "");
+        //                string datestring = DateTime.Now.ToString("yyyyMMdd");
+        //                string imgdir = ctrl.Server.MapPath("~/userfiles") + "\\docs\\" + datestring + "\\";
+        //                if (!DirectoryExists(ctrl, imgdir))
+        //                    Directory.CreateDirectory(imgdir);
+        //                var desfl = imgdir + fn;
+        //                FileCopy(ctrl, fl, desfl, true);
+        //                if (FileExist(ctrl, desfl))
+        //                {
+        //                    var alldata = RetrieveDataFromExcel(ctrl, desfl, "Project(NPI&RD)");
+        //                    foreach (var line in alldata)
+        //                    {
+        //                        var pjcode = line[1];
+        //                        if (pjcode.ToUpper().Contains("PROJECT CODE") 
+        //                            || pjcode.ToUpper().Contains("NA"))
+        //                        {
+        //                            continue;
+        //                        }
+
+        //                        var pjname = line[7];
+        //                        var pm = line[16];
+
+        //                        if (!string.IsNullOrEmpty(pjcode)
+        //                            && !string.IsNullOrEmpty(pjname)
+        //                            && !string.IsNullOrEmpty(pm))
+        //                        {
+        //                            var owner = line[15];
+        //                            var type = line[17] + "/" + line[18] + "/" + line[20];
+        //                            var rdsite = line[22];
+
+        //                            var phase = line[27];
+        //                            var period = line[28];
+        //                            var buget = line[32];
+
+        //                            var plannercode = line[62];
+        //                            var series = line[59];
+        //                            var planner = line[68];
+
+        //                            ProjectVM.CreateProject(ctrl.ViewBag.compName, pjname);
+
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Project Code", pjcode);
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "PM", pm);
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Owner", owner);
+
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Planner", planner);
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Type", type);
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Series", series);
+
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "NPI Status", phase);
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "RD Site", rdsite);
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Period", period);
+
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Buget", buget);
+        //                            ProjectVM.UpdateProjectColumnValue(ctrl.ViewBag.compName, pjname, "Planner Code", plannercode);
+        //                        }//check PM
+        //                    }//end foreach
+        //                }//copied file exist
+        //            }
+        //            catch (Exception ex) { }
+        //        }// src file exist
+        //    }// scan file from source fold
+        //}
 
         //public static void LoadAllProjects(Controller ctrl)
         //{
