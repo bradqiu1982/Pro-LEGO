@@ -293,8 +293,8 @@ namespace ProLEGO.Models
             pjcol.AddPJColumn(ctrl.ViewBag.compName);
             new System.Threading.ManualResetEvent(false).WaitOne(1000);
 
-            var sql = @"select (Project+'/'+Series) as ProjectName,Project_Code,Project_Manager,Planner,Phase_in_current_week
-                         ,BU,Cost_Center,Location,RD_Type,(Project_Group+'/'+Group1+'/'+Group2) as PJGroup,Planner_Code  FROM [OA].[dbo].[View_OA_Planning_Project_List]";
+            var sql = @"select (Project_Planning1+'/'+Series_Planning1) as ProjectName,Project_Code,Project_PM,PC,Phase_in_current_week
+                         ,BU,Cost_Center,Build_Location,RD_Type,(Project_Group+'/'+Group1+'/'+Group2) as PJGroup,Planner_Code1  FROM [OA].[dbo].[View_OA_Planning_Project_List]";
             var dbret = DBUtility.ExeOASqlWithRes(sql);
             foreach (var line in dbret)
             {
